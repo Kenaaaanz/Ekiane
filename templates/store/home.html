@@ -1,0 +1,421 @@
+{% extends 'base.html' %}
+
+{% block hero %}{% endblock %}
+
+{% block content %}
+<!-- Featured Collection Section - Refined Luxury -->
+<section class="featured-section">
+    <div class="section-header">
+        <span class="eyebrow">Artisanal Edit</span>
+        <h2>Featured Collection</h2>
+        <p>Discover our most luxurious organic hair care products, crafted with rare botanicals and pure shea butter.</p>
+    </div>
+    <div class="feature-grid">
+        {% for product in products %}
+            <article class="product-card">
+                <div class="product-image">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy">
+                    {% else %}
+                        <div class="product-placeholder">{{ product.name }}</div>
+                    {% endif %}
+                    {% if product.stock > 0 and product.stock < 10 %}
+                        <span class="stock-badge low-stock">Low Stock</span>
+                    {% elif product.stock > 0 %}
+                        <span class="stock-badge in-stock-badge">Available</span>
+                    {% endif %}
+                </div>
+                <div class="product-info">
+                    <span class="product-category">{{ product.category.name }}</span>
+                    <h3><a href="{{ product.get_absolute_url }}">{{ product.name }}</a></h3>
+                    <p class="product-description">{{ product.description|truncatechars:80 }}</p>
+                    <div class="product-meta">
+                        <span class="price">{{ currency_symbol }} {{ product.price|floatformat:0 }}</span>
+                        {% if product.stock > 0 %}
+                            <span class="in-stock"><i class="fas fa-check-circle"></i> In Stock</span>
+                        {% else %}
+                            <span class="out-stock"><i class="fas fa-times-circle"></i> Out of Stock</span>
+                        {% endif %}
+                    </div>
+                    <a class="button-secondary" href="{{ product.get_absolute_url }}">
+                        View Details <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </article>
+        {% empty %}
+            <div class="empty-state">
+                <i class="fas fa-leaf"></i>
+                <p>No products available yet.</p>
+                <span>New collections arriving soon.</span>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Shop by Category - Elegant Showcase -->
+<section class="category-showcase">
+    <div class="category-header">
+        <span class="eyebrow">Browse By Essence</span>
+        <h2>Shop by Category</h2>
+        <p>Explore our curated range of organic hair and beard care rituals</p>
+    </div>
+    <div class="category-grid">
+        <div class="category-card" data-category="shea">
+            <div class="category-icon"><i class="fas fa-seedling"></i></div>
+            <h3>Shea Butter</h3>
+            <p>Deep moisturizing formulas</p>
+            <a href="/category/shea-butter/" class="category-link">Explore <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="category-card" data-category="shampoo">
+            <div class="category-icon"><i class="fas fa-shower"></i></div>
+            <h3>Shampoo</h3>
+            <p>Gentle cleansing blends</p>
+            <a href="/category/shampoo/" class="category-link">Explore <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="category-card" data-category="conditioner">
+            <div class="category-icon"><i class="fas fa-leaf"></i></div>
+            <h3>Conditioner</h3>
+            <p>Hydrating treatments</p>
+            <a href="/category/conditioner/" class="category-link">Explore <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="category-card" data-category="beard">
+            <div class="category-icon"><i class="fas fa-beard"></i></div>
+            <h3>Beard Oil</h3>
+            <p>Premium grooming oils</p>
+            <a href="/category/beard-oil/" class="category-link">Explore <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Additional refined styling for the page content */
+    .featured-section {
+        padding: 2rem 0 3rem;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .section-header .eyebrow {
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+
+    .section-header h2 {
+        font-size: 2.5rem;
+        font-weight: 500;
+        margin-bottom: 0.75rem;
+        color: #1F1C18;
+    }
+
+    .section-header p {
+        color: #5C5548;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 2rem;
+    }
+
+    .product-card {
+        background: #FFFFFF;
+        border-radius: 24px;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+        border: 1px solid #F0E7DF;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+    }
+
+    .product-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 24px 36px -18px rgba(0, 0, 0, 0.12);
+        border-color: #E5D5C2;
+    }
+
+    .product-image {
+        position: relative;
+        aspect-ratio: 1 / 1;
+        background: #F8F3EC;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .product-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+
+    .product-card:hover .product-image img {
+        transform: scale(1.03);
+    }
+
+    .product-placeholder {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.2rem;
+        color: #B78C5A;
+        text-align: center;
+        padding: 1rem;
+    }
+
+    .stock-badge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        font-size: 0.7rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 50px;
+        font-weight: 500;
+        background: white;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .low-stock {
+        background: #FEF1E0;
+        color: #C97E2A;
+    }
+
+    .in-stock-badge {
+        background: #E8F3EC;
+        color: #2D6A4F;
+    }
+
+    .product-info {
+        padding: 1.5rem;
+    }
+
+    .product-category {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #B78C5A;
+        font-weight: 500;
+    }
+
+    .product-info h3 {
+        margin: 0.5rem 0 0.75rem;
+        font-size: 1.25rem;
+        font-family: 'Cormorant Garamond', serif;
+        font-weight: 500;
+    }
+
+    .product-info h3 a {
+        color: #2A2723;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .product-info h3 a:hover {
+        color: #B78C5A;
+    }
+
+    .product-description {
+        font-size: 0.85rem;
+        color: #6A5E4F;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+    }
+
+    .product-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .price {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #1F1C18;
+        font-family: 'Cormorant Garamond', serif;
+    }
+
+    .in-stock, .out-stock {
+        font-size: 0.7rem;
+        font-weight: 500;
+    }
+
+    .in-stock {
+        color: #2D6A4F;
+    }
+
+    .out-stock {
+        color: #BFA38A;
+    }
+
+    .in-stock i, .out-stock i {
+        margin-right: 4px;
+        font-size: 0.65rem;
+    }
+
+    .button-secondary {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0.6rem 1.2rem;
+        background: transparent;
+        border: 1px solid #DCC9AE;
+        border-radius: 40px;
+        color: #2A2723;
+        font-size: 0.8rem;
+        font-weight: 500;
+        transition: all 0.25s;
+        text-decoration: none;
+    }
+
+    .button-secondary:hover {
+        background: #1F1C18;
+        border-color: #1F1C18;
+        color: white;
+    }
+
+    .button-secondary i {
+        transition: transform 0.2s;
+    }
+
+    .button-secondary:hover i {
+        transform: translateX(3px);
+    }
+
+    /* Category Showcase */
+    .category-showcase {
+        padding: 4rem 0 2rem;
+        margin-top: 2rem;
+    }
+
+    .category-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .category-header .eyebrow {
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+
+    .category-header h2 {
+        font-size: 2.5rem;
+        font-weight: 500;
+        margin-bottom: 0.75rem;
+        color: #1F1C18;
+    }
+
+    .category-header p {
+        color: #5C5548;
+    }
+
+    .category-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.8rem;
+    }
+
+    .category-card {
+        background: #FFFFFF;
+        border-radius: 28px;
+        padding: 2rem 1.5rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        border: 1px solid #F0E7DF;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .category-card:hover {
+        transform: translateY(-4px);
+        border-color: #DCC9AE;
+        box-shadow: 0 16px 28px -12px rgba(0, 0, 0, 0.08);
+    }
+
+    .category-icon {
+        font-size: 2.2rem;
+        color: #B78C5A;
+        margin-bottom: 1rem;
+    }
+
+    .category-card h3 {
+        font-size: 1.35rem;
+        font-family: 'Cormorant Garamond', serif;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #2A2723;
+    }
+
+    .category-card p {
+        font-size: 0.85rem;
+        color: #6A5E4F;
+        margin-bottom: 1.2rem;
+    }
+
+    .category-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #B78C5A;
+        text-decoration: none;
+        transition: gap 0.2s;
+    }
+
+    .category-link:hover {
+        gap: 10px;
+        color: #8B5E3C;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        background: #FEFAF5;
+        border-radius: 32px;
+        color: #A18F7A;
+    }
+
+    .empty-state i {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: #DCC9AE;
+    }
+
+    .empty-state p {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .empty-state span {
+        font-size: 0.85rem;
+    }
+
+    @media (max-width: 768px) {
+        .feature-grid {
+            grid-template-columns: 1fr;
+        }
+        .category-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+        .section-header h2,
+        .category-header h2 {
+            font-size: 1.8rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .category-grid {
+            grid-template-columns: 1fr;
+        }
+        .product-meta {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+{% endblock %}

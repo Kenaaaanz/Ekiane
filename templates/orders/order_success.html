@@ -1,0 +1,430 @@
+{% extends 'base.html' %}
+
+{% block hero %}{% endblock %}
+
+{% block content %}
+<section class="order-success">
+    <div class="success-container">
+        {% if order %}
+            <!-- Success State - Luxury Confirmation -->
+            <div class="success-icon-wrapper">
+                <div class="success-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <div class="success-ring"></div>
+            </div>
+            <h1>Order Confirmed</h1>
+            <p class="success-message">Thank you, <span class="customer-name">{{ order.first_name }}</span>! Your payment was successful and your order has been confirmed.</p>
+            
+            <div class="order-details-card">
+                <h3>Order Summary</h3>
+                <div class="details-grid">
+                    <div class="detail-item">
+                        <span class="detail-label">Order Number</span>
+                        <span class="detail-value order-id">#{{ order.id }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Email Address</span>
+                        <span class="detail-value">{{ order.email }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Total Paid</span>
+                        <span class="detail-value total-amount">{{ currency_symbol }} {{ order.total|floatformat:0 }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="next-steps-card">
+                <i class="fas fa-envelope"></i>
+                <p>We will send you a confirmation email shortly with tracking information.</p>
+                <span class="note">Please allow 2-3 business days for processing</span>
+            </div>
+
+            <div class="action-buttons">
+                <a class="button primary-btn" href="/">
+                    Continue Shopping <i class="fas fa-arrow-right"></i>
+                </a>
+                <a class="button-secondary" href="/orders/">
+                    View My Orders <i class="fas fa-receipt"></i>
+                </a>
+            </div>
+
+            <div class="support-note">
+                <i class="fas fa-headset"></i>
+                <span>Need assistance? <a href="mailto:info@ekiane.com">Contact our concierge</a></span>
+            </div>
+        {% else %}
+            <!-- Error / Missing Order State -->
+            <div class="error-icon-wrapper">
+                <div class="error-icon">
+                    <i class="fas fa-exclamation"></i>
+                </div>
+            </div>
+            <h1>Order Information Unavailable</h1>
+            <p class="error-message">We couldn't retrieve your order details. Please contact support if you were charged but don't see this confirmation.</p>
+            <div class="action-buttons">
+                <a class="button" href="/">Return to Home</a>
+                <a class="button-secondary" href="mailto:info@ekiane.com">Contact Support</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<style>
+    /* Order Success Page - Luxury Refinement */
+    .order-success {
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 3rem 2rem 5rem;
+    }
+
+    .success-container {
+        max-width: 680px;
+        width: 100%;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    /* Animated Success Icon */
+    .success-icon-wrapper {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 2rem;
+    }
+
+    .success-icon {
+        width: 80px;
+        height: 80px;
+        background: #1F1C18;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 2;
+        animation: scaleIn 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+
+    .success-icon i {
+        color: white;
+        font-size: 2.2rem;
+    }
+
+    .success-ring {
+        position: absolute;
+        top: -8px;
+        left: -8px;
+        right: -8px;
+        bottom: -8px;
+        border: 2px solid #B78C5A;
+        border-radius: 50%;
+        opacity: 0;
+        animation: pulseRing 1.5s ease-out infinite;
+    }
+
+    @keyframes scaleIn {
+        0% {
+            transform: scale(0);
+            opacity: 0;
+        }
+        50% {
+            transform: scale(1.1);
+        }
+        100% {
+            transform: scale(1);
+            opacity: 1;
+        }
+    }
+
+    @keyframes pulseRing {
+        0% {
+            transform: scale(0.8);
+            opacity: 0.6;
+        }
+        100% {
+            transform: scale(1.3);
+            opacity: 0;
+        }
+    }
+
+    /* Typography */
+    h1 {
+        font-size: 2.5rem;
+        font-weight: 500;
+        color: #1F1C18;
+        margin-bottom: 1rem;
+        font-family: 'Cormorant Garamond', serif;
+    }
+
+    .success-message {
+        font-size: 1rem;
+        color: #5C5548;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+
+    .customer-name {
+        color: #B78C5A;
+        font-weight: 500;
+    }
+
+    /* Order Details Card */
+    .order-details-card {
+        background: #FFFFFF;
+        border-radius: 28px;
+        padding: 1.8rem;
+        margin-bottom: 1.8rem;
+        text-align: left;
+        border: 1px solid #F0E7DF;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+    }
+
+    .order-details-card h3 {
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #B78C5A;
+        margin-bottom: 1.2rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid #F0E7DF;
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+    }
+
+    .details-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .detail-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .detail-label {
+        font-size: 0.85rem;
+        color: #8C7E6B;
+        font-weight: 400;
+    }
+
+    .detail-value {
+        font-weight: 500;
+        color: #2A2723;
+        font-size: 1rem;
+    }
+
+    .order-id {
+        font-family: monospace;
+        letter-spacing: 0.5px;
+        background: #F8F3EC;
+        padding: 0.2rem 0.6rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+    }
+
+    .total-amount {
+        color: #B78C5A;
+        font-size: 1.2rem;
+        font-weight: 600;
+        font-family: 'Cormorant Garamond', serif;
+    }
+
+    /* Next Steps Card */
+    .next-steps-card {
+        background: #FEFAF5;
+        border-radius: 24px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        text-align: center;
+        border: 1px solid #F0E7DF;
+    }
+
+    .next-steps-card i {
+        font-size: 1.8rem;
+        color: #B78C5A;
+        margin-bottom: 0.8rem;
+        display: inline-block;
+    }
+
+    .next-steps-card p {
+        font-size: 0.95rem;
+        color: #2A2723;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+
+    .next-steps-card .note {
+        font-size: 0.75rem;
+        color: #A18F7A;
+        display: block;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 1.5rem;
+    }
+
+    .primary-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #1F1C18;
+        color: white;
+        padding: 0.85rem 2rem;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 0.85rem;
+        transition: all 0.3s;
+        border: 1px solid transparent;
+    }
+
+    .primary-btn:hover {
+        background: #B78C5A;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(183, 140, 90, 0.25);
+    }
+
+    .primary-btn i {
+        transition: transform 0.2s;
+    }
+
+    .primary-btn:hover i {
+        transform: translateX(4px);
+    }
+
+    .button-secondary {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0.85rem 2rem;
+        background: transparent;
+        border: 1px solid #DCC9AE;
+        border-radius: 50px;
+        color: #2A2723;
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: all 0.25s;
+    }
+
+    .button-secondary:hover {
+        background: #F8F3EC;
+        border-color: #B78C5A;
+    }
+
+    /* Support Note */
+    .support-note {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.8rem;
+        color: #8C7E6B;
+        padding: 0.75rem 1.2rem;
+        background: #FFFFFF;
+        border-radius: 50px;
+        border: 1px solid #F0E7DF;
+    }
+
+    .support-note i {
+        color: #B78C5A;
+        font-size: 0.8rem;
+    }
+
+    .support-note a {
+        color: #B78C5A;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .support-note a:hover {
+        text-decoration: underline;
+    }
+
+    /* Error State Styling */
+    .error-icon-wrapper {
+        margin-bottom: 2rem;
+    }
+
+    .error-icon {
+        width: 70px;
+        height: 70px;
+        background: #FEF1E0;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+    }
+
+    .error-icon i {
+        color: #C97E2A;
+        font-size: 2rem;
+    }
+
+    .error-message {
+        color: #8C7E6B;
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+        .order-success {
+            padding: 2rem 1rem 4rem;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+        }
+
+        .order-details-card {
+            padding: 1.2rem;
+        }
+
+        .detail-item {
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .primary-btn, .button-secondary {
+            justify-content: center;
+            width: 100%;
+        }
+
+        .success-icon {
+            width: 65px;
+            height: 65px;
+        }
+
+        .success-icon i {
+            font-size: 1.8rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .details-grid {
+            gap: 0.75rem;
+        }
+        
+        .next-steps-card {
+            padding: 1rem;
+        }
+    }
+</style>
+{% endblock %}

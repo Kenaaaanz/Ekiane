@@ -1,0 +1,802 @@
+
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | Ekiane Luxury Admin{% endblock %}
+
+{% block extrastyle %}
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   EKIANE LUXURY ADMIN - PROFESSIONAL REFINEMENT
+   Deep Emerald (#0A2E2A), Aged Gold (#C6A43F), Ivory (#FAF7F2)
+   ============================================ */
+
+:root {
+    --primary-deep: #0A2E2A;
+    --primary-dark: #124D46;
+    --primary-medium: #1A6B60;
+    --primary-light: #268C7E;
+    --accent-gold: #C6A43F;
+    --accent-gold-light: #DABF6E;
+    --accent-gold-dark: #A8882E;
+    --bg-ivory: #FAF7F2;
+    --bg-cream: #FFFDF9;
+    --bg-warm: #F5F0E8;
+    --text-charcoal: #2C2A27;
+    --text-muted: #7A7368;
+    --border-light: #EAE4DA;
+    --border-medium: #DDD5C8;
+    --success-emerald: #1B6B5C;
+    --error-ruby: #B85C4A;
+    --warning-amber: #D4A343;
+}
+
+/* Base Refinements */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-ivory) !important;
+}
+
+h1, h2, h3, h4, .dashboard-title, .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+}
+
+/* ========== HEADER - LUXURY REFINEMENT ========== */
+#header {
+    background: linear-gradient(105deg, var(--primary-deep) 0%, var(--primary-dark) 100%) !important;
+    border-bottom: 2px solid var(--accent-gold) !important;
+    padding: 1rem 2rem !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+#branding h1, #site-name {
+    font-family: 'Cormorant Garamond', serif !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.15em !important;
+    font-size: 1.6rem !important;
+}
+
+#site-name a {
+    color: var(--accent-gold) !important;
+    text-decoration: none !important;
+    transition: opacity 0.2s ease !important;
+}
+
+
+#site-name a:hover {
+    opacity: 0.85 !important;
+    color: var(--accent-gold-light) !important;
+}
+
+#user-tools {
+    color: rgba(255, 245, 230, 0.85) !important;
+    font-size: 0.8rem !important;
+    font-weight: 400 !important;
+}
+
+#user-tools a {
+    color: var(--accent-gold-light) !important;
+    text-decoration: none !important;
+    transition: color 0.2s ease !important;
+}
+
+#user-tools a:hover {
+    color: var(--accent-gold) !important;
+    text-decoration: underline !important;
+}
+
+/* ========== HORIZONTAL NAVIGATION BAR - LUXURY FLOATING BUTTONS ========== */
+#nav-sidebar,
+#sidebar,
+.sidebar {
+    display: none !important; /* Hide the vertical sidebar */
+}
+
+#content {
+    margin-left: 0 !important;
+    width: auto !important;
+    padding: 0 !important;
+    background: var(--bg-ivory) !important;
+}
+
+#container {
+    max-width: 1440px !important;
+    margin: 0 auto !important;
+    padding: 0 1.5rem !important;
+}
+
+#content-main {
+    background: var(--bg-cream) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.04) !important;
+    margin: 1.5rem auto !important;
+    padding: 2rem !important;
+    border: 1px solid var(--border-light) !important;
+}
+
+.luxury-nav-bar {
+    position: relative !important;
+    top: auto !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: calc(100% - 3rem) !important;
+    max-width: 1440px !important;
+    margin: 0 auto 2rem !important;
+    background: rgba(250, 247, 242, 0.96) !important;
+    backdrop-filter: blur(22px) !important;
+    border-bottom: 1px solid var(--border-light) !important;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.08) !important;
+    z-index: 100 !important;
+    padding: 1rem 1.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.75rem !important;
+    flex-wrap: wrap !important;
+    border-radius: 32px !important;
+}
+
+.luxury-nav-item {
+    position: relative !important;
+    background: linear-gradient(135deg, var(--bg-cream) 0%, var(--bg-warm) 100%) !important;
+    border: 1px solid rgba(222, 184, 135, 0.32) !important;
+    border-radius: 999px !important;
+    padding: 0.85rem 1.6rem !important;
+    color: var(--text-charcoal) !important;
+    text-decoration: none !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+    letter-spacing: 0.04em !important;
+    text-transform: uppercase !important;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.6rem !important;
+    box-shadow:
+        0 4px 14px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+    min-width: 130px !important;
+    justify-content: center !important;
+}
+
+.luxury-nav-item::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: linear-gradient(135deg, rgba(198, 164, 63, 0.08) 0%, rgba(198, 164, 63, 0.03) 100%) !important;
+    border-radius: 999px !important;
+    opacity: 0 !important;
+    transition: opacity 0.3s ease !important;
+    z-index: -1 !important;
+}
+
+.luxury-nav-item:hover {
+    transform: translateY(-2px) !important;
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.45) !important;
+    border-color: var(--accent-gold) !important;
+    color: var(--primary-deep) !important;
+}
+
+.luxury-nav-item:hover::before {
+    opacity: 1 !important;
+}
+
+.luxury-nav-item.current,
+.luxury-nav-item.selected {
+    background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%) !important;
+    color: var(--primary-deep) !important;
+    border-color: var(--accent-gold-dark) !important;
+    box-shadow:
+        0 6px 22px rgba(198, 164, 63, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
+    font-weight: 700 !important;
+}
+
+.luxury-nav-item.current::before,
+.luxury-nav-item.selected::before {
+    opacity: 1 !important;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%) !important;
+}
+
+/* Navigation Icons */
+.luxury-nav-item[href*="/admin/auth/"]::after,
+.luxury-nav-item[href*="/admin/accounts/"]::after {
+    content: "👥";
+    font-size: 1.1rem;
+}
+
+.luxury-nav-item[href*="/admin/store/"]::after,
+.luxury-nav-item[href*="/admin/products/"]::after {
+    content: "🛍️";
+    font-size: 1.1rem;
+}
+
+.luxury-nav-item[href*="/admin/orders/"]::after {
+    content: "📦";
+    font-size: 1.1rem;
+}
+
+.luxury-nav-item[href*="/admin/payments/"]::after {
+    content: "💳";
+    font-size: 1.1rem;
+}
+
+.luxury-nav-item[href*="/admin/analytics/"]::after,
+.luxury-nav-item[href*="/analytics/"]::after {
+    content: "📊";
+    font-size: 1.1rem;
+}
+
+.luxury-nav-item[href*="/admin/"]:not([href*="/admin/auth/"]):not([href*="/admin/store/"]):not([href*="/admin/orders/"]):not([href*="/admin/payments/"]):not([href*="/admin/analytics/"])::after {
+    content: "⚙️";
+    font-size: 1.1rem;
+}
+
+#content {
+    margin-top: 0 !important;
+    background: var(--bg-ivory) !important;
+}
+
+#content-main {
+    background: var(--bg-cream) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.04) !important;
+    margin: 1.5rem auto !important;
+    padding: 2rem !important;
+    border: 1px solid var(--border-light) !important;
+}
+
+/* Responsive design for navigation */
+@media (max-width: 1024px) {
+    .luxury-nav-bar {
+        padding: 0.8rem 1rem !important;
+        gap: 0.4rem !important;
+    }
+
+    .luxury-nav-item {
+        padding: 0.7rem 1.2rem !important;
+        font-size: 0.8rem !important;
+        min-width: 110px !important;
+    }
+
+    .luxury-nav-item::after {
+        font-size: 1rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .luxury-nav-bar {
+        width: 100% !important;
+        padding: 1rem !important;
+        gap: 0.5rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .luxury-nav-item {
+        flex: 1 1 calc(50% - 0.3rem) !important;
+        min-width: auto !important;
+        padding: 0.7rem 0.85rem !important;
+        font-size: 0.75rem !important;
+        justify-content: center !important;
+    }
+
+    .luxury-nav-item::after {
+        font-size: 0.95rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .luxury-nav-item {
+        flex: 1 1 100% !important;
+        margin-bottom: 0.3rem !important;
+    }
+}
+
+/* ========== MAIN CONTENT AREA ========== */
+#content {
+    background: var(--bg-ivory) !important;
+}
+
+#content-main {
+    background: var(--bg-cream) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.04) !important;
+    margin: 1.5rem !important;
+    padding: 2rem !important;
+    border: 1px solid var(--border-light) !important;
+}
+
+/* Dashboard Title */
+.dashboard-title {
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: var(--primary-deep);
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.02em;
+}
+
+.dashboard-subtitle {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-light);
+}
+
+/* ========== KPI CARDS - PROFESSIONAL METRICS ========== */
+.kpi-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    margin-bottom: 2.5rem;
+}
+
+.kpi-card {
+    background: var(--bg-cream);
+    padding: 1.5rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    text-align: left;
+    border: 1px solid var(--border-light);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-gold), var(--accent-gold-light));
+}
+
+.kpi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+    border-color: var(--border-medium);
+}
+
+.kpi-icon {
+    font-size: 1.8rem;
+    color: var(--accent-gold);
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+
+.kpi-card h3 {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+    font-family: 'Inter', sans-serif;
+}
+
+.kpi-value {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--primary-deep);
+    margin-bottom: 0.25rem;
+    font-family: 'Cormorant Garamond', serif;
+    letter-spacing: -0.02em;
+}
+
+.kpi-label {
+    color: var(--text-muted);
+    font-size: 0.7rem;
+    font-weight: 400;
+}
+
+/* ========== CHARTS GRID ========== */
+.charts-grid {
+    display: grid;
+    gap: 1.8rem;
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+    margin-bottom: 2.5rem;
+}
+
+.chart-card {
+    background: var(--bg-cream);
+    padding: 1.5rem;
+    border-radius: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    border: 1px solid var(--border-light);
+    transition: box-shadow 0.3s ease;
+}
+
+.chart-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.chart-card h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--border-light);
+    color: var(--primary-deep);
+    font-size: 1.3rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.chart-card h2 i {
+    color: var(--accent-gold);
+    font-size: 1.1rem;
+}
+
+.chart-container {
+    position: relative;
+    height: 280px;
+    margin-top: 0.5rem;
+}
+
+/* ========== ANALYTICS TABLES ========== */
+.analytics-section {
+    margin-top: 2rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border-light);
+}
+
+.section-header h3 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--primary-deep);
+    margin: 0;
+}
+
+.section-header .badge {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    background: var(--bg-warm);
+    padding: 0.2rem 0.7rem;
+    border-radius: 30px;
+}
+
+.analytics-table-wrapper {
+    overflow-x: auto;
+    border-radius: 16px;
+    border: 1px solid var(--border-light);
+    background: var(--bg-cream);
+}
+
+.analytics-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.analytics-table th {
+    text-align: left;
+    padding: 1rem 1.2rem;
+    background: var(--bg-warm);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--primary-dark);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.analytics-table td {
+    padding: 0.9rem 1.2rem;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-charcoal);
+    font-size: 0.85rem;
+}
+
+.analytics-table tr:last-child td {
+    border-bottom: none;
+}
+
+.analytics-table tr:hover td {
+    background: rgba(198, 164, 63, 0.03);
+}
+
+.analytics-table td:first-child {
+    font-weight: 500;
+}
+
+.analytics-table td:last-child {
+    font-weight: 600;
+    color: var(--primary-medium);
+    text-align: right;
+}
+
+.total-row td {
+    background: var(--bg-warm);
+    border-top: 2px solid var(--border-medium);
+    font-weight: 600;
+    color: var(--primary-deep);
+}
+
+/* ========== PRODUCTS TABLE ========== */
+.products-table-wrapper {
+    overflow-x: auto;
+    border-radius: 16px;
+    border: 1px solid var(--border-light);
+}
+
+.products-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.products-table thead {
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary-medium));
+}
+
+.products-table th {
+    padding: 1rem 1.2rem;
+    font-weight: 600;
+    text-align: left;
+    color: white;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.products-table td {
+    padding: 0.9rem 1.2rem;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-charcoal);
+    font-size: 0.85rem;
+}
+
+.products-table tbody tr:hover {
+    background: rgba(198, 164, 63, 0.03);
+}
+
+.product-name {
+    font-weight: 600;
+    color: var(--primary-dark);
+}
+
+.product-sales {
+    color: var(--accent-gold-dark);
+    font-weight: 600;
+    text-align: right;
+}
+
+/* ========== EMPTY STATE ========== */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-muted);
+    background: var(--bg-warm);
+    border-radius: 16px;
+    margin: 1rem 0;
+}
+
+.empty-state i {
+    font-size: 2.5rem;
+    color: var(--border-medium);
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.empty-state p {
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* ========== BUTTON STYLES ========== */
+.button, input[type="submit"], .submit-row input {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 50px;
+    font-weight: 500;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    background: var(--primary-dark);
+    color: white;
+}
+
+.button:hover, input[type="submit"]:hover, .submit-row input:hover {
+    background: var(--primary-medium);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(18, 77, 70, 0.25);
+}
+
+.button-secondary {
+    background: transparent;
+    color: var(--primary-dark);
+    border: 1.5px solid var(--primary-dark);
+}
+
+.button-secondary:hover {
+    background: var(--primary-dark);
+    color: white;
+}
+
+/* ========== BACK BUTTON STYLES ========== */
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: linear-gradient(135deg, var(--bg-cream) 0%, var(--bg-warm) 100%);
+    border: 1px solid rgba(222, 184, 135, 0.32);
+    border-radius: 999px;
+    color: var(--text-charcoal);
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    margin-bottom: 1rem;
+}
+
+.back-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    border-color: var(--accent-gold);
+    color: var(--primary-deep);
+    text-decoration: none;
+}
+
+.back-button i {
+    font-size: 1rem;
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+@media (max-width: 1024px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    #content-main {
+        margin: 1rem !important;
+        padding: 1.25rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .kpi-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .kpi-value {
+        font-size: 1.8rem;
+    }
+    
+    #content-main {
+        margin: 0.75rem !important;
+        padding: 1rem !important;
+    }
+    
+    .analytics-table th,
+    .analytics-table td,
+    .products-table th,
+    .products-table td {
+        padding: 0.7rem 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-title {
+        font-size: 1.4rem;
+    }
+    
+    .kpi-card {
+        padding: 1rem;
+    }
+    
+    .chart-card {
+        padding: 1rem;
+    }
+    
+    .chart-container {
+        height: 220px;
+    }
+}
+
+/* ========== CUSTOM SCROLLBAR ========== */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--border-light);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-gold);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-gold-dark);
+}
+
+/* ========== LOADING STATES ========== */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* ========== PRINT STYLES ========== */
+@media print {
+    #nav-sidebar, #user-tools, .button, .button-secondary {
+        display: none !important;
+    }
+    
+    #content-main {
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+    }
+    
+    .kpi-card, .chart-card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+}
+</style>
+
+<!-- Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+{% endblock %}
+
+{% block nav-breadcrumbs %}
+<!-- Luxury Navigation Bar - Under Header -->
+<nav class="luxury-nav-bar">
+    <a href="{% url 'admin:auth_user_changelist' %}" class="luxury-nav-item">Users</a>
+    <a href="{% url 'admin:store_category_changelist' %}" class="luxury-nav-item">Categories</a>
+    <a href="{% url 'admin:store_product_changelist' %}" class="luxury-nav-item">Products</a>
+    <a href="{% url 'admin:orders_order_changelist' %}" class="luxury-nav-item">Orders</a>
+    <a href="{% url 'admin:payments_payment_changelist' %}" class="luxury-nav-item">Payments</a>
+    <a href="{% url 'admin:analytics_productbatch_changelist' %}" class="luxury-nav-item">Product Batches</a>
+    <a href="{% url 'analytics:dashboard' %}" class="luxury-nav-item">Analytics</a>
+</nav>
+
+<!-- Back Button -->
+<div style="margin-bottom: 1rem; display:flex; justify-content:flex-start; gap:0.75rem; flex-wrap:wrap;">
+    <a href="#" class="back-button" onclick="if (window.history.length > 1) { window.history.back(); } else { window.location.href = '{% url 'admin:index' %}'; } return false;">
+        <i class="fas fa-arrow-left"></i>
+        <span>Back</span>
+    </a>
+</div>
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">EKIANE</a></h1>
+{% endblock %}

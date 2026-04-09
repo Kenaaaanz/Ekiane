@@ -1,0 +1,734 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}Analytics Dashboard | Ekiane Admin{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+/* Analytics Dashboard Styles */
+.page-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.admin-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem 0;
+    border-bottom: 2px solid #e8e3d8;
+}
+
+.admin-header h1 {
+    color: #004D40;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.admin-subtitle {
+    color: #6b6359;
+    font-size: 1.1rem;
+    font-weight: 400;
+}
+
+.last-updated {
+    color: #6b6359;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    font-weight: 300;
+}
+
+/* KPI Cards */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.kpi-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e8e3d8;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.kpi-card h3 {
+    color: #004D40;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.kpi-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #d7b74a;
+    margin-bottom: 0.5rem;
+}
+
+.kpi-label {
+    color: #6b6359;
+    font-size: 0.9rem;
+}
+
+/* Charts */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.chart-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e8e3d8;
+}
+
+.chart-card h2 {
+    color: #004D40;
+    margin-bottom: 1.5rem;
+    font-size: 1.3rem;
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+}
+
+/* Analytics Tables */
+.analytics-detail {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e8e3d8;
+    margin-bottom: 2rem;
+}
+
+.analytics-detail h2 {
+    color: #004D40;
+    margin-bottom: 1.5rem;
+}
+
+.analytics-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.analytics-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e8e3d8;
+}
+
+.analytics-table td:first-child {
+    font-weight: 600;
+    color: #004D40;
+}
+
+.total-row td {
+    border-top: 2px solid #d7b74a;
+    font-weight: 700;
+    color: #004D40;
+}
+
+/* Products Table */
+.top-products {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e8e3d8;
+}
+
+.products-table-wrapper {
+    overflow-x: auto;
+}
+
+.products-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.products-table th,
+.products-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e8e3d8;
+}
+
+.products-table th {
+    background: #faf7f2;
+    color: #004D40;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+}
+
+.product-name {
+    font-weight: 600;
+    color: #1a1917;
+}
+
+.product-sales {
+    color: #6b6359;
+}
+
+.empty-state {
+    text-align: center;
+    color: #6b6359;
+    padding: 2rem;
+    font-style: italic;
+}
+
+/* Status colors */
+.text-success {
+    color: #2e7d6a;
+    font-weight: 600;
+}
+
+.text-muted {
+    color: #6b6359;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .page-container {
+        padding: 1rem;
+    }
+
+    .kpi-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .charts-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .kpi-card {
+        padding: 1.5rem;
+    }
+
+    .chart-card {
+        padding: 1.5rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+    <div class="admin-header">
+        <h1>Admin Dashboard</h1>
+        <p class="admin-subtitle">Sales, Profit & Performance Analytics</p>
+        <p class="last-updated">Last Updated: <span id="lastUpdated">{{ last_updated|date:"H:i:s" }}</span></p>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="kpi-grid">
+        <article class="kpi-card">
+            <h3>Total Revenue</h3>
+            <p class="kpi-value">{{ currency_symbol }} {{ total_revenue|floatformat:0 }}</p>
+            <p class="kpi-label">All completed orders</p>
+        </article>
+        <article class="kpi-card">
+            <h3>Total Orders</h3>
+            <p class="kpi-value">{{ order_count }}</p>
+            <p class="kpi-label">Successful transactions</p>
+        </article>
+        <article class="kpi-card">
+            <h3>Net Profit</h3>
+            <p class="kpi-value">{{ currency_symbol }} {{ total_profit|floatformat:0 }}</p>
+            <p class="kpi-label">After costs & fees</p>
+        </article>
+        <article class="kpi-card">
+            <h3>Cost of Goods</h3>
+            <p class="kpi-value">{{ currency_symbol }} {{ total_cost|floatformat:0 }}</p>
+            <p class="kpi-label">Manufacturing costs</p>
+        </article>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="charts-grid">
+        <!-- Revenue Breakdown Chart -->
+        <section class="chart-card">
+            <h2>Financial Breakdown</h2>
+            <div class="chart-container">
+                <canvas id="profitChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Revenue Trend Chart -->
+        <section class="chart-card">
+            <h2>Revenue Trend (Last 30 Days)</h2>
+            <div class="chart-container">
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </section>
+    </div>
+
+    <!-- More Charts -->
+    <div class="charts-grid">
+        <!-- Orders Trend -->
+        <section class="chart-card">
+            <h2>Orders Timeline (Last 30 Days)</h2>
+            <div class="chart-container">
+                <canvas id="ordersChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Category Performance -->
+        <section class="chart-card">
+            <h2>Top Categories by Revenue</h2>
+            <div class="chart-container">
+                <canvas id="categoriesChart"></canvas>
+            </div>
+        </section>
+    </div>
+
+    <!-- Financial Summary Table -->
+    <section class="analytics-detail">
+        <h2>Financial Summary</h2>
+        <table class="analytics-table">
+            <tr>
+                <td>Total Revenue:</td>
+                <td>{{ currency_symbol }} {{ total_revenue|floatformat:0 }}</td>
+            </tr>
+            <tr>
+                <td>Total Cost of Goods:</td>
+                <td>{{ currency_symbol }} {{ total_cost|floatformat:0 }}</td>
+            </tr>
+            <tr>
+                <td>Platform Fees (8%):</td>
+                <td>{{ currency_symbol }} {{ total_platform_fee|floatformat:0 }}</td>
+            </tr>
+            <tr class="total-row">
+                <td><strong>Net Profit:</strong></td>
+                <td><strong>{{ currency_symbol }} {{ total_profit|floatformat:0 }}</strong></td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- Best Selling Products -->
+    <section class="top-products">
+        <h2>Best Selling Products</h2>
+        {% if top_products %}
+            <div class="products-table-wrapper">
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Units Sold</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in top_products %}
+                            <tr>
+                                <td class="product-name">{{ product.name }}</td>
+                                <td class="product-sales">{{ product.sold_quantity|default:0 }} units</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="empty-state">No sales data yet.</p>
+        {% endif %}
+    </section>
+
+    <!-- Batch Performance -->
+    <section class="analytics-detail">
+        <h2>Recent Batch Performance</h2>
+        {% if product_performance_batches %}
+            <div class="products-table-wrapper">
+                <table class="products-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Batch Date</th>
+                            <th>Status</th>
+                            <th>Produced</th>
+                            <th>Sold</th>
+                            <th>Days Open</th>
+                            <th>Total Profit</th>
+                            <th>Profit/Day</th>
+                            <th>Sell Rate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for batch in product_performance_batches %}
+                            <tr>
+                                <td class="product-name">{{ batch.product_name }}</td>
+                                <td>{{ batch.batch_date }}</td>
+                                <td>
+                                    <span class="{% if batch.status == 'open' %}text-success{% else %}text-muted{% endif %}">
+                                        {{ batch.status|title }}
+                                    </span>
+                                </td>
+                                <td>{{ batch.quantity_produced }}</td>
+                                <td>{{ batch.quantity_sold }}</td>
+                                <td>{{ batch.days_open }}</td>
+                                <td>{{ currency_symbol }} {{ batch.total_profit|floatformat:0 }}</td>
+                                <td>{{ currency_symbol }} {{ batch.profit_per_day|floatformat:0 }}</td>
+                                <td>{{ batch.sell_through_rate|floatformat:1 }}%</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="empty-state">No batch performance data available yet.</p>
+        {% endif %}
+    </section>
+
+    <!-- Batch Charts -->
+    <div class="charts-grid">
+        <!-- Batch Profits -->
+        <section class="chart-card">
+            <h2>Batch Total Profits</h2>
+            <div class="chart-container">
+                <canvas id="batchProfitsChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Batch Days Open -->
+        <section class="chart-card">
+            <h2>Batch Days Open</h2>
+            <div class="chart-container">
+                <canvas id="batchDaysChart"></canvas>
+            </div>
+        </section>
+    </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+    const currencySymbol = '{{ currency_symbol }}';
+    let profitData = {{ profit_data_json|safe }};
+    let dailyRevenue = {{ daily_revenue_json|safe }};
+    let dailyOrders = {{ daily_orders_json|safe }};
+    let categoryRevenue = {{ category_sales_json|safe }};
+    let categoryUnits = {{ category_units_json|safe }};
+    let batchLabels = {{ batch_labels_json|safe }};
+    let batchProfits = {{ batch_profits_json|safe }};
+    let batchDaysOpen = {{ batch_days_open_json|safe }};
+
+    let profitChart, revenueChart, ordersChart, categoriesChart, batchProfitsChart, batchDaysChart;
+    let autoRefreshEnabled = true;
+    let refreshInterval;
+
+    // Pie Chart - Profit Breakdown
+    profitChart = new Chart(document.getElementById('profitChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Net Profit', 'Cost of Goods', 'Platform Fees'],
+            datasets: [{
+                data: [profitData.profit, profitData.cost, profitData.fees],
+                backgroundColor: ['#2e7d6a', '#d7b74a', '#e8d5b7'],
+                borderColor: '#fff',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        font: { size: 12, family: "'Inter', sans-serif" },
+                        color: '#1a1917',
+                        padding: 15
+                    }
+                }
+            }
+        }
+    });
+
+    // Line Chart - Revenue Trend
+    const revenueLabels = Object.keys(dailyRevenue).sort();
+    const revenueValues = revenueLabels.map(label => dailyRevenue[label]);
+    
+    revenueChart = new Chart(document.getElementById('revenueChart'), {
+        type: 'line',
+        data: {
+            labels: revenueLabels,
+            datasets: [{
+                label: 'Daily Revenue',
+                data: revenueValues,
+                borderColor: '#004D40',
+                backgroundColor: 'rgba(0, 77, 64, 0.1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#d7b74a',
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        font: { size: 12, family: "'Inter', sans-serif" },
+                        color: '#1a1917'
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#6b6359' },
+                    grid: { color: '#e8e3d8' }
+                },
+                x: {
+                    ticks: { color: '#6b6359' },
+                    grid: { color: '#e8e3d8' }
+                }
+            }
+        }
+    });
+
+    // Line Chart - Orders Timeline
+    const orderLabels = Object.keys(dailyOrders).sort();
+    const orderValues = orderLabels.map(label => dailyOrders[label]);
+    
+    ordersChart = new Chart(document.getElementById('ordersChart'), {
+        type: 'bar',
+        data: {
+            labels: orderLabels,
+            datasets: [{
+                label: 'Daily Orders',
+                data: orderValues,
+                backgroundColor: '#d7b74a',
+                borderColor: '#c39f3e',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        font: { size: 12, family: "'Inter', sans-serif" },
+                        color: '#1a1917'
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#6b6359' },
+                    grid: { color: '#e8e3d8' }
+                },
+                x: {
+                    ticks: { color: '#6b6359' },
+                    grid: { color: '#e8e3d8' }
+                }
+            }
+        }
+    });
+
+    const categoryLabels = Object.keys(categoryRevenue);
+    const categoryValues = categoryLabels.map(label => categoryRevenue[label]);
+    
+    categoriesChart = new Chart(document.getElementById('categoriesChart'), {
+        type: 'bar',
+        data: {
+            labels: categoryLabels,
+            datasets: [{
+                label: 'Revenue by Category',
+                data: categoryValues,
+                backgroundColor: '#004D40',
+                borderColor: '#024a3c',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        font: { size: 12, family: "'Inter', sans-serif" },
+                        color: '#1a1917'
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    ticks: { color: '#6b6359' },
+                    grid: { color: '#e8e3d8' }
+                },
+                y: {
+                    ticks: { color: '#6b6359' },
+                    grid: { color: '#e8e3d8' }
+                }
+            }
+        }
+    });
+
+    // Batch Charts
+
+    // Bar Chart - Batch Profits
+    batchProfitsChart = new Chart(document.getElementById('batchProfitsChart'), {
+        type: 'bar',
+        data: {
+            labels: batchLabels,
+            datasets: [{
+                label: 'Total Profit',
+                data: batchProfits,
+                backgroundColor: '#2e7d6a',
+                borderColor: '#1f5a4a',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        font: { size: 12, family: "'Inter', sans-serif" },
+                        color: '#1a1917'
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#6b6359' },
+                    grid: { color: '#e8e3d8' }
+                },
+                x: {
+                    ticks: { color: '#6b6359' },
+                    grid: { color: '#e8e3d8' }
+                }
+            }
+        }
+    });
+
+    // Line Chart - Batch Days Open
+    batchDaysChart = new Chart(document.getElementById('batchDaysChart'), {
+        type: 'line',
+        data: {
+            labels: batchLabels,
+            datasets: [{
+                label: 'Days Open',
+                data: batchDaysOpen,
+                borderColor: '#d7b74a',
+                backgroundColor: 'rgba(215, 183, 74, 0.1)',
+                borderWidth: 2,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#d7b74a',
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        font: { size: 12, family: "'Inter', sans-serif" },
+                        color: '#1a1917'
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#6b6359' },
+                    grid: { color: '#e8e3d8' }
+                },
+                x: {
+                    ticks: { color: '#6b6359' },
+                    grid: { color: '#e8e3d8' }
+                }
+            }
+        }
+    });
+
+    // Realtime Updates
+    function refreshAnalyticsData() {
+        fetch('{% url "analytics:analytics_api" %}')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateKPIs(data.data);
+                    updateLastUpdated(data.data.timestamp);
+                }
+            })
+            .catch(error => console.error('Error fetching analytics data:', error));
+    }
+
+    function updateKPIs(data) {
+        // Update KPI values
+        document.querySelector('.kpi-card:nth-child(1) .kpi-value').textContent = `${currencySymbol} ${Math.round(data.total_revenue).toLocaleString()}`;
+        document.querySelector('.kpi-card:nth-child(2) .kpi-value').textContent = data.order_count;
+        document.querySelector('.kpi-card:nth-child(3) .kpi-value').textContent = `${currencySymbol} ${Math.round(data.total_profit).toLocaleString()}`;
+        document.querySelector('.kpi-card:nth-child(4) .kpi-value').textContent = `${currencySymbol} ${Math.round(data.total_cost).toLocaleString()}`;
+
+        // Update profit chart data
+        if (profitChart && data.profit_data) {
+            profitChart.data.datasets[0].data = [data.profit_data.profit, data.profit_data.cost, data.profit_data.fees];
+            profitChart.update();
+        }
+    }
+
+    function updateLastUpdated(timestamp) {
+        const timeElement = document.getElementById('lastUpdated');
+        if (timeElement) {
+            const now = new Date(timestamp);
+            const timeStr = now.toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+            });
+            timeElement.textContent = timeStr;
+        }
+    }
+
+    // Auto-refresh every 30 seconds
+    function startAutoRefresh() {
+        if (refreshInterval) clearInterval(refreshInterval);
+        refreshInterval = setInterval(() => {
+            if (autoRefreshEnabled) {
+                refreshAnalyticsData();
+            }
+        }, 30000);
+    }
+
+    // Start auto-refresh on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        startAutoRefresh();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block hero %}
+<div class="hero-panel" style="padding: 60px 2rem 40px;">
+    <div class="hero-content">
+        <span class="eyebrow">Ekiane Atelier</span>
+        <h1>Sign Out</h1>
+        <p>Thank you for visiting Ekiane. Come back soon for more luxury organic hair care.</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-wrapper auth-form">
+        <div class="form-header">
+            <h2>Confirm Sign Out</h2>
+            <p>Are you sure you want to sign out of your Ekiane account?</p>
+        </div>
+
+        <form method="post" class="auth-form-content">
+            {% csrf_token %}
+            {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+            {% endif %}
+
+            <button type="submit" class="button button-primary form-submit-btn">
+                Sign Out <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </form>
+
+        <div class="form-divider">
+            <span>Changed your mind?</span>
+        </div>
+
+        <a href="{% url 'account_login' %}" class="button button-secondary button-full">
+            Stay Signed In <i class="fas fa-arrow-left"></i>
+        </a>
+    </div>
+
+    <div class="form-benefits">
+        <div class="benefit-item">
+            <div class="benefit-icon"><i class="fas fa-gem"></i></div>
+            <h3>Exclusive Access</h3>
+            <p>Get early access to new luxury hair care products</p>
+        </div>
+        <div class="benefit-item">
+            <div class="benefit-icon"><i class="fas fa-bolt"></i></div>
+            <h3>Quick Checkout</h3>
+            <p>Save your details for faster purchases</p>
+        </div>
+        <div class="benefit-item">
+            <div class="benefit-icon"><i class="fas fa-truck"></i></div>
+            <h3>Order Tracking</h3>
+            <p>Monitor your shipments in real-time</p>
+        </div>
+        <div class="benefit-item">
+            <div class="benefit-icon"><i class="fas fa-headset"></i></div>
+            <h3>Premium Support</h3>
+            <p>Direct access to our customer care team</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Form Container - Luxury Styling */
+    .form-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 2rem 4rem;
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        gap: 3rem;
+        align-items: start;
+    }
+
+    /* Form Wrapper */
+    .form-wrapper {
+        background: #FFFFFF;
+        border-radius: 32px;
+        padding: 2rem 2rem 2.5rem;
+        border: 1px solid #F0E7DF;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .form-header h2 {
+        font-size: 1.8rem;
+        font-weight: 500;
+        color: #1F1C18;
+        margin-bottom: 0.5rem;
+        font-family: 'Cormorant Garamond', serif;
+    }
+
+    .form-header p {
+        color: #5C5548;
+        font-size: 0.85rem;
+    }
+
+    /* Submit Button */
+    .form-submit-btn {
+        width: 100%;
+        justify-content: center;
+        gap: 0.8rem;
+        padding: 0.9rem;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+    }
+
+    .button-primary {
+        background: #1F1C18;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 60px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+        transition: all 0.25s;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .button-primary:hover {
+        background: #B78C5A;
+        transform: translateY(-2px);
+    }
+
+    .button-secondary {
+        background: transparent;
+        border: 1.5px solid #DCC9AE;
+        color: #2A2723;
+        border-radius: 60px;
+        font-family: 'Inter', sans-serif;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.25s;
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+    }
+
+    .button-secondary:hover {
+        background: #F8F3EC;
+        border-color: #B78C5A;
+    }
+
+    .button-full {
+        width: 100%;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.85rem;
+    }
+
+    /* Divider */
+    .form-divider {
+        text-align: center;
+        margin: 1.5rem 0 1rem;
+        position: relative;
+    }
+
+    .form-divider::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 100%;
+        height: 1px;
+        background: #F0E7DF;
+    }
+
+    .form-divider span {
+        background: #FFFFFF;
+        padding: 0 1rem;
+        position: relative;
+        font-size: 0.75rem;
+        color: #A18F7A;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    /* Benefits Panel */
+    .form-benefits {
+        background: #FEFAF5;
+        border-radius: 32px;
+        padding: 2rem;
+        border: 1px solid #F0E7DF;
+        position: sticky;
+        top: 100px;
+    }
+
+    .benefit-item {
+        margin-bottom: 1.8rem;
+        text-align: center;
+    }
+
+    .benefit-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .benefit-icon {
+        width: 48px;
+        height: 48px;
+        background: #F8F3EC;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        color: #B78C5A;
+        font-size: 1.2rem;
+    }
+
+    .benefit-item h3 {
+        font-size: 1rem;
+        font-weight: 500;
+        color: #1F1C18;
+        margin-bottom: 0.5rem;
+        font-family: 'Cormorant Garamond', serif;
+    }
+
+    .benefit-item p {
+        font-size: 0.8rem;
+        color: #5C5548;
+        line-height: 1.4;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .form-container {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .form-benefits {
+            position: static;
+        }
+    }
+</style>
+{% endblock %}

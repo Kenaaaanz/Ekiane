@@ -1,0 +1,543 @@
+
+{% extends 'base.html' %}
+
+{% block hero %}{% endblock %}
+
+{% block content %}
+<section class="product-detail">
+    <div class="detail-container">
+        <!-- Product Image Gallery Section -->
+        <div class="detail-image">
+            <div class="image-frame">
+                {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy">
+                {% else %}
+                    <div class="product-placeholder">
+                        <i class="fas fa-leaf"></i>
+                        <span>{{ product.name }}</span>
+                    </div>
+                {% endif %}
+                {% if product.stock > 0 and product.stock < 10 %}
+                    <span class="stock-indicator low-stock-indicator">Low Stock</span>
+                {% elif product.stock > 0 %}
+                    <span class="stock-indicator in-stock-indicator">In Stock</span>
+                {% else %}
+                    <span class="stock-indicator out-stock-indicator">Unavailable</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Product Content Section -->
+        <div class="detail-content">
+            <div class="breadcrumb-wrapper">
+                <a href="/" class="breadcrumb-link"><i class="fas fa-home"></i> Home</a>
+                <span class="breadcrumb-separator">/</span>
+                <a href="{{ product.category.get_absolute_url }}" class="breadcrumb-link">{{ product.category.name }}</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">{{ product.name }}</span>
+            </div>
+
+            <h1>{{ product.name }}</h1>
+            
+            <div class="product-rating">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                <span class="rating-text">5.0 · Luxury Collection</span>
+            </div>
+
+            <div class="detail-price-section">
+                <span class="price-label">Price</span>
+                <div class="price-value-wrapper">
+                    <span class="price-value">{{ currency_symbol }} {{ product.price|floatformat:0 }}</span>
+                    {% if product.profit_margin %}
+                        <span class="margin-badge">Premium</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="detail-description-wrapper">
+                <h3 class="description-heading">Description</h3>
+                <p class="detail-description">{{ product.description }}</p>
+            </div>
+
+            {% if product.profit_margin %}
+                <div class="product-margin">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Margin: {{ product.profit_margin|floatformat:1 }}%</span>
+                </div>
+            {% endif %}
+
+            {% if product.stock > 0 %}
+                <form action="{% url 'store:add_to_cart' product.id %}" method="post" class="add-to-cart-form">
+                    {% csrf_token %}
+                    <div class="quantity-selector">
+                        <label for="quantity">Quantity</label>
+                        <div class="quantity-control">
+                            <button type="button" class="qty-btn qty-minus" onclick="decrementQty()">−</button>
+                            <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ product.stock }}" readonly>
+                            <button type="button" class="qty-btn qty-plus" onclick="incrementQty()">+</button>
+                        </div>
+                        <span class="stock-available">Available: {{ product.stock }} units</span>
+                    </div>
+                    <button class="button add-to-cart-btn" type="submit">
+                        <i class="fas fa-shopping-bag"></i> Add to Cart
+                    </button>
+                </form>
+            {% else %}
+                <div class="out-stock-message">
+                    <i class="fas fa-times-circle"></i>
+                    <p>Currently out of stock</p>
+                    <span>Sign up to be notified when this item returns</span>
+                </div>
+            {% endif %}
+
+            <div class="product-benefits">
+                <div class="benefit-item">
+                    <i class="fas fa-truck"></i>
+                    <span>Free shipping on orders over $100</span>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-undo-alt"></i>
+                    <span>30-day returns</span>
+                </div>
+                <div class="benefit-item">
+                    <i class="fas fa-seedling"></i>
+                    <span>100% organic ingredients</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function decrementQty() {
+        let qtyInput = document.getElementById('quantity');
+        let currentVal = parseInt(qtyInput.value);
+        let minVal = parseInt(qtyInput.min);
+        if (currentVal > minVal) {
+            qtyInput.value = currentVal - 1;
+        }
+    }
+
+    function incrementQty() {
+        let qtyInput = document.getElementById('quantity');
+        let currentVal = parseInt(qtyInput.value);
+        let maxVal = parseInt(qtyInput.max);
+        if (currentVal < maxVal) {
+            qtyInput.value = currentVal + 1;
+        }
+    }
+</script>
+
+<style>
+    /* Product Detail - Luxury Refinement */
+    .product-detail {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 2rem 2rem 4rem;
+    }
+
+    .detail-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        background: #FFFFFF;
+        border-radius: 32px;
+        padding: 2rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+        border: 1px solid #F0E7DF;
+    }
+
+    /* Image Section */
+    .detail-image {
+        position: relative;
+    }
+
+    .image-frame {
+        position: relative;
+        background: #FEFAF5;
+        border-radius: 28px;
+        overflow: hidden;
+        aspect-ratio: 1 / 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #F0E7DF;
+    }
+
+    .image-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+
+    .image-frame:hover img {
+        transform: scale(1.02);
+    }
+
+    .product-placeholder {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.5rem;
+        color: #B78C5A;
+        background: #F8F3EC;
+        width: 100%;
+        height: 100%;
+    }
+
+    .product-placeholder i {
+        font-size: 3rem;
+        color: #DCC9AE;
+    }
+
+    .stock-indicator {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        padding: 0.35rem 1rem;
+        border-radius: 50px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        backdrop-filter: blur(4px);
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .low-stock-indicator {
+        background: #FEF1E0;
+        color: #C97E2A;
+    }
+
+    .in-stock-indicator {
+        background: #E8F3EC;
+        color: #2D6A4F;
+    }
+
+    .out-stock-indicator {
+        background: #F5EFE8;
+        color: #BFA38A;
+    }
+
+    /* Content Section */
+    .detail-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+    }
+
+    .breadcrumb-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        font-size: 0.8rem;
+    }
+
+    .breadcrumb-link {
+        color: #A18F7A;
+        text-decoration: none;
+        transition: color 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .breadcrumb-link:hover {
+        color: #B78C5A;
+    }
+
+    .breadcrumb-separator {
+        color: #DCC9AE;
+    }
+
+    .breadcrumb-current {
+        color: #B78C5A;
+        font-weight: 500;
+    }
+
+    .detail-content h1 {
+        font-size: 2.5rem;
+        font-weight: 500;
+        color: #1F1C18;
+        margin: 0;
+        line-height: 1.2;
+    }
+
+    .product-rating {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #DCC9AE;
+        font-size: 0.85rem;
+    }
+
+    .product-rating i {
+        color: #D4AF7A;
+    }
+
+    .rating-text {
+        color: #A18F7A;
+        font-size: 0.75rem;
+        margin-left: 0.25rem;
+    }
+
+    .detail-price-section {
+        background: #FEFAF5;
+        padding: 1rem 1.2rem;
+        border-radius: 20px;
+        border: 1px solid #F0E7DF;
+    }
+
+    .price-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #B78C5A;
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+
+    .price-value-wrapper {
+        display: flex;
+        align-items: baseline;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .price-value {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #1F1C18;
+        font-family: 'Cormorant Garamond', serif;
+    }
+
+    .margin-badge {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.7rem;
+        background: #E8F3EC;
+        color: #2D6A4F;
+        border-radius: 50px;
+        font-weight: 500;
+    }
+
+    .detail-description-wrapper {
+        margin: 0.5rem 0;
+    }
+
+    .description-heading {
+        font-size: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #A18F7A;
+        margin-bottom: 0.75rem;
+    }
+
+    .detail-description {
+        color: #5C5548;
+        line-height: 1.6;
+        font-size: 0.95rem;
+    }
+
+    .product-margin {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #F8F3EC;
+        padding: 0.4rem 1rem;
+        border-radius: 50px;
+        font-size: 0.75rem;
+        color: #B78C5A;
+        width: fit-content;
+    }
+
+    /* Add to Cart Form */
+    .add-to-cart-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        margin-top: 0.5rem;
+    }
+
+    .quantity-selector {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .quantity-selector label {
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #2A2723;
+    }
+
+    .quantity-control {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        border: 1px solid #E5D9CE;
+        border-radius: 60px;
+        overflow: hidden;
+    }
+
+    .qty-btn {
+        width: 38px;
+        height: 42px;
+        background: #FFFFFF;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: #2A2723;
+        transition: all 0.2s;
+        font-weight: 500;
+    }
+
+    .qty-btn:hover {
+        background: #B78C5A;
+        color: white;
+    }
+
+    .quantity-control input {
+        width: 60px;
+        text-align: center;
+        border: none;
+        padding: 0.5rem 0;
+        font-size: 0.95rem;
+        font-weight: 500;
+        background: #FFFFFF;
+        -moz-appearance: textfield;
+    }
+
+    .quantity-control input::-webkit-inner-spin-button,
+    .quantity-control input::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .stock-available {
+        font-size: 0.7rem;
+        color: #2D6A4F;
+        background: #E8F3EC;
+        padding: 0.2rem 0.7rem;
+        border-radius: 50px;
+    }
+
+    .add-to-cart-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        background: #1F1C18;
+        color: white;
+        padding: 1rem 2rem;
+        border: none;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 500;
+        border-radius: 60px;
+        transition: all 0.25s;
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .add-to-cart-btn:hover {
+        background: #B78C5A;
+        transform: translateY(-2px);
+    }
+
+    .out-stock-message {
+        text-align: center;
+        padding: 1.5rem;
+        background: #FEFAF5;
+        border-radius: 20px;
+        border: 1px solid #F0E7DF;
+    }
+
+    .out-stock-message i {
+        font-size: 2rem;
+        color: #DCC9AE;
+        margin-bottom: 0.5rem;
+    }
+
+    .out-stock-message p {
+        color: #BFA38A;
+        font-weight: 500;
+        margin: 0.5rem 0;
+    }
+
+    .out-stock-message span {
+        font-size: 0.75rem;
+        color: #A18F7A;
+    }
+
+    /* Product Benefits */
+    .product-benefits {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid #F0E7DF;
+    }
+
+    .benefit-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.7rem;
+        color: #A18F7A;
+    }
+
+    .benefit-item i {
+        color: #B78C5A;
+        font-size: 0.85rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+        .detail-container {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            padding: 1.5rem;
+        }
+        
+        .detail-content h1 {
+            font-size: 2rem;
+        }
+        
+        .price-value {
+            font-size: 1.8rem;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .product-detail {
+            padding: 1rem 1rem 3rem;
+        }
+        
+        .detail-container {
+            padding: 1rem;
+        }
+        
+        .add-to-cart-btn {
+            max-width: 100%;
+        }
+        
+        .quantity-selector {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .product-benefits {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+    }
+</style>
+{% endblock %}

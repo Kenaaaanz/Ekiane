@@ -1,0 +1,489 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block hero %}
+<div class="hero-panel" style="padding: 60px 2rem 40px;">
+    <div class="hero-content">
+        <span class="eyebrow">Ekiane Atelier</span>
+        <h1>Welcome Back</h1>
+        <p>Sign in to your Ekiane account to continue shopping</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <div class="form-wrapper auth-form">
+        <div class="form-header">
+            <h2>Login to Your Account</h2>
+            <p>Access your order history and premium content</p>
+        </div>
+
+        {% if form.non_field_errors %}
+            <div class="error-alert">
+                {% for error in form.non_field_errors %}
+                    <p><i class="fas fa-exclamation-circle"></i> {{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post" class="auth-form-content" novalidate>
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ form.login.id_for_label }}">Email Address or Username</label>
+                <div class="form-input-wrapper">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input 
+                        type="text" 
+                        name="{{ form.login.html_name }}" 
+                        id="{{ form.login.id_for_label }}"
+                        placeholder="Enter your email or username"
+                        class="form-input"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+                {% if form.login.errors %}
+                    <div class="form-error">
+                        {% for error in form.login.errors %}{{ error }}{% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password.id_for_label }}">Password</label>
+                <div class="form-input-wrapper">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input 
+                        type="password" 
+                        name="{{ form.password.html_name }}" 
+                        id="{{ form.password.id_for_label }}"
+                        placeholder="Enter your password"
+                        class="form-input"
+                        autocomplete="current-password"
+                        required
+                    >
+                </div>
+                {% if form.password.errors %}
+                    <div class="form-error">
+                        {% for error in form.password.errors %}{{ error }}{% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            {% if form.remember %}
+            <div class="form-group checkbox-group">
+                <label class="checkbox-label">
+                    <input 
+                        type="checkbox" 
+                        name="{{ form.remember.html_name }}"
+                        id="{{ form.remember.id_for_label }}"
+                    >
+                    <span class="checkmark"></span>
+                    <span>Remember me</span>
+                </label>
+            </div>
+            {% endif %}
+
+            <button type="submit" class="button button-primary form-submit-btn">
+                Sign In <i class="fas fa-arrow-right"></i>
+            </button>
+        </form>
+
+        <div class="form-links">
+            <a href="{% url 'account_reset_password' %}" class="form-link">
+                <i class="fas fa-key"></i> Forgot your password?
+            </a>
+        </div>
+
+        <div class="form-divider">
+            <span>Don't have an account?</span>
+        </div>
+
+        <a href="{% url 'account_signup' %}" class="button button-secondary button-full">
+            Create Account <i class="fas fa-user-plus"></i>
+        </a>
+    </div>
+
+    <div class="form-benefits">
+        <div class="benefit-item">
+            <div class="benefit-icon"><i class="fas fa-gem"></i></div>
+            <h3>Exclusive Access</h3>
+            <p>Get early access to new luxury hair care products</p>
+        </div>
+        <div class="benefit-item">
+            <div class="benefit-icon"><i class="fas fa-bolt"></i></div>
+            <h3>Quick Checkout</h3>
+            <p>Save your details for faster purchases</p>
+        </div>
+        <div class="benefit-item">
+            <div class="benefit-icon"><i class="fas fa-truck"></i></div>
+            <h3>Order Tracking</h3>
+            <p>Monitor your shipments in real-time</p>
+        </div>
+        <div class="benefit-item">
+            <div class="benefit-icon"><i class="fas fa-headset"></i></div>
+            <h3>Premium Support</h3>
+            <p>Direct access to our customer care team</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Form Container - Luxury Styling */
+    .form-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 2rem 4rem;
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        gap: 3rem;
+        align-items: start;
+    }
+
+    /* Form Wrapper */
+    .form-wrapper {
+        background: #FFFFFF;
+        border-radius: 32px;
+        padding: 2rem 2rem 2.5rem;
+        border: 1px solid #F0E7DF;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
+    }
+
+    .form-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .form-header h2 {
+        font-size: 1.8rem;
+        font-weight: 500;
+        color: #1F1C18;
+        margin-bottom: 0.5rem;
+        font-family: 'Cormorant Garamond', serif;
+    }
+
+    .form-header p {
+        color: #5C5548;
+        font-size: 0.85rem;
+    }
+
+    /* Form Groups */
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #2A2723;
+        letter-spacing: 0.02em;
+    }
+
+    .form-input-wrapper {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #B78C5A;
+        font-size: 0.9rem;
+        pointer-events: none;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 0.9rem 1rem 0.9rem 2.8rem;
+        border: 1.5px solid #F0E7DF;
+        border-radius: 60px;
+        font-size: 0.9rem;
+        font-family: 'Inter', sans-serif;
+        transition: all 0.25s;
+        background: #FFFFFF;
+        color: #2A2723;
+    }
+
+    .form-input:focus {
+        outline: none;
+        border-color: #B78C5A;
+        box-shadow: 0 0 0 3px rgba(183, 140, 90, 0.1);
+    }
+
+    .form-input::placeholder {
+        color: #C5B9A8;
+        font-weight: 300;
+    }
+
+    /* Checkbox Styling */
+    .checkbox-group {
+        margin: 1rem 0;
+    }
+
+    .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        cursor: pointer;
+        font-size: 0.85rem;
+        color: #5C5548;
+        position: relative;
+        padding-left: 0;
+    }
+
+    .checkbox-label input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+    .checkmark {
+        width: 18px;
+        height: 18px;
+        background: #FFFFFF;
+        border: 2px solid #DCC9AE;
+        border-radius: 4px;
+        display: inline-block;
+        position: relative;
+        transition: all 0.2s;
+    }
+
+    .checkbox-label input:checked ~ .checkmark {
+        background: #B78C5A;
+        border-color: #B78C5A;
+    }
+
+    .checkbox-label input:checked ~ .checkmark:after {
+        content: '\f00c';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 10px;
+        color: white;
+    }
+
+    /* Error Alert */
+    .error-alert {
+        background: #FEF1E0;
+        border-left: 3px solid #C97E2A;
+        padding: 0.8rem 1rem;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+    }
+
+    .error-alert p {
+        color: #C97E2A;
+        font-size: 0.8rem;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .form-error {
+        margin-top: 0.4rem;
+        font-size: 0.7rem;
+        color: #C97E2A;
+    }
+
+    /* Submit Button */
+    .form-submit-btn {
+        width: 100%;
+        justify-content: center;
+        gap: 0.8rem;
+        padding: 0.9rem;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+    }
+
+    .button-primary {
+        background: #1F1C18;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    .button-primary:hover {
+        background: #B78C5A;
+        transform: translateY(-2px);
+    }
+
+    .button-secondary {
+        background: transparent;
+        border: 1.5px solid #DCC9AE;
+        color: #2A2723;
+    }
+
+    .button-secondary:hover {
+        background: #F8F3EC;
+        border-color: #B78C5A;
+    }
+
+    .button-full {
+        width: 100%;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.85rem;
+    }
+
+    /* Form Links */
+    .form-links {
+        text-align: center;
+        margin: 1.5rem 0;
+    }
+
+    .form-link {
+        color: #B78C5A;
+        text-decoration: none;
+        font-size: 0.8rem;
+        transition: color 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .form-link:hover {
+        color: #8B5E3C;
+        text-decoration: underline;
+    }
+
+    /* Divider */
+    .form-divider {
+        text-align: center;
+        margin: 1.5rem 0 1rem;
+        position: relative;
+    }
+
+    .form-divider::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 100%;
+        height: 1px;
+        background: #F0E7DF;
+    }
+
+    .form-divider span {
+        background: #FFFFFF;
+        padding: 0 1rem;
+        position: relative;
+        font-size: 0.75rem;
+        color: #A18F7A;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    /* Benefits Panel */
+    .form-benefits {
+        background: #FEFAF5;
+        border-radius: 32px;
+        padding: 2rem;
+        border: 1px solid #F0E7DF;
+        position: sticky;
+        top: 100px;
+    }
+
+    .benefit-item {
+        margin-bottom: 1.8rem;
+        text-align: center;
+    }
+
+    .benefit-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .benefit-icon {
+        width: 50px;
+        height: 50px;
+        background: #FFFFFF;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1rem;
+        border: 1px solid #DCC9AE;
+        color: #B78C5A;
+        font-size: 1.2rem;
+    }
+
+    .benefit-item h3 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #2A2723;
+        margin-bottom: 0.3rem;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .benefit-item p {
+        font-size: 0.75rem;
+        color: #8C7E6B;
+        line-height: 1.4;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+        .form-container {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            padding: 1rem 1.5rem 3rem;
+        }
+
+        .form-benefits {
+            position: static;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+
+        .benefit-item {
+            margin-bottom: 0;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .form-wrapper {
+            padding: 1.5rem;
+        }
+
+        .form-header h2 {
+            font-size: 1.5rem;
+        }
+
+        .form-benefits {
+            grid-template-columns: 1fr;
+        }
+
+        .hero-panel {
+            padding: 40px 1rem 30px !important;
+        }
+
+        .hero-content h1 {
+            font-size: 2rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .form-container {
+            padding: 0.5rem 1rem 2rem;
+        }
+        
+        .form-input {
+            padding: 0.8rem 1rem 0.8rem 2.5rem;
+            font-size: 0.85rem;
+        }
+    }
+</style>
+{% endblock %}

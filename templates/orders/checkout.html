@@ -1,0 +1,513 @@
+{% extends 'base.html' %}
+
+{% block hero %}{% endblock %}
+
+{% block content %}
+<section class="checkout-page">
+    <div class="checkout-header">
+        <span class="eyebrow">Complete Your Ritual</span>
+        <h1>Secure Checkout</h1>
+        <p>Enter your details to finalize your organic luxury experience</p>
+    </div>
+
+    <div class="checkout-container">
+        <form method="post" class="checkout-form" id="checkout-form">
+            {% csrf_token %}
+            
+            <div class="form-section">
+                <div class="section-title">
+                    <i class="fas fa-user"></i>
+                    <h2>Billing Information</h2>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="first_name">First Name</label>
+                        <input type="text" name="first_name" id="first_name" required placeholder="John">
+                        <span class="input-focus"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="last_name">Last Name</label>
+                        <input type="text" name="last_name" id="last_name" required placeholder="Doe">
+                        <span class="input-focus"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" name="email" id="email" required placeholder="hello@example.com">
+                    <span class="input-focus"></span>
+                    <span class="input-hint">Order confirmation will be sent here</span>
+                </div>
+                <div class="form-group">
+                    <label for="address">Street Address</label>
+                    <input type="text" name="address" id="address" required placeholder="123 Luxury Avenue">
+                    <span class="input-focus"></span>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" name="city" id="city" required placeholder="Nairobi">
+                        <span class="input-focus"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="postal_code">Postal Code</label>
+                        <input type="text" name="postal_code" id="postal_code" required placeholder="00100">
+                        <span class="input-focus"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="payment-section">
+                <div class="section-title">
+                    <i class="fas fa-credit-card"></i>
+                    <h2>Payment Method</h2>
+                </div>
+                <div class="payment-method-card">
+                    <div class="payment-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="payment-info">
+                        <span class="payment-name">Paystack Secure Gateway</span>
+                        <span class="payment-desc">Credit/Debit Card • Mobile Money • Bank Transfer</span>
+                    </div>
+                    <div class="payment-badge">
+                        <i class="fas fa-shield-alt"></i> 256-bit SSL
+                    </div>
+                </div>
+            </div>
+
+            <button class="button button-large pay-button" type="submit">
+                <span>Pay {{ currency_symbol }} {{ cart.total|floatformat:0 }}</span>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            
+            <div class="secure-badge">
+                <i class="fas fa-lock"></i>
+                <span>Your transaction is encrypted and secure</span>
+            </div>
+        </form>
+        
+        <aside class="checkout-summary">
+            <div class="summary-card">
+                <h3>Order Summary</h3>
+                <ul class="summary-items">
+                    {% for item in cart.items %}
+                        <li>
+                            <div class="item-info">
+                                <span class="item-quantity">{{ item.quantity }}×</span>
+                                <span class="item-name">{{ item.product.name }}</span>
+                            </div>
+                            <div class="item-price">{{ currency_symbol }} {{ item.item_total|floatformat:0 }}</div>
+                        </li>
+                    {% empty %}
+                        <li class="empty-summary">Your cart is empty</li>
+                    {% endfor %}
+                </ul>
+                
+                {% if cart.items %}
+                    <div class="summary-details">
+                        <div class="summary-row subtotal">
+                            <span>Subtotal</span>
+                            <span>{{ currency_symbol }} {{ cart.total|floatformat:0 }}</span>
+                        </div>
+                        <div class="summary-row shipping">
+                            <span>Shipping</span>
+                            <span>Calculated at payment</span>
+                        </div>
+                        <div class="summary-divider"></div>
+                        <div class="summary-row total">
+                            <span>Total Due</span>
+                            <span class="total-amount">{{ currency_symbol }} {{ cart.total|floatformat:0 }}</span>
+                        </div>
+                    </div>
+                {% endif %}
+                
+                <div class="trust-badges">
+                    <div class="trust-item">
+                        <i class="fas fa-truck"></i>
+                        <span>Fast Delivery</span>
+                    </div>
+                    <div class="trust-item">
+                        <i class="fas fa-undo-alt"></i>
+                        <span>Easy Returns</span>
+                    </div>
+                    <div class="trust-item">
+                        <i class="fas fa-leaf"></i>
+                        <span>Eco Packaging</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</section>
+
+<style>
+    /* Checkout Page - Luxury Refined */
+    .checkout-page {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 1.5rem 2rem 4rem;
+    }
+
+    .checkout-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .checkout-header .eyebrow {
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+
+    .checkout-header h1 {
+        font-size: 2.8rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #1F1C18;
+    }
+
+    .checkout-header p {
+        color: #5C5548;
+        font-size: 1rem;
+    }
+
+    /* Checkout Container - Two Column Layout */
+    .checkout-container {
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        gap: 2.5rem;
+        align-items: start;
+    }
+
+    /* Form Styling */
+    .checkout-form {
+        background: #FFFFFF;
+        border-radius: 28px;
+        border: 1px solid #F0E7DF;
+        padding: 2rem;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+    }
+
+    .form-section, .payment-section {
+        margin-bottom: 2rem;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid #F0E7DF;
+    }
+
+    .section-title i {
+        font-size: 1.2rem;
+        color: #B78C5A;
+    }
+
+    .section-title h2 {
+        font-size: 1.3rem;
+        font-weight: 500;
+        margin: 0;
+        color: #2A2723;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.2rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.2rem;
+        position: relative;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: #2A2723;
+        margin-bottom: 0.5rem;
+        letter-spacing: 0.02em;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 0.85rem 1rem;
+        border: 1px solid #E5D9CE;
+        border-radius: 16px;
+        font-size: 0.9rem;
+        font-family: 'Inter', sans-serif;
+        background: #FEFCF9;
+        transition: all 0.2s ease;
+        color: #2A2723;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #B78C5A;
+        background: #FFFFFF;
+        box-shadow: 0 0 0 3px rgba(183, 140, 90, 0.1);
+    }
+
+    .input-hint {
+        display: block;
+        font-size: 0.7rem;
+        color: #A18F7A;
+        margin-top: 0.35rem;
+    }
+
+    /* Payment Method Card */
+    .payment-method-card {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: #FEFAF5;
+        border-radius: 20px;
+        border: 1px solid #F0E7DF;
+    }
+
+    .payment-icon {
+        width: 48px;
+        height: 48px;
+        background: #FFFFFF;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #B78C5A;
+        font-size: 1.2rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .payment-info {
+        flex: 1;
+    }
+
+    .payment-name {
+        display: block;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: #2A2723;
+    }
+
+    .payment-desc {
+        display: block;
+        font-size: 0.7rem;
+        color: #A18F7A;
+    }
+
+    .payment-badge {
+        font-size: 0.7rem;
+        color: #2D6A4F;
+        background: #E8F3EC;
+        padding: 0.3rem 0.8rem;
+        border-radius: 50px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    /* Pay Button */
+    .pay-button {
+        width: 100%;
+        justify-content: center;
+        gap: 12px;
+        background: #1F1C18;
+        padding: 1rem;
+        font-size: 1rem;
+        margin-top: 1rem;
+    }
+
+    .pay-button:hover {
+        background: #B78C5A;
+    }
+
+    .secure-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 1.2rem;
+        font-size: 0.7rem;
+        color: #A18F7A;
+    }
+
+    .secure-badge i {
+        color: #B78C5A;
+    }
+
+    /* Summary Sidebar */
+    .checkout-summary {
+        position: sticky;
+        top: 100px;
+    }
+
+    .summary-card {
+        background: #FFFFFF;
+        border-radius: 28px;
+        border: 1px solid #F0E7DF;
+        padding: 1.8rem;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+    }
+
+    .summary-card h3 {
+        font-size: 1.3rem;
+        font-family: 'Cormorant Garamond', serif;
+        font-weight: 500;
+        margin-bottom: 1.2rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid #F0E7DF;
+        color: #2A2723;
+    }
+
+    .summary-items {
+        list-style: none;
+        margin-bottom: 1.5rem;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .summary-items li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.6rem 0;
+        border-bottom: 1px solid #F5EFE8;
+        font-size: 0.85rem;
+    }
+
+    .item-info {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: #3A3630;
+    }
+
+    .item-quantity {
+        color: #B78C5A;
+        font-weight: 500;
+    }
+
+    .item-price {
+        font-weight: 500;
+        color: #1F1C18;
+    }
+
+    .empty-summary {
+        text-align: center;
+        color: #A18F7A;
+        padding: 1rem;
+    }
+
+    .summary-details {
+        margin-top: 1rem;
+    }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.8rem;
+        font-size: 0.85rem;
+        color: #5C5548;
+    }
+
+    .shipping span:last-child {
+        font-size: 0.75rem;
+        color: #B78C5A;
+    }
+
+    .summary-divider {
+        height: 1px;
+        background: #F0E7DF;
+        margin: 1rem 0;
+    }
+
+    .total {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #2A2723;
+    }
+
+    .total-amount {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #B78C5A;
+    }
+
+    .trust-badges {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+        border-top: 1px solid #F0E7DF;
+    }
+
+    .trust-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.65rem;
+        color: #A18F7A;
+    }
+
+    .trust-item i {
+        font-size: 1rem;
+        color: #B78C5A;
+    }
+
+    /* Responsive */
+    @media (max-width: 950px) {
+        .checkout-container {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        .checkout-summary {
+            position: static;
+            max-width: 500px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        .checkout-header h1 {
+            font-size: 2.2rem;
+        }
+    }
+
+    @media (max-width: 680px) {
+        .checkout-page {
+            padding: 1rem 1rem 3rem;
+        }
+        .checkout-form {
+            padding: 1.5rem;
+        }
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+        .payment-method-card {
+            flex-wrap: wrap;
+        }
+        .payment-badge {
+            margin-left: auto;
+        }
+        .trust-badges {
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .payment-method-card {
+            flex-direction: column;
+            text-align: center;
+        }
+        .payment-badge {
+            margin-left: 0;
+        }
+    }
+</style>
+{% endblock %}

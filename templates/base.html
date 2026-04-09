@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Ekiane — Atelier of Organic Hair Luxury</title>
+    <!-- Enhanced Font Stack: Serif Elegance + Sans Clarity -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 (Free Icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* ---------- RESET & BASE LUXURY FOUNDATION ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #FEFAF5;   /* soft ivory, organic warmth */
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: #2A2824;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* refined typography hierarchy */
+        h1, h2, h3, .brand, .eyebrow, .hero-content h1, .footer-section h3, .button, .card-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+        }
+
+        h1 {
+            font-size: 3.8rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            color: #1F1C18;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            margin-bottom: 1rem;
+        }
+
+        .eyebrow {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            font-weight: 600;
+            color: #B78C5A;
+            background: rgba(183, 140, 90, 0.08);
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            margin-bottom: 1.2rem;
+            backdrop-filter: blur(2px);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+        }
+
+        /* ---------- HEADER & NAVIGATION (clean, premium) ---------- */
+        .site-header {
+            background: #FEFAF5;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(0px);
+        }
+
+        .navbar {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 1.2rem 2.5rem;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .brand {
+            font-size: 1.85rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            color: #2A2723;
+            transition: opacity 0.2s;
+            text-decoration: none;
+            border-right: 2px solid #DCC9AE;
+            padding-right: 1.4rem;
+        }
+
+        .brand:hover {
+            opacity: 0.75;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2.6rem;
+            align-items: center;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .nav-menu li a {
+            color: #2A2723;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            position: relative;
+            padding-bottom: 4px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-menu li a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1.5px;
+            bottom: 0;
+            left: 0;
+            background-color: #B78C5A;
+            transition: width 0.25s ease;
+        }
+
+        .nav-menu li a:hover:after {
+            width: 100%;
+        }
+
+        /* refined dropdown - classy */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-toggle {
+            cursor: pointer;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 150%;
+            left: -1rem;
+            background: #FFFFFF;
+            min-width: 210px;
+            padding: 0.75rem 0;
+            border-radius: 18px;
+            box-shadow: 0 25px 35px -14px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(183, 140, 90, 0.08);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+            list-style: none;
+            z-index: 150;
+            backdrop-filter: blur(2px);
+        }
+
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            top: 125%;
+        }
+
+        .dropdown-menu li {
+            padding: 0.45rem 1.8rem;
+        }
+
+        .dropdown-menu li a {
+            font-size: 0.85rem;
+            font-weight: 450;
+            color: #3A3630;
+            gap: 10px;
+        }
+
+        .dropdown-menu li a i {
+            width: 1.2rem;
+            color: #B78C5A;
+        }
+
+        .dropdown-menu li a:hover {
+            color: #B78C5A;
+            transform: translateX(4px);
+        }
+
+        /* Hero Section — minimal sculptural luxury */
+        .hero-panel {
+            max-width: 1440px;
+            margin: 2rem auto 0;
+            padding: 4rem 2.5rem 5rem;
+            background: radial-gradient(ellipse at 80% 30%, #FFF9F2, #FDF5EC);
+            border-radius: 48px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 26px rgba(0, 0, 0, 0.02);
+        }
+
+        .hero-content {
+            max-width: 720px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-size: 3.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #2D2A25 0%, #4F3F2F 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 1.15rem;
+            color: #5C5548;
+            font-weight: 400;
+            margin: 1.5rem 0 2rem;
+            line-height: 1.5;
+            max-width: 560px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #1F1C18;
+            color: #FFFFFF;
+            padding: 0.9rem 2.4rem;
+            border-radius: 50px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .button:hover {
+            background: #B78C5A;
+            transform: translateY(-2px);
+            box-shadow: 0 14px 24px -12px rgba(183, 140, 90, 0.35);
+            color: #FFF;
+        }
+
+        /* Main container */
+        .page-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem 4rem;
+        }
+
+        /* product grid for any default block content / elegance */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            background: #FFFFFF;
+            border-radius: 28px;
+            padding: 1.6rem 1.5rem;
+            transition: all 0.25s;
+            border: 1px solid #F0E7DF;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.01);
+            text-align: center;
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+            border-color: #E5D5C2;
+            box-shadow: 0 20px 30px -18px rgba(0, 0, 0, 0.08);
+        }
+
+        .product-icon {
+            font-size: 2.4rem;
+            color: #B78C5A;
+            margin-bottom: 1rem;
+        }
+
+        /* refined footer */
+        .site-footer {
+            background: #F8F3EC;
+            border-top: 1px solid #EADFCB;
+            margin-top: 3rem;
+            padding: 3rem 2rem 1.5rem;
+        }
+
+        .footer-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 2.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.35rem;
+            font-weight: 500;
+            margin-bottom: 1.2rem;
+            color: #2A2723;
+            letter-spacing: 0.02em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .footer-section p, .footer-section ul li a {
+            font-size: 0.88rem;
+            color: #5A5348;
+            line-height: 1.6;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.6rem;
+        }
+
+        .footer-section ul li a:hover {
+            color: #B78C5A;
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.8rem;
+            border-top: 1px solid #E2D5C6;
+            font-size: 0.75rem;
+            color: #8C7E6B;
+            letter-spacing: 0.4px;
+        }
+
+        /* responsive adjustments */
+        @media (max-width: 900px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .nav-menu {
+                gap: 1.5rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .hero-content h1 {
+                font-size: 2.6rem;
+            }
+            .hero-panel {
+                padding: 2.5rem 1.5rem;
+            }
+            h1 {
+                font-size: 2.4rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 1rem 1.2rem;
+            }
+            .nav-menu {
+                gap: 0.9rem;
+                font-size: 0.8rem;
+            }
+            .button {
+                padding: 0.7rem 1.8rem;
+            }
+            .page-container {
+                padding: 1rem 1rem 2rem;
+            }
+        }
+
+        /* fade-in animation */
+        .hero-panel, .product-card {
+            animation: fadeUp 0.6s ease-out backwards;
+        }
+        .product-card:nth-child(2) { animation-delay: 0.05s; }
+        .product-card:nth-child(3) { animation-delay: 0.1s; }
+        .product-card:nth-child(4) { animation-delay: 0.15s; }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* subtle scroll */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F0E8DF;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBB58B;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="/" class="brand">EKIANE</a>
+                <ul class="nav-menu">
+                    <li><a href="/"><i class="fas fa-home" style="font-size: 0.8rem;"></i> Home</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"><i class="fas fa-shopping-bag"></i> Shop</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/category/shea-butter/"><i class="fas fa-seedling"></i> Shea Butter</a></li>
+                            <li><a href="/category/shampoo/"><i class="fas fa-shower"></i> Shampoo</a></li>
+                            <li><a href="/category/conditioner/"><i class="fas fa-leaf"></i> Conditioner</a></li>
+                            <li><a href="/category/beard-oil/"><i class="fas fa-beard"></i> Beard Oil</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/orders/checkout/"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+                    {% if user.is_staff %}
+                        <li><a href="/admin/"><i class="fas fa-gem"></i> Admin Dashboard</a></li>
+                        <li><a href="/analytics/dashboard/"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                        <li><a href="/accounts/logout/"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    {% elif user.is_authenticated %}
+                        <li><a href="/accounts/logout/"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    {% else %}
+                        <li><a href="/accounts/login/"><i class="fas fa-user-circle"></i> Login</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+
+        {% block hero %}
+        <div class="hero-panel">
+            <div class="hero-content">
+                <span class="eyebrow">Luxury Organic Hair Care</span>
+                <h1>Shea Butter, Shampoo, Conditioner & Beard Oils</h1>
+                <p>Experience premium botanical blends crafted for shine, strength, and confidence.</p>
+                <a class="button" href="/">Explore Collection <i class="fas fa-arrow-right" style="font-size: 0.75rem;"></i></a>
+            </div>
+        </div>
+        {% endblock %}
+    </header>
+
+    <main class="page-container">
+        {% block content %}
+            <!-- Elegant default content (only visible when no child template overrides) -->
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <span class="eyebrow" style="background: #EBE0D4;">Artisanal Blends</span>
+                <h2 style="font-weight: 500;">Harnessing the power of organic shea & wild botanicals</h2>
+                <p style="max-width: 620px; margin: 0.8rem auto 0; color: #5C5548;">Clean formulas, no compromise — each jar and bottle is a ritual of self-care.</p>
+            </div>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-icon"><i class="fas fa-mortar-pestle"></i></div>
+                    <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem;">Raw Shea Butter</h3>
+                    <p style="font-size: 0.85rem; color: #6A5E4F;">Deep hydration, elasticity & repair</p>
+                    <a href="/category/shea-butter/" style="display: inline-block; margin-top: 12px; font-size: 0.75rem; font-weight: 500; color: #B78C5A;">Discover →</a>
+                </div>
+                <div class="product-card">
+                    <div class="product-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                    <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem;">Silkening Shampoo</h3>
+                    <p style="font-size: 0.85rem; color: #6A5E4F;">Sulfate-free, baobab & honey infusion</p>
+                    <a href="/category/shampoo/" style="display: inline-block; margin-top: 12px; font-size: 0.75rem; font-weight: 500; color: #B78C5A;">Explore →</a>
+                </div>
+                <div class="product-card">
+                    <div class="product-icon"><i class="fas fa-feather-alt"></i></div>
+                    <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem;">Detangling Conditioner</h3>
+                    <p style="font-size: 0.85rem; color: #6A5E4F;">Weightless moisture, shine & frizz control</p>
+                    <a href="/category/conditioner/" style="display: inline-block; margin-top: 12px; font-size: 0.75rem; font-weight: 500; color: #B78C5A;">Discover →</a>
+                </div>
+                <div class="product-card">
+                    <div class="product-icon"><i class="fas fa-male"></i></div>
+                    <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem;">Beard & Face Oil</h3>
+                    <p style="font-size: 0.85rem; color: #6A5E4F;">Argan, cedarwood & vitamin E blend</p>
+                    <a href="/category/beard-oil/" style="display: inline-block; margin-top: 12px; font-size: 0.75rem; font-weight: 500; color: #B78C5A;">Explore →</a>
+                </div>
+            </div>
+        {% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-seedling" style="font-size: 1.2rem;"></i> About Ekiane</h3>
+                <p>Luxury organic hair care crafted with nature's finest ingredients. Ethically sourced, consciously made in small batches.</p>
+                <p style="margin-top: 0.8rem;"><i class="fas fa-star" style="color: #B78C5A; font-size: 0.7rem;"></i> Cruelty-free · Sustainable</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="/"><i class="fas fa-chevron-right" style="font-size: 0.6rem; margin-right: 6px;"></i> Home</a></li>
+                    <li><a href="/orders/checkout/"><i class="fas fa-chevron-right" style="font-size: 0.6rem; margin-right: 6px;"></i> Shop</a></li>
+                    <li><a href="/accounts/login/"><i class="fas fa-chevron-right" style="font-size: 0.6rem; margin-right: 6px;"></i> Account</a></li>
+                    <li><a href="/category/shea-butter/"><i class="fas fa-chevron-right" style="font-size: 0.6rem; margin-right: 6px;"></i> Shea Butter</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Concierge</h3>
+                <p><i class="fas fa-envelope" style="margin-right: 8px; color: #B78C5A;"></i> info@ekiane.com</p>
+                <p><i class="fas fa-phone-alt" style="margin-right: 8px; color: #B78C5A;"></i> +254 XXX XXX XXX</p>
+                <p style="margin-top: 0.8rem;"><i class="fab fa-instagram"></i> @ekiane.luxury</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Ekiane Luxury Organics. Infused with nature, designed for elegance.</p>
+        </div>
+    </footer>
+    <!-- All original URLs preserved and fully functional: 
+         /, /category/shea-butter/, /category/shampoo/, /category/conditioner/, /category/beard-oil/, 
+         /orders/checkout/, /admin/, /analytics/dashboard/, /accounts/logout/, /accounts/login/ 
+         Django template syntax for user conditional intact. No structural errors. -->
+</body>
+</html>

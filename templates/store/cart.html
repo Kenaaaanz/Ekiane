@@ -1,0 +1,491 @@
+{% extends 'base.html' %}
+
+{% block hero %}{% endblock %}
+
+{% block content %}
+<section class="cart-page">
+    <div class="cart-header">
+        <span class="eyebrow">Your Ritual Selection</span>
+        <h1>Shopping Cart</h1>
+        <p>Review your handpicked organic essentials</p>
+    </div>
+
+    {% if cart.items %}
+        <div class="cart-container">
+            <div class="cart-items-wrapper">
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart.items %}
+                            <tr>
+                                <td data-label="Product">
+                                    <a href="{{ item.product.get_absolute_url }}" class="product-link">{{ item.product.name }}</a>
+                                    {% if item.product.category %}
+                                        <span class="product-category-meta">{{ item.product.category.name }}</span>
+                                    {% endif %}
+                                </td>
+                                <td data-label="Price" class="price-cell">{{ currency_symbol }} {{ item.product.price|floatformat:0 }}</td>
+                                <td data-label="Quantity" class="quantity-cell">
+                                    <span class="quantity-display">{{ item.quantity }}</span>
+                                </td>
+                                <td data-label="Total" class="total-cell">{{ currency_symbol }} {{ item.item_total|floatformat:0 }}</td>
+                                <td data-label="Remove" class="remove-cell">
+                                    <a href="{% url 'store:remove_from_cart' item.product.id %}" class="remove-btn" title="Remove item">
+                                        <i class="fas fa-trash-alt"></i>
+                                        <span class="remove-text">Remove</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="cart-summary">
+                <div class="summary-card">
+                    <h3>Order Summary</h3>
+                    <div class="summary-line">
+                        <span>Subtotal</span>
+                        <span class="summary-amount">{{ currency_symbol }} {{ cart.total|floatformat:0 }}</span>
+                    </div>
+                    <div class="summary-line shipping-note">
+                        <span>Shipping</span>
+                        <span>Calculated at checkout</span>
+                    </div>
+                    <div class="summary-divider"></div>
+                    <div class="summary-line total-line">
+                        <span>Estimated Total</span>
+                        <span class="total-amount">{{ currency_symbol }} {{ cart.total|floatformat:0 }}</span>
+                    </div>
+                    <a class="button checkout-btn" href="{% url 'orders:checkout' %}">
+                        Proceed to Checkout <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a class="button-secondary continue-link" href="/">
+                        <i class="fas fa-arrow-left"></i> Continue Shopping
+                    </a>
+                    <div class="secure-checkout">
+                        <i class="fas fa-lock"></i>
+                        <span>Secure checkout — 100% encrypted</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="empty-cart">
+            <div class="empty-cart-icon">
+                <i class="fas fa-shopping-bag"></i>
+            </div>
+            <h3>Your cart is currently empty</h3>
+            <p>Discover our luxury organic collection and find your perfect ritual.</p>
+            <a class="button" href="/">Explore Collection</a>
+            <div class="empty-cart-suggestions">
+                <span>Featured categories:</span>
+                <div class="suggestion-links">
+                    <a href="/category/shea-butter/">Shea Butter</a>
+                    <a href="/category/shampoo/">Shampoo</a>
+                    <a href="/category/conditioner/">Conditioner</a>
+                    <a href="/category/beard-oil/">Beard Oil</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</section>
+
+<style>
+    /* Cart Page - Luxury Refinement */
+    .cart-page {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 1.5rem 2rem 4rem;
+    }
+
+    .cart-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .cart-header .eyebrow {
+        display: inline-block;
+        margin-bottom: 1rem;
+    }
+
+    .cart-header h1 {
+        font-size: 2.8rem;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: #1F1C18;
+    }
+
+    .cart-header p {
+        color: #5C5548;
+        font-size: 1rem;
+    }
+
+    /* Cart Container Layout */
+    .cart-container {
+        display: grid;
+        grid-template-columns: 1fr 360px;
+        gap: 2.5rem;
+        align-items: start;
+    }
+
+    /* Cart Table Styling */
+    .cart-items-wrapper {
+        background: #FFFFFF;
+        border-radius: 28px;
+        border: 1px solid #F0E7DF;
+        overflow-x: auto;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+    }
+
+    .cart-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+    }
+
+    .cart-table thead th {
+        text-align: left;
+        padding: 1.2rem 1rem;
+        background: #FEFAF5;
+        font-weight: 600;
+        color: #2A2723;
+        font-size: 0.8rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        border-bottom: 1px solid #F0E7DF;
+    }
+
+    .cart-table tbody tr {
+        border-bottom: 1px solid #F5EFE8;
+        transition: background 0.2s;
+    }
+
+    .cart-table tbody tr:hover {
+        background: #FEFBF8;
+    }
+
+    .cart-table td {
+        padding: 1.2rem 1rem;
+        vertical-align: middle;
+        color: #3A3630;
+    }
+
+    .product-link {
+        font-weight: 500;
+        color: #2A2723;
+        text-decoration: none;
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.05rem;
+        transition: color 0.2s;
+        display: block;
+    }
+
+    .product-link:hover {
+        color: #B78C5A;
+    }
+
+    .product-category-meta {
+        display: block;
+        font-size: 0.7rem;
+        color: #B78C5A;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        margin-top: 4px;
+    }
+
+    .price-cell, .total-cell {
+        font-weight: 500;
+        color: #1F1C18;
+    }
+
+    .quantity-display {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        background: #F8F3EC;
+        border-radius: 30px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        min-width: 50px;
+        text-align: center;
+    }
+
+    .remove-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #BFA38A;
+        text-decoration: none;
+        font-size: 0.75rem;
+        font-weight: 500;
+        transition: color 0.2s;
+        padding: 6px 10px;
+        border-radius: 40px;
+    }
+
+    .remove-btn:hover {
+        color: #C97E2A;
+        background: #FEF1E0;
+    }
+
+    .remove-text {
+        display: inline-block;
+    }
+
+    /* Cart Summary Card */
+    .summary-card {
+        background: #FFFFFF;
+        border-radius: 28px;
+        padding: 1.8rem;
+        border: 1px solid #F0E7DF;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+        position: sticky;
+        top: 100px;
+    }
+
+    .summary-card h3 {
+        font-size: 1.3rem;
+        font-family: 'Cormorant Garamond', serif;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid #F0E7DF;
+        color: #2A2723;
+    }
+
+    .summary-line {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.8rem;
+        color: #5C5548;
+        font-size: 0.9rem;
+    }
+
+    .summary-amount {
+        font-weight: 500;
+        color: #2A2723;
+    }
+
+    .shipping-note span:last-child {
+        font-size: 0.8rem;
+        color: #B78C5A;
+    }
+
+    .summary-divider {
+        height: 1px;
+        background: #F0E7DF;
+        margin: 1rem 0;
+    }
+
+    .total-line {
+        margin-bottom: 1.8rem;
+        font-size: 1.1rem;
+    }
+
+    .total-line span:first-child {
+        font-weight: 600;
+        color: #2A2723;
+    }
+
+    .total-amount {
+        font-weight: 700;
+        color: #B78C5A;
+        font-size: 1.3rem;
+    }
+
+    .checkout-btn {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 1rem;
+        background: #1F1C18;
+        gap: 10px;
+    }
+
+    .checkout-btn:hover {
+        background: #B78C5A;
+    }
+
+    .continue-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        text-align: center;
+        padding: 0.8rem;
+        background: transparent;
+        border: 1px solid #DCC9AE;
+        border-radius: 50px;
+        color: #2A2723;
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: all 0.25s;
+    }
+
+    .continue-link:hover {
+        background: #F8F3EC;
+        border-color: #B78C5A;
+    }
+
+    .secure-checkout {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 1.2rem;
+        font-size: 0.7rem;
+        color: #A18F7A;
+        padding-top: 1rem;
+        border-top: 1px solid #F5EFE8;
+    }
+
+    .secure-checkout i {
+        font-size: 0.7rem;
+    }
+
+    /* Empty Cart Elegant State */
+    .empty-cart {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: #FFFFFF;
+        border-radius: 32px;
+        border: 1px solid #F0E7DF;
+        max-width: 600px;
+        margin: 2rem auto;
+    }
+
+    .empty-cart-icon {
+        font-size: 3.5rem;
+        color: #DCC9AE;
+        margin-bottom: 1.5rem;
+    }
+
+    .empty-cart h3 {
+        font-size: 1.6rem;
+        font-family: 'Cormorant Garamond', serif;
+        font-weight: 500;
+        margin-bottom: 0.75rem;
+        color: #2A2723;
+    }
+
+    .empty-cart p {
+        color: #5C5548;
+        margin-bottom: 2rem;
+    }
+
+    .empty-cart-suggestions {
+        margin-top: 2.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #F0E7DF;
+    }
+
+    .empty-cart-suggestions span {
+        display: block;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #B78C5A;
+        margin-bottom: 1rem;
+    }
+
+    .suggestion-links {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .suggestion-links a {
+        color: #2A2723;
+        text-decoration: none;
+        font-size: 0.85rem;
+        padding: 0.4rem 1rem;
+        background: #FEFAF5;
+        border-radius: 40px;
+        transition: all 0.2s;
+    }
+
+    .suggestion-links a:hover {
+        background: #B78C5A;
+        color: white;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+        .cart-container {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+        .summary-card {
+            position: static;
+        }
+        .cart-header h1 {
+            font-size: 2.2rem;
+        }
+    }
+
+    @media (max-width: 680px) {
+        .cart-page {
+            padding: 1rem 1rem 3rem;
+        }
+        .cart-table thead {
+            display: none;
+        }
+        .cart-table tbody tr {
+            display: block;
+            padding: 1rem;
+            border-bottom: 1px solid #F0E7DF;
+        }
+        .cart-table td {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.6rem 0;
+            border: none;
+        }
+        .cart-table td:before {
+            content: attr(data-label);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #B78C5A;
+        }
+        .product-category-meta {
+            margin-top: 0;
+        }
+        .remove-btn {
+            justify-content: flex-end;
+            width: 100%;
+        }
+        .quantity-display {
+            display: inline-block;
+        }
+        .cart-items-wrapper {
+            padding: 0.5rem;
+        }
+        .remove-text {
+            display: inline;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .suggestion-links {
+            flex-direction: column;
+            align-items: center;
+        }
+        .empty-cart {
+            padding: 2rem 1rem;
+        }
+    }
+</style>
+{% endblock %}

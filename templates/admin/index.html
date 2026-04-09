@@ -1,0 +1,663 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}Dashboard | Ekiane Luxury Admin{% endblock %}
+
+
+{% block content %}
+
+
+<div class="dashboard-header">
+    <h1 class="dashboard-title">Analytics Dashboard</h1>
+    <p class="dashboard-subtitle">Sales, Profit & Performance Intelligence</p>
+</div>
+
+<!-- KPI Cards - Luxury Metrics -->
+<div class="kpi-grid">
+    <article class="kpi-card">
+        <div class="kpi-icon"><i class="fas fa-chart-line"></i></div>
+        <h3>Total Revenue</h3>
+        <p class="kpi-value">{{ currency_symbol }} {{ total_revenue|floatformat:0 }}</p>
+        <p class="kpi-label">All completed orders</p>
+    </article>
+    <article class="kpi-card">
+        <div class="kpi-icon"><i class="fas fa-shopping-bag"></i></div>
+        <h3>Total Orders</h3>
+        <p class="kpi-value">{{ order_count }}</p>
+        <p class="kpi-label">Successful transactions</p>
+    </article>
+    <article class="kpi-card">
+        <div class="kpi-icon"><i class="fas fa-chart-pie"></i></div>
+        <h3>Net Profit</h3>
+        <p class="kpi-value">{{ currency_symbol }} {{ total_profit|floatformat:0 }}</p>
+        <p class="kpi-label">After costs & fees</p>
+    </article>
+    <article class="kpi-card">
+        <div class="kpi-icon"><i class="fas fa-boxes"></i></div>
+        <h3>Cost of Goods</h3>
+        <p class="kpi-value">{{ currency_symbol }} {{ total_cost|floatformat:0 }}</p>
+        <p class="kpi-label">Manufacturing costs</p>
+    </article>
+</div>
+
+<!-- Charts Section - Primary -->
+<div class="charts-grid">
+    <!-- Revenue Breakdown Chart -->
+    <section class="chart-card">
+        <h2><i class="fas fa-chart-pie"></i> Financial Breakdown</h2>
+        <div class="chart-container">
+            <canvas id="profitChart"></canvas>
+        </div>
+    </section>
+
+    <!-- Revenue Trend Chart -->
+    <section class="chart-card">
+        <h2><i class="fas fa-chart-line"></i> Revenue Trend</h2>
+        <div class="chart-container">
+            <canvas id="revenueChart"></canvas>
+        </div>
+        <div class="chart-note">Last 30 days performance</div>
+    </section>
+</div>
+
+<!-- Charts Section - Secondary -->
+<div class="charts-grid">
+    <!-- Orders Trend -->
+    <section class="chart-card">
+        <h2><i class="fas fa-calendar-alt"></i> Orders Timeline</h2>
+        <div class="chart-container">
+            <canvas id="ordersChart"></canvas>
+        </div>
+        <div class="chart-note">Daily order volume (last 30 days)</div>
+    </section>
+
+    <!-- Category Performance -->
+    <section class="chart-card">
+        <h2><i class="fas fa-tags"></i> Top Categories by Revenue</h2>
+        <div class="chart-container">
+            <canvas id="categoriesChart"></canvas>
+        </div>
+    </section>
+</div>
+
+<!-- Financial Summary Table -->
+<section class="analytics-section">
+    <div class="section-header">
+        <h3><i class="fas fa-coins"></i> Financial Summary</h3>
+        <span class="badge">All time</span>
+    </div>
+    <div class="analytics-table-wrapper">
+        <table class="analytics-table">
+            <tbody>
+                <tr>
+                    <td>Total Revenue</td>
+                    <td>{{ currency_symbol }} {{ total_revenue|floatformat:0 }}</td>
+                </tr>
+                <tr>
+                    <td>Total Cost of Goods</td>
+                    <td>{{ currency_symbol }} {{ total_cost|floatformat:0 }}</td>
+                </tr>
+                <tr>
+                    <td>Platform Fees (8%)</td>
+                    <td>{{ currency_symbol }} {{ total_platform_fee|floatformat:0 }}</td>
+                </tr>
+                <tr class="total-row">
+                    <td><strong>Net Profit</strong></td>
+                    <td><strong>{{ currency_symbol }} {{ total_profit|floatformat:0 }}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Best Selling Products -->
+<section class="analytics-section">
+    <div class="section-header">
+        <h3><i class="fas fa-crown"></i> Best Selling Products</h3>
+        <span class="badge">Top performers</span>
+    </div>
+    {% if top_products %}
+        <div class="products-table-wrapper">
+            <table class="products-table">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Units Sold</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in top_products %}
+                        <tr>
+                            <td class="product-name">{{ product.name }}</td>
+                            <td class="product-sales">{{ product.sold_quantity|default:0 }} units</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="fas fa-chart-simple"></i>
+            <p>No sales data yet.</p>
+        </div>
+    {% endif %}
+</section>
+
+<!-- Product Batch Performance -->
+<section class="analytics-section">
+    <div class="section-header">
+        <h3><i class="fas fa-industry"></i> Product Batch Performance</h3>
+        <span class="badge">Inventory analytics</span>
+    </div>
+    {% if product_performance_batches %}
+    <div class="products-table-wrapper">
+        <table class="products-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Batch Date</th>
+                    <th>Status</th>
+                    <th>Produced</th>
+                    <th>Sold</th>
+                    <th>Days Open</th>
+                    <th>Cost / Unit</th>
+                    <th>Margin</th>
+                    <th>Total Profit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for batch in product_performance_batches %}
+                    <tr>
+                        <td class="product-name">{{ batch.product_name }}</td>
+                        <td>{{ batch.batch_date }}</td>
+                        <td>
+                            <span class="status-badge status-{{ batch.status }}">
+                                {{ batch.status|title }}
+                            </span>
+                        </td>
+                        <td>{{ batch.quantity_produced }}</td>
+                        <td>{{ batch.quantity_sold }}</td>
+                        <td>{{ batch.days_open }}</td>
+                        <td>{{ currency_symbol }} {{ batch.cost_per_unit|floatformat:2 }}</td>
+                        <td class="{% if batch.profit_margin > 20 %}positive{% elif batch.profit_margin > 0 %}neutral{% else %}negative{% endif %}">
+                            {{ batch.profit_margin|floatformat:2 }}%
+                        </td>
+                        <td class="product-sales">{{ currency_symbol }} {{ batch.total_profit|floatformat:0 }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Batch Performance Charts -->
+    <div class="charts-grid">
+        <section class="chart-card">
+            <h2><i class="fas fa-chart-line"></i> Batch Cost vs Target</h2>
+            <div class="chart-container">
+                <canvas id="batchCostChart"></canvas>
+            </div>
+        </section>
+        <section class="chart-card">
+            <h2><i class="fas fa-percent"></i> Batch Profit Margin</h2>
+            <div class="chart-container">
+                <canvas id="batchMarginChart"></canvas>
+            </div>
+        </section>
+        <section class="chart-card">
+            <h2><i class="fas fa-chart-bar"></i> Cost Variance Analysis</h2>
+            <div class="chart-container">
+                <canvas id="batchVarianceChart"></canvas>
+            </div>
+        </section>
+    </div>
+    {% else %}
+        <div class="empty-state">
+            <i class="fas fa-box-open"></i>
+            <p>No batch performance data available yet.</p>
+        </div>
+    {% endif %}
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const currencySymbol = '{{ currency_symbol }}';
+    const profitData = {{ profit_data_json|safe }};
+    const dailyRevenue = {{ daily_revenue_json|safe }};
+    const dailyOrders = {{ daily_orders_json|safe }};
+    const categoryRevenue = {{ category_sales_json|safe }};
+    const categoryUnits = {{ category_units_json|safe }};
+    const batchLabels = {{ batch_labels_json|safe }};
+    const batchCosts = {{ batch_costs_json|safe }};
+    const batchTargetCosts = {{ batch_target_costs_json|safe }};
+    const batchMargins = {{ batch_margins_json|safe }};
+    const batchVariances = {{ batch_variances_json|safe }};
+
+    // Profit Donut Chart
+    new Chart(document.getElementById('profitChart'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Net Profit', 'Cost of Goods', 'Platform Fees'],
+            datasets: [{
+                data: [profitData.profit, profitData.cost, profitData.fees],
+                backgroundColor: ['#1A6B60', '#C6A43F', '#DDD5C8'],
+                borderColor: '#FFFFFF',
+                borderWidth: 2,
+                hoverOffset: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            cutout: '60%',
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        font: { size: 11, family: "'Inter', sans-serif", weight: '500' },
+                        color: '#2C2A27',
+                        padding: 12,
+                        usePointStyle: true,
+                        pointStyle: 'circle'
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            let value = context.raw || 0;
+                            let total = context.dataset.data.reduce((a, b) => a + b, 0);
+                            let percentage = ((value / total) * 100).toFixed(1);
+                            return `${label}: ${currencySymbol} ${value.toLocaleString()} (${percentage}%)`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Revenue Trend Line Chart
+    const revenueLabels = Object.keys(dailyRevenue).sort();
+    const revenueValues = revenueLabels.map(label => dailyRevenue[label]);
+
+    new Chart(document.getElementById('revenueChart'), {
+        type: 'line',
+        data: {
+            labels: revenueLabels,
+            datasets: [{
+                label: 'Daily Revenue',
+                data: revenueValues,
+                borderColor: '#1A6B60',
+                backgroundColor: 'rgba(26, 107, 96, 0.05)',
+                borderWidth: 2.5,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: '#C6A43F',
+                pointBorderColor: '#FFFFFF',
+                pointBorderWidth: 2,
+                pointRadius: 3,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `${currencySymbol} ${context.raw.toLocaleString()}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { 
+                        color: '#7A7368',
+                        callback: function(value) {
+                            return currencySymbol + value.toLocaleString();
+                        }
+                    },
+                    grid: { color: '#EAE4DA' }
+                },
+                x: {
+                    ticks: { color: '#7A7368', maxRotation: 45, minRotation: 45 },
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+
+    // Orders Bar Chart
+    const orderLabels = Object.keys(dailyOrders).sort();
+    const orderValues = orderLabels.map(label => dailyOrders[label]);
+
+    new Chart(document.getElementById('ordersChart'), {
+        type: 'bar',
+        data: {
+            labels: orderLabels,
+            datasets: [{
+                label: 'Daily Orders',
+                data: orderValues,
+                backgroundColor: '#C6A43F',
+                borderColor: '#A8882E',
+                borderWidth: 1,
+                borderRadius: 6,
+                barPercentage: 0.7
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `${context.raw} orders`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#7A7368', stepSize: 1 },
+                    grid: { color: '#EAE4DA' }
+                },
+                x: {
+                    ticks: { color: '#7A7368', maxRotation: 45, minRotation: 45 },
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+
+    // Category Performance Horizontal Bar Chart
+    const categoryLabels = Object.keys(categoryRevenue);
+    const categoryValues = categoryLabels.map(label => categoryRevenue[label]);
+
+    new Chart(document.getElementById('categoriesChart'), {
+        type: 'bar',
+        data: {
+            labels: categoryLabels,
+            datasets: [{
+                label: 'Revenue by Category',
+                data: categoryValues,
+                backgroundColor: '#124D46',
+                borderColor: '#0A2E2A',
+                borderWidth: 1,
+                borderRadius: 6
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `${currencySymbol} ${context.raw.toLocaleString()}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    ticks: { 
+                        color: '#7A7368',
+                        callback: function(value) {
+                            return currencySymbol + value.toLocaleString();
+                        }
+                    },
+                    grid: { color: '#EAE4DA' }
+                },
+                y: {
+                    ticks: { color: '#2C2A27', font: { weight: '500' } },
+                    grid: { display: false }
+                }
+            }
+        }
+    });
+
+    // Batch Cost Chart
+    if (batchLabels && batchLabels.length) {
+        new Chart(document.getElementById('batchCostChart'), {
+            type: 'line',
+            data: {
+                labels: batchLabels,
+                datasets: [
+                    {
+                        label: 'Batch Cost / Unit',
+                        data: batchCosts,
+                        borderColor: '#124D46',
+                        backgroundColor: 'rgba(18, 77, 70, 0.08)',
+                        tension: 0.3,
+                        fill: true,
+                        pointBackgroundColor: '#124D46',
+                        pointBorderColor: '#FFFFFF',
+                        pointBorderWidth: 2,
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    },
+                    {
+                        label: 'Target Product Cost',
+                        data: batchTargetCosts,
+                        borderColor: '#C6A43F',
+                        backgroundColor: 'rgba(198, 164, 63, 0.05)',
+                        borderWidth: 2,
+                        borderDash: [6, 6],
+                        tension: 0.3,
+                        fill: false,
+                        pointRadius: 0,
+                        pointHoverRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: { size: 10, family: "'Inter', sans-serif" },
+                            color: '#2C2A27',
+                            usePointStyle: true
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: ${currencySymbol} ${context.raw.toFixed(2)}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { 
+                            color: '#7A7368',
+                            callback: function(value) {
+                                return currencySymbol + value.toFixed(2);
+                            }
+                        },
+                        grid: { color: '#EAE4DA' }
+                    },
+                    x: {
+                        ticks: { color: '#7A7368' },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        // Batch Margin Chart
+        new Chart(document.getElementById('batchMarginChart'), {
+            type: 'bar',
+            data: {
+                labels: batchLabels,
+                datasets: [{
+                    label: 'Profit Margin (%)',
+                    data: batchMargins,
+                    backgroundColor: batchMargins.map(m => m >= 25 ? '#1A6B60' : (m >= 10 ? '#C6A43F' : '#B85C4A')),
+                    borderRadius: 8,
+                    barPercentage: 0.6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.raw.toFixed(1)}% margin`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { color: '#7A7368', callback: function(value) { return value + '%'; } },
+                        grid: { color: '#EAE4DA' }
+                    },
+                    x: {
+                        ticks: { color: '#7A7368' },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        // Batch Variance Chart
+        new Chart(document.getElementById('batchVarianceChart'), {
+            type: 'bar',
+            data: {
+                labels: batchLabels,
+                datasets: [{
+                    label: 'Cost Variance',
+                    data: batchVariances,
+                    backgroundColor: batchVariances.map(v => v >= 0 ? '#B85C4A' : '#1A6B60'),
+                    borderRadius: 8,
+                    barPercentage: 0.6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const value = context.raw;
+                                return `${value >= 0 ? '+' : ''}${currencySymbol} ${Math.abs(value).toFixed(2)} variance`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: { 
+                            color: '#7A7368',
+                            callback: function(value) {
+                                return (value >= 0 ? '+' : '') + currencySymbol + Math.abs(value).toFixed(0);
+                            }
+                        },
+                        grid: { color: '#EAE4DA' }
+                    },
+                    x: {
+                        ticks: { color: '#7A7368' },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    }
+</script>
+
+<style>
+    /* Additional refinements for dashboard */
+    .chart-note {
+        text-align: center;
+        font-size: 0.65rem;
+        color: #7A7368;
+        margin-top: 0.5rem;
+        letter-spacing: 0.02em;
+    }
+
+    .status-badge {
+        display: inline-block;
+        padding: 0.2rem 0.6rem;
+        border-radius: 30px;
+        font-size: 0.7rem;
+        font-weight: 500;
+    }
+
+    .status-open {
+        background: rgba(198, 164, 63, 0.12);
+        color: #C6A43F;
+    }
+
+    .status-closed {
+        background: rgba(26, 107, 96, 0.1);
+        color: #1A6B60;
+    }
+
+    .positive {
+        color: #1A6B60;
+        font-weight: 600;
+    }
+
+    .neutral {
+        color: #C6A43F;
+        font-weight: 600;
+    }
+
+    .negative {
+        color: #B85C4A;
+        font-weight: 600;
+    }
+
+    .kpi-icon {
+        font-size: 1.6rem;
+        color: #C6A43F;
+        margin-bottom: 0.75rem;
+    }
+
+    .dashboard-title {
+        font-size: 1.8rem;
+        font-weight: 500;
+        color: #0A2E2A;
+        margin-bottom: 0.25rem;
+    }
+
+    .dashboard-subtitle {
+        color: #7A7368;
+        font-size: 0.85rem;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #EAE4DA;
+    }
+</style>
+{% endblock %}
