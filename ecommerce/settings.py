@@ -10,7 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+from logging import config
 from pathlib import Path
+import dj_database_url
+from decouple import config
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-your-secret-key-here'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG')
 
 ALLOWED_HOSTS = ['testserver', 'localhost', '127.0.0.1']
 
@@ -43,6 +47,7 @@ INSTALLED_APPS = [
     'orders',
     'payments',
     'analytics',
+    'website_settings',
     'rest_framework',
     'allauth',
     'allauth.account',
@@ -85,12 +90,26 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# Database configuration
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
+if DATABASE_URL:
+    # Production - PostgreSQL on Render
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
     }
-}
+else:
+    # Local development - SQLite
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Cache configuration
@@ -170,7 +189,7 @@ LOGOUT_REDIRECT_URL = '/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Paystack settings
-PAYSTACK_PUBLIC_KEY = 'pk_test_337b9ec67d63671cd5b8af50e9f0d07034e382ec'
-PAYSTACK_SECRET_KEY = 'sk_test_856586b7a585295f8a5908c60293ace2c7058372'
-PAYSTACK_SUBACCOUNT_CODE = 'ACCT_ixml3tt85ucu9ep'
-PLATFORM_FEE_PERCENT = 8
+PAYSTACK_PUBLIC_KEY = config('PAYSTACK_PUBLIC_KEY') 
+PAYSTACK_SECRET_KEY = config('PAYSTACK_SECRET_KEY') 
+PAYSTACK_SUBACCOUNT_CODE = config('PAYSTACK_SUBACCOUNT_CODE') 
+PLATFORM_FEE_PERCENT = config('PLATFORM_FEE_PERCENT', default=8)

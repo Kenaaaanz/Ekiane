@@ -31,7 +31,7 @@ urlpatterns = [
     path('', include('store.urls')),
     path('orders/', include('orders.urls')),
     path('payments/', include('payments.urls')),
-    path('analytics/', include('analytics.urls')),
+    path('website-settings/', include('website_settings.urls')),
 ]
 
 if settings.DEBUG:

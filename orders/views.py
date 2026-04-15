@@ -1,6 +1,7 @@
 from decimal import Decimal
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 from .models import Order, OrderItem
 from store.models import Product
 
@@ -65,3 +66,9 @@ def order_success(request):
     if order_id:
         order = get_object_or_404(Order, pk=order_id)
     return render(request, 'orders/order_success.html', {'order': order})
+
+
+@login_required
+def order_history(request):
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'orders/order_history.html', {'orders': orders})

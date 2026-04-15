@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Product, Category
+from website_settings.models import AboutPage
 
 
 def get_cart(request):
@@ -61,3 +62,8 @@ def remove_from_cart(request, product_id):
     cart.pop(str(product_id), None)
     request.session['cart'] = cart
     return redirect('store:cart_detail')
+
+
+def about(request):
+    about_page, created = AboutPage.objects.get_or_create(id=1)
+    return render(request, 'store/about.html', {'about_page': about_page})

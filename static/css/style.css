@@ -168,13 +168,12 @@ a:hover {
    ============================================ */
 
 .hero-panel {
-    padding: 120px 2rem;
+    padding: 80px 2rem;
     display: grid;
     place-items: center;
     text-align: center;
     background: linear-gradient(180deg, var(--primary-dark) 0%, var(--primary-medium) 100%);
     position: relative;
-    overflow: hidden;
 }
 
 .hero-panel::before {

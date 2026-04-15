@@ -1,0 +1,586 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %}About Ekiane — Our Story of Organic Luxury{% endblock %}
+
+{% block hero %}
+<!-- Hero Section - Brand Story Introduction -->
+<section class="about-hero">
+    <div class="hero-content">
+        <span class="eyebrow">Our Heritage</span>
+        <h1>{{ about_page.hero_title|default:"The Ekiane Legacy" }}</h1>
+        <p>{{ about_page.hero_subtitle|default:"A journey of passion, purity, and the pursuit of hair perfection through nature's finest gifts." }}</p>
+    </div>
+    <div class="hero-image">
+        {% if about_page.hero_image %}
+            <img src="{{ about_page.hero_image.url }}" alt="Ekiane organic hair care products" loading="lazy">
+        {% else %}
+            <img src="{% static 'images/about-hero.jpg' %}" alt="Ekiane organic hair care products" loading="lazy">
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}
+<!-- Our Story Section -->
+<section class="story-section">
+    <div class="story-container">
+        <div class="story-content">
+            <span class="eyebrow">The Beginning</span>
+            <h2>From African Roots to Global Luxury</h2>
+            {{ about_page.brand_story|linebreaks }}
+        </div>
+        <div class="story-image">
+            {% if about_page.brand_image %}
+                <img src="{{ about_page.brand_image.url }}" alt="African hair care traditions" loading="lazy">
+            {% else %}
+                <img src="{% static 'images/story-origin.jpg' %}" alt="African hair care traditions" loading="lazy">
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Philosophy Section -->
+<section class="philosophy-section">
+    <div class="philosophy-grid">
+        <div class="philosophy-card">
+            <div class="philosophy-icon">
+                <i class="fas fa-leaf"></i>
+            </div>
+            <h3>Organic Purity</h3>
+            <p>We source only the finest organic ingredients, ensuring every formula is free from harmful chemicals and synthetic additives.</p>
+        </div>
+
+        <div class="philosophy-card">
+            <div class="philosophy-icon">
+                <i class="fas fa-heart"></i>
+            </div>
+            <h3>Ethical Sourcing</h3>
+            <p>Our commitment extends to fair trade partnerships with local communities, supporting sustainable harvesting practices worldwide.</p>
+        </div>
+
+        <div class="philosophy-card">
+            <div class="philosophy-icon">
+                <i class="fas fa-flask"></i>
+            </div>
+            <h3>Scientific Excellence</h3>
+            <p>We blend traditional wisdom with cutting-edge research to create formulations that deliver exceptional results.</p>
+        </div>
+
+        <div class="philosophy-card">
+            <div class="philosophy-icon">
+                <i class="fas fa-globe-americas"></i>
+            </div>
+            <h3>Global Community</h3>
+            <p>Ekiane unites hair lovers worldwide in our shared appreciation for natural beauty and self-expression.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Journey Timeline -->
+<section class="journey-section">
+    <div class="section-header">
+        <span class="eyebrow">Our Evolution</span>
+        <h2>The Ekiane Journey</h2>
+        <p>From humble beginnings to becoming a beacon of organic luxury</p>
+    </div>
+
+    {% if about_page.timeline %}
+        <div class="timeline-content">
+            {{ about_page.timeline|linebreaks }}
+        </div>
+        {% if about_page.timeline_image %}
+            <div class="timeline-image">
+                <img src="{{ about_page.timeline_image.url }}" alt="Ekiane journey timeline" loading="lazy">
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2018</div>
+                    <h3>The Spark of Inspiration</h3>
+                    <p>Our founder discovers the transformative power of pure shea butter during travels through West Africa, sparking the vision for Ekiane.</p>
+                </div>
+                <div class="timeline-image">
+                    <img src="{% static 'images/timeline-2018.jpg' %}" alt="2018 - The beginning" loading="lazy">
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2019</div>
+                    <h3>First Collection Launch</h3>
+                    <p>Our inaugural line of organic hair oils and treatments debuts, featuring pure shea butter, argan oil, and botanical extracts.</p>
+                </div>
+                <div class="timeline-image">
+                    <img src="{% static 'images/timeline-2019.jpg' %}" alt="2019 - First collection" loading="lazy">
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2021</div>
+                    <h3>Global Recognition</h3>
+                    <p>Ekiane receives international acclaim for our commitment to organic ingredients and sustainable practices.</p>
+                </div>
+                <div class="timeline-image">
+                    <img src="{% static 'images/timeline-2021.jpg' %}" alt="2021 - Global recognition" loading="lazy">
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2023</div>
+                    <h3>Expanded Atelier</h3>
+                    <p>Our state-of-the-art organic laboratory opens, combining traditional methods with modern science for unparalleled quality.</p>
+                </div>
+                <div class="timeline-image">
+                    <img src="{% static 'images/timeline-2023.jpg' %}" alt="2023 - Expanded atelier" loading="lazy">
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2024</div>
+                    <h3>Community Impact</h3>
+                    <p>Launch of our community education program, teaching the art of natural hair care and supporting local artisans.</p>
+                </div>
+                <div class="timeline-image">
+                    <img src="{% static 'images/timeline-2024.jpg' %}" alt="2024 - Community impact" loading="lazy">
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</section>
+
+<!-- Values Section -->
+<section class="values-section">
+    <div class="values-container">
+        <div class="values-content">
+            <span class="eyebrow">Our Values</span>
+            <h2>Beauty Beyond the Bottle</h2>
+            {% if about_page.values %}
+                {{ about_page.values|linebreaks }}
+            {% else %}
+                <p>At Ekiane, we believe that true beauty begins with self-care rituals that nourish both body and soul. Our products are more than hair care solutions—they're an invitation to embrace your natural beauty and connect with the earth's wisdom.</p>
+
+                <div class="values-list">
+                    <div class="value-item">
+                        <h4><i class="fas fa-seedling"></i> Sustainability</h4>
+                        <p>Every ingredient is sourced responsibly, ensuring the longevity of our planet's precious resources.</p>
+                    </div>
+
+                    <div class="value-item">
+                        <h4><i class="fas fa-users"></i> Community</h4>
+                        <p>We empower local communities through fair trade partnerships and educational initiatives.</p>
+                    </div>
+
+                    <div class="value-item">
+                        <h4><i class="fas fa-heart"></i> Authenticity</h4>
+                        <p>Our formulas remain true to their organic roots, never compromising on purity for convenience.</p>
+                    </div>
+
+                    <div class="value-item">
+                        <h4><i class="fas fa-star"></i> Excellence</h4>
+                        <p>We pursue perfection in every detail, from ingredient selection to packaging design.</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        <div class="values-image">
+            <img src="{% static 'images/values-organic.jpg' %}" alt="Organic ingredients and values" loading="lazy">
+        </div>
+    </div>
+</section>
+
+{% if about_page.philosophy %}
+<!-- Philosophy Section -->
+<section class="philosophy-content-section">
+    <div class="philosophy-content-container">
+        <div class="philosophy-content">
+            <span class="eyebrow">Our Philosophy</span>
+            <h2>Beauty Philosophy</h2>
+            {{ about_page.philosophy|linebreaks }}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Call to Action -->
+<section class="cta-section">
+    <div class="cta-content">
+        <h2>Experience the Ekiane Difference</h2>
+        <p>Join thousands who have discovered the transformative power of organic hair care. Begin your journey to healthier, more beautiful hair today.</p>
+        <a href="{% url 'store:home' %}" class="button-primary">
+            Shop Our Collection <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+</section>
+
+<style>
+    /* About Page Specific Styles */
+    .about-hero {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+        padding: 4rem 0 3rem;
+    }
+
+    .about-hero .hero-content {
+        text-align: left;
+    }
+
+    .about-hero .hero-content h1 {
+        font-size: 4rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero-image img {
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .story-section {
+        padding: 6rem 0;
+        background: #F8F6F2;
+    }
+
+    .story-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2.5rem;
+    }
+
+    .story-content h2 {
+        margin-bottom: 2rem;
+        color: #2A2824;
+    }
+
+    .story-content p {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        margin-bottom: 1.5rem;
+        color: #5A564F;
+    }
+
+    .story-image img {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        border-radius: 20px;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .philosophy-section {
+        padding: 6rem 0;
+    }
+
+    .philosophy-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2.5rem;
+    }
+
+    .philosophy-card {
+        background: white;
+        padding: 3rem 2rem;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+        border: 1px solid rgba(0, 0, 0, 0.04);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .philosophy-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .philosophy-icon {
+        font-size: 3rem;
+        color: #B78C5A;
+        margin-bottom: 1.5rem;
+    }
+
+    .philosophy-card h3 {
+        font-size: 1.4rem;
+        margin-bottom: 1rem;
+        color: #2A2824;
+    }
+
+    .philosophy-card p {
+        color: #5A564F;
+        line-height: 1.6;
+    }
+
+    .journey-section {
+        padding: 6rem 0;
+        background: #F8F6F2;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 4rem;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .section-header h2 {
+        margin-bottom: 1rem;
+    }
+
+    .section-header p {
+        color: #5A564F;
+        font-size: 1.1rem;
+    }
+
+    .timeline {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 0 2.5rem;
+    }
+
+    .timeline-item {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: 3rem;
+        margin-bottom: 4rem;
+        align-items: center;
+    }
+
+    .timeline-item:nth-child(even) {
+        direction: rtl;
+    }
+
+    .timeline-item:nth-child(even) .timeline-content {
+        text-align: right;
+    }
+
+    .timeline-year {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #B78C5A;
+        margin-bottom: 0.5rem;
+    }
+
+    .timeline-content h3 {
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        color: #2A2824;
+    }
+
+    .timeline-content p {
+        color: #5A564F;
+        line-height: 1.6;
+    }
+
+    .timeline-image img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    }
+
+    .values-section {
+        padding: 6rem 0;
+    }
+
+    .values-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2.5rem;
+    }
+
+    .values-content h2 {
+        margin-bottom: 2rem;
+        color: #2A2824;
+    }
+
+    .values-content p {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        margin-bottom: 2rem;
+        color: #5A564F;
+    }
+
+    .values-list {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+
+    .value-item {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+
+    .value-item i {
+        color: #B78C5A;
+        font-size: 1.2rem;
+        margin-top: 0.2rem;
+    }
+
+    .value-item h4 {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+        color: #2A2824;
+    }
+
+    .value-item p {
+        color: #5A564F;
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+
+    .values-image img {
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+        border-radius: 20px;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    .cta-section {
+        padding: 6rem 0;
+        background: linear-gradient(135deg, #2A2824 0%, #1F1C18 100%);
+        color: white;
+        text-align: center;
+    }
+
+    .cta-content {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 0 2.5rem;
+    }
+
+    .cta-content h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1.5rem;
+        color: white;
+    }
+
+    .cta-content p {
+        font-size: 1.1rem;
+        margin-bottom: 2.5rem;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .button-primary {
+        background: #B78C5A;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        font-size: 1rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+        border: 2px solid #B78C5A;
+    }
+
+    .button-primary:hover {
+        background: transparent;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(183, 140, 90, 0.3);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+        .about-hero,
+        .story-container,
+        .values-container {
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+
+        .timeline-item {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+
+        .timeline-item:nth-child(even) {
+            direction: ltr;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            text-align: center;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .about-hero .hero-content h1 {
+            font-size: 3rem;
+        }
+
+        .philosophy-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .values-list {
+            grid-template-columns: 1fr;
+        }
+
+        .hero-image img,
+        .story-image img,
+        .values-image img {
+            height: 300px;
+        }
+
+        .timeline-item {
+            margin-bottom: 3rem;
+        }
+
+        .timeline-image img {
+            height: 150px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .about-hero {
+            padding: 4rem 0 2rem;
+        }
+
+        .about-hero .hero-content h1 {
+            font-size: 2.5rem;
+        }
+
+        .story-section,
+        .philosophy-section,
+        .journey-section,
+        .values-section,
+        .cta-section {
+            padding: 4rem 0;
+        }
+
+        .philosophy-card {
+            padding: 2rem 1.5rem;
+        }
+
+        .cta-content h2 {
+            font-size: 2rem;
+        }
+    }
+</style>
+{% endblock %}

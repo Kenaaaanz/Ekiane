@@ -435,10 +435,15 @@
                             <li><a href="/category/beard-oil/"><i class="fas fa-beard"></i> Beard Oil</a></li>
                         </ul>
                     </li>
+                    <li><a href="/about/"><i class="fas fa-info-circle"></i> About</a></li>
                     <li><a href="/orders/checkout/"><i class="fas fa-shopping-cart"></i> Cart</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'orders:order_history' %}"><i class="fas fa-history"></i> Order History</a></li>
+                    {% endif %}
                     {% if user.is_staff %}
                         <li><a href="/admin/"><i class="fas fa-gem"></i> Admin Dashboard</a></li>
                         <li><a href="/analytics/dashboard/"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                        <li><a href="{% url 'website_settings:settings' %}"><i class="fas fa-cogs"></i> Website Settings</a></li>
                         <li><a href="/accounts/logout/"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                     {% elif user.is_authenticated %}
                         <li><a href="/accounts/logout/"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
@@ -525,9 +530,6 @@
             <p>&copy; 2026 Ekiane Luxury Organics. Infused with nature, designed for elegance.</p>
         </div>
     </footer>
-    <!-- All original URLs preserved and fully functional: 
-         /, /category/shea-butter/, /category/shampoo/, /category/conditioner/, /category/beard-oil/, 
-         /orders/checkout/, /admin/, /analytics/dashboard/, /accounts/logout/, /accounts/login/ 
-         Django template syntax for user conditional intact. No structural errors. -->
+    
 </body>
 </html>

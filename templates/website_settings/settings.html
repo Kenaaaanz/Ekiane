@@ -1,0 +1,750 @@
+
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}Website Settings | {{ site_title|default:_('Ekiane Luxury Admin') }}{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}"><i class="fas fa-home"></i> Home</a>
+    &rsaquo; <i class="fas fa-cog"></i> Website Settings
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="website-settings-container">
+    <div class="settings-header">
+        <h1 class="dashboard-title"><i class="fas fa-sliders-h"></i> Website Settings</h1>
+        <p class="dashboard-subtitle">Manage contact information, social links, and about page content</p>
+    </div>
+
+    {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-info-circle{% endif %}"></i>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="settings-tabs">
+        <div class="tab-buttons">
+            <button class="tab-btn active" onclick="showTab('contact')">
+                <i class="fas fa-envelope"></i> Contact Information
+            </button>
+            <button class="tab-btn" onclick="showTab('about')">
+                <i class="fas fa-info-circle"></i> About Page Content
+            </button>
+        </div>
+
+        <!-- Contact Information Tab -->
+        <div id="contact-tab" class="tab-content active">
+            <div class="tab-header">
+                <h2><i class="fas fa-address-card"></i> Contact Information</h2>
+                <p>Update your store's contact details and social media links</p>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-section">
+                    <h3><i class="fas fa-map-marker-alt"></i> Contact Details</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="id_email">Contact Email <span class="required">*</span></label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-envelope input-icon"></i>
+                                <input type="email" name="email" id="id_email" value="{{ contact_info.email }}" required placeholder="info@ekiane.com">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_phone">Phone Number</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-phone input-icon"></i>
+                                <input type="text" name="phone" id="id_phone" value="{{ contact_info.phone }}" placeholder="+1 234 567 8900">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_address">Address</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-location-dot input-icon"></i>
+                            <textarea name="address" id="id_address" rows="3" placeholder="123 Luxury Avenue, Beverly Hills, CA 90210">{{ contact_info.address }}</textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_business_hours">Business Hours</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-clock input-icon"></i>
+                            <textarea name="business_hours" id="id_business_hours" rows="3" placeholder="Mon-Fri: 9AM-6PM&#10;Sat: 10AM-4PM&#10;Sun: Closed">{{ contact_info.business_hours }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-share-alt"></i> Social Media Links</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="id_social_facebook">Facebook URL</label>
+                            <div class="input-wrapper">
+                                <i class="fab fa-facebook-f input-icon"></i>
+                                <input type="url" name="social_facebook" id="id_social_facebook" value="{{ contact_info.social_facebook }}" placeholder="https://facebook.com/ekiane">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_social_instagram">Instagram URL</label>
+                            <div class="input-wrapper">
+                                <i class="fab fa-instagram input-icon"></i>
+                                <input type="url" name="social_instagram" id="id_social_instagram" value="{{ contact_info.social_instagram }}" placeholder="https://instagram.com/ekiane">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_social_twitter">Twitter URL</label>
+                            <div class="input-wrapper">
+                                <i class="fab fa-twitter input-icon"></i>
+                                <input type="url" name="social_twitter" id="id_social_twitter" value="{{ contact_info.social_twitter }}" placeholder="https://twitter.com/ekiane">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" name="contact_submit" class="button-primary">
+                        <i class="fas fa-save"></i> Save Contact Information
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- About Page Content Tab -->
+        <div id="about-tab" class="tab-content">
+            <div class="tab-header">
+                <h2><i class="fas fa-file-alt"></i> About Page Content</h2>
+                <p>Manage the story, mission, and imagery of your brand</p>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-section">
+                    <h3><i class="fas fa-tag"></i> Page Settings</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="id_title">Page Title</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-heading input-icon"></i>
+                                <input type="text" name="title" id="id_title" value="{{ about_page.title }}" placeholder="About Ekiane">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_hero_title">Hero Title</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-star input-icon"></i>
+                                <input type="text" name="hero_title" id="id_hero_title" value="{{ about_page.hero_title }}" placeholder="Our Story">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_hero_subtitle">Hero Subtitle</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-quote-left input-icon"></i>
+                            <textarea name="hero_subtitle" id="id_hero_subtitle" rows="2" placeholder="Luxury organic hair care crafted with purpose">{{ about_page.hero_subtitle }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-pen-fancy"></i> Content Sections</h3>
+                    <div class="form-group">
+                        <label for="id_brand_story">Brand Story <span class="required">*</span></label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-book-open input-icon textarea-icon"></i>
+                            <textarea name="brand_story" id="id_brand_story" rows="6" required placeholder="Share the inspiring journey of Ekiane...">{{ about_page.brand_story }}</textarea>
+                        </div>
+                        <div class="field-help">Tell the authentic story behind your brand</div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="id_mission">Mission Statement</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-bullseye input-icon"></i>
+                                <textarea name="mission" id="id_mission" rows="4" placeholder="Our commitment to excellence...">{{ about_page.mission }}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_values">Core Values</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-gem input-icon"></i>
+                                <textarea name="values" id="id_values" rows="4" placeholder="Quality, Sustainability, Innovation...">{{ about_page.values }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="id_timeline">Company Timeline</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-timeline input-icon"></i>
+                                <textarea name="timeline" id="id_timeline" rows="4" placeholder="2018: Founded in Nairobi&#10;2020: International expansion&#10;2023: Global recognition">{{ about_page.timeline }}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_philosophy">Beauty Philosophy</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-feather-alt input-icon"></i>
+                                <textarea name="philosophy" id="id_philosophy" rows="4" placeholder="Clean beauty, conscious luxury...">{{ about_page.philosophy }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-images"></i> Brand Imagery</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="id_hero_image">Hero Image</label>
+                            <div class="file-input-wrapper">
+                                <input type="file" name="hero_image" id="id_hero_image" accept="image/*" class="file-input">
+                                <label for="id_hero_image" class="file-label">
+                                    <i class="fas fa-upload"></i> Choose Image
+                                </label>
+                            </div>
+                            {% if about_page.hero_image %}
+                                <div class="current-image">
+                                    <img src="{{ about_page.hero_image.url }}" alt="Current hero image">
+                                    <p><i class="fas fa-image"></i> Current: {{ about_page.hero_image.name|truncatechars:40 }}</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_brand_image">Brand Image</label>
+                            <div class="file-input-wrapper">
+                                <input type="file" name="brand_image" id="id_brand_image" accept="image/*" class="file-input">
+                                <label for="id_brand_image" class="file-label">
+                                    <i class="fas fa-upload"></i> Choose Image
+                                </label>
+                            </div>
+                            {% if about_page.brand_image %}
+                                <div class="current-image">
+                                    <img src="{{ about_page.brand_image.url }}" alt="Current brand image">
+                                    <p><i class="fas fa-image"></i> Current: {{ about_page.brand_image.name|truncatechars:40 }}</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_timeline_image">Timeline Image</label>
+                            <div class="file-input-wrapper">
+                                <input type="file" name="timeline_image" id="id_timeline_image" accept="image/*" class="file-input">
+                                <label for="id_timeline_image" class="file-label">
+                                    <i class="fas fa-upload"></i> Choose Image
+                                </label>
+                            </div>
+                            {% if about_page.timeline_image %}
+                                <div class="current-image">
+                                    <img src="{{ about_page.timeline_image.url }}" alt="Current timeline image">
+                                    <p><i class="fas fa-image"></i> Current: {{ about_page.timeline_image.name|truncatechars:40 }}</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="image-hint">
+                        <i class="fas fa-info-circle"></i> Recommended image size: 1200x800px. Max file size: 5MB
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" name="about_submit" class="button-primary">
+                        <i class="fas fa-save"></i> Save About Page Content
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+/* ============================================
+   WEBSITE SETTINGS - LUXURY ADMIN THEME
+   ============================================ */
+
+.website-settings-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1.5rem;
+}
+
+/* Header Section */
+.settings-header {
+    margin-bottom: 2rem;
+}
+
+.dashboard-title {
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: #0A2E2A;
+    margin-bottom: 0.25rem;
+    font-family: 'Cormorant Garamond', serif;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.dashboard-title i {
+    color: #C6A43F;
+    font-size: 1.6rem;
+}
+
+.dashboard-subtitle {
+    color: #7A7368;
+    font-size: 0.85rem;
+    margin-bottom: 0;
+}
+
+/* Messages */
+.messages-container {
+    margin-bottom: 1.5rem;
+}
+
+.alert {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    border-radius: 12px;
+    font-weight: 500;
+    border-left: 4px solid;
+}
+
+.alert-success {
+    background: rgba(26, 107, 96, 0.08);
+    color: #1A6B60;
+    border-left-color: #1A6B60;
+}
+
+.alert-info {
+    background: rgba(198, 164, 63, 0.08);
+    color: #A8882E;
+    border-left-color: #C6A43F;
+}
+
+.alert i {
+    font-size: 1.1rem;
+}
+
+/* Tabs Container */
+.settings-tabs {
+    background: #FFFFFF;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+    border: 1px solid #EAE4DA;
+    overflow: hidden;
+}
+
+.tab-buttons {
+    display: flex;
+    border-bottom: 1px solid #EAE4DA;
+    background: #FAF7F2;
+}
+
+.tab-btn {
+    padding: 1rem 2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #7A7368;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Inter', sans-serif;
+}
+
+.tab-btn i {
+    font-size: 1rem;
+}
+
+.tab-btn.active {
+    color: #0A2E2A;
+    border-bottom-color: #C6A43F;
+    background: #FFFFFF;
+}
+
+.tab-btn:hover:not(.active) {
+    color: #2C2A27;
+    background: rgba(198, 164, 63, 0.05);
+}
+
+/* Tab Content */
+.tab-content {
+    display: none;
+    padding: 2rem;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.tab-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #EAE4DA;
+}
+
+.tab-header h2 {
+    color: #0A2E2A;
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+.tab-header h2 i {
+    color: #C6A43F;
+    font-size: 1.3rem;
+}
+
+.tab-header p {
+    color: #7A7368;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+/* Form Sections */
+.form-section {
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #EAE4DA;
+}
+
+.form-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.form-section h3 {
+    color: #2C2A27;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.form-section h3 i {
+    color: #C6A43F;
+    font-size: 0.9rem;
+}
+
+/* Form Layout */
+.form-row {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #2C2A27;
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+}
+
+.required {
+    color: #B85C4A;
+    margin-left: 0.25rem;
+}
+
+/* Input Wrappers */
+.input-wrapper {
+    position: relative;
+}
+
+.input-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #C6A43F;
+    font-size: 0.9rem;
+    pointer-events: none;
+}
+
+.textarea-icon {
+    top: 1rem;
+    transform: none;
+}
+
+.input-wrapper input,
+.input-wrapper textarea {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+    border: 1.5px solid #EAE4DA;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s ease;
+    background: #FFFFFF;
+    color: #2C2A27;
+}
+
+.input-wrapper input:focus,
+.input-wrapper textarea:focus {
+    outline: none;
+    border-color: #C6A43F;
+    box-shadow: 0 0 0 3px rgba(198, 164, 63, 0.1);
+}
+
+.input-wrapper textarea {
+    resize: vertical;
+    min-height: 80px;
+    padding-top: 0.75rem;
+}
+
+/* File Input */
+.file-input-wrapper {
+    position: relative;
+}
+
+.file-input {
+    position: absolute;
+    opacity: 0;
+    width: 0.1px;
+    height: 0.1px;
+}
+
+.file-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background: #FAF7F2;
+    border: 1.5px solid #EAE4DA;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #2C2A27;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.file-label:hover {
+    background: #F5EFE8;
+    border-color: #C6A43F;
+}
+
+.file-label i {
+    color: #C6A43F;
+}
+
+/* Current Image Display */
+.current-image {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    background: #FAF7F2;
+    border-radius: 12px;
+    border: 1px solid #EAE4DA;
+}
+
+.current-image img {
+    max-width: 150px;
+    max-height: 100px;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    border: 1px solid #EAE4DA;
+}
+
+.current-image p {
+    margin: 0;
+    font-size: 0.7rem;
+    color: #7A7368;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.image-hint {
+    margin-top: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    background: rgba(198, 164, 63, 0.06);
+    border-radius: 8px;
+    font-size: 0.7rem;
+    color: #7A7368;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.image-hint i {
+    color: #C6A43F;
+}
+
+/* Field Help */
+.field-help {
+    margin-top: 0.4rem;
+    font-size: 0.7rem;
+    color: #7A7368;
+    font-style: italic;
+}
+
+/* Form Actions */
+.form-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #EAE4DA;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.button-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #0A2E2A;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.button-primary:hover {
+    background: #1A6B60;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(10, 46, 42, 0.2);
+}
+
+.button-primary i {
+    font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .website-settings-container {
+        padding: 1rem;
+    }
+    
+    .tab-buttons {
+        flex-direction: column;
+    }
+    
+    .tab-btn {
+        justify-content: center;
+        padding: 0.75rem;
+        border-bottom: 1px solid #EAE4DA;
+        border-left: 3px solid transparent;
+    }
+    
+    .tab-btn.active {
+        border-bottom-color: #EAE4DA;
+        border-left-color: #C6A43F;
+        background: #FFFFFF;
+    }
+    
+    .tab-content {
+        padding: 1.25rem;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .dashboard-title {
+        font-size: 1.4rem;
+    }
+    
+    .tab-header h2 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .tab-content {
+        padding: 1rem;
+    }
+    
+    .form-actions {
+        justify-content: stretch;
+    }
+    
+    .button-primary {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<script>
+function showTab(tabName) {
+    // Hide all tabs
+    const tabs = document.querySelectorAll('.tab-content');
+    tabs.forEach(tab => tab.classList.remove('active'));
+
+    // Remove active class from all buttons
+    const buttons = document.querySelectorAll('.tab-btn');
+    buttons.forEach(btn => btn.classList.remove('active'));
+
+    // Show selected tab
+    const selectedTab = document.getElementById(tabName + '-tab');
+    if (selectedTab) {
+        selectedTab.classList.add('active');
+    }
+
+    // Add active class to clicked button
+    const activeButton = Array.from(buttons).find(btn => {
+        const onclickAttr = btn.getAttribute('onclick');
+        return onclickAttr && onclickAttr.includes(tabName);
+    });
+    if (activeButton) {
+        activeButton.classList.add('active');
+    }
+}
+
+// Ensure tab buttons work with event parameter
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    const originalOnclick = btn.getAttribute('onclick');
+    if (originalOnclick) {
+        btn.setAttribute('onclick', originalOnclick + '; event.preventDefault(); return false;');
+    }
+});
+</script>
+{% endblock %}
