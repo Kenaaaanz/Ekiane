@@ -19,12 +19,29 @@ This is a Django-based e-commerce website for luxury organic hair products like 
 
 ## Configuration
 
+### Paystack Settings
 Update the Paystack keys and subaccount in `ecommerce/settings.py`:
 
 - `PAYSTACK_PUBLIC_KEY`
 - `PAYSTACK_SECRET_KEY`
 - `PAYSTACK_SUBACCOUNT_CODE`
 - `PLATFORM_FEE_PERCENT`
+
+### Cloudinary Setup (Production Media Storage)
+For production deployment, images are stored on Cloudinary:
+
+1. Create a free account at [cloudinary.com](https://cloudinary.com)
+2. Get your Cloud Name, API Key, and API Secret
+3. Set these environment variables:
+   - `CLOUDINARY_CLOUD_NAME`
+   - `CLOUDINARY_API_KEY`
+   - `CLOUDINARY_API_SECRET`
+   Or use the combined format:
+   - `CLOUDINARY_URL=cloudinary://API_KEY:API_SECRET@CLOUD_NAME`
+
+4. If you have existing images, run: `python manage.py migrate_images`
+
+See `CLOUDINARY_SETUP.md` for detailed instructions.
 
 ## Usage
 

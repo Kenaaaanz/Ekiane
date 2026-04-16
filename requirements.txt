@@ -10,5 +10,3 @@ psycopg2
 gunicorn
 whitenoise==6.5.0
 cloudinary==1.36.0
-django-cors-headers
-cloudinary-storage
