@@ -7,3 +7,4 @@ paystack-python==0.1
 python-decouple
 dj-database-url
 psycopg2
+gunicorn
