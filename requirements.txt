@@ -6,3 +6,4 @@ requests==2.33.1
 paystack-python==0.1
 python-decouple
 dj-database-url
+psycopg2
