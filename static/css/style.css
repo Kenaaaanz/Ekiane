@@ -83,6 +83,7 @@ a:hover {
 .site-header {
     background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-medium) 100%);
     color: #f9f4eb;
+    position: relative;
 }
 
 .navbar {
