@@ -1,4 +1,5 @@
 from django.db import models
+from cloudinary.models import CloudinaryField
 
 class ContactInfo(models.Model):
     email = models.EmailField(verbose_name="Contact Email")
@@ -28,9 +29,9 @@ class AboutPage(models.Model):
     philosophy = models.TextField(blank=True, verbose_name="Beauty Philosophy")
 
     # Images
-    hero_image = models.ImageField(upload_to='about/', blank=True, verbose_name="Hero Image")
-    brand_image = models.ImageField(upload_to='about/', blank=True, verbose_name="Brand Image")
-    timeline_image = models.ImageField(upload_to='about/', blank=True, verbose_name="Timeline Image")
+    hero_image = CloudinaryField('image')
+    brand_image = CloudinaryField('image')
+    timeline_image = CloudinaryField('image')
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
