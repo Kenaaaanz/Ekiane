@@ -426,10 +426,16 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle"><i class="fas fa-shopping-bag"></i> Shop</a>
                         <ul class="dropdown-menu">
-                            <li><a href="/category/shea-butter/"><i class="fas fa-seedling"></i> Shea Butter</a></li>
-                            <li><a href="/category/shampoo/"><i class="fas fa-shower"></i> Shampoo</a></li>
-                            <li><a href="/category/conditioner/"><i class="fas fa-leaf"></i> Conditioner</a></li>
-                            <li><a href="/category/beard-oil/"><i class="fas fa-beard"></i> Beard Oil</a></li>
+                            {% for category in categories %}
+                            <li>
+                                <a href="{% url 'category_products' category.slug %}">
+                                    <i class="fas {{ category.icon_class|default:'fa-tag' }}"></i> 
+                                    {{ category.name }}
+                                </a>
+                            </li>
+                            {% empty %}
+                            <li><a href="#">No categories available</a></li>
+                            {% endfor %}
                         </ul>
                     </li>
                     <li><a href="/about/"><i class="fas fa-info-circle"></i> About</a></li>
