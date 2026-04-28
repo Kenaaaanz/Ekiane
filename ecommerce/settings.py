@@ -30,7 +30,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['testserver', 'localhost', '127.0.0.1', '.onrender.com']
+ALLOWED_HOSTS = ['testserver', 'localhost', '127.0.0.1', '.onrender.com', 'ekianeonsare.com', 'www.ekianeonsare.com']
 
 
 # Application definition
