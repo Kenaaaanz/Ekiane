@@ -19,7 +19,7 @@ def get_cart(request):
 
 
 def home(request):
-    products = Product.objects.filter(available=True)[:8]
+    products = Product.objects.filter(available=True)
     categories = Category.objects.all()
     return render(request, 'store/home.html', {'products': products, 'categories': categories})
 
