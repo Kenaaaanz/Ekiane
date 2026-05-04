@@ -45,7 +45,7 @@
                             <span class="price">{{ currency_symbol }} {{ product.price|floatformat:0 }}</span>
                             {% if product.stock > 0 %}
                                 <span class="in-stock">
-                                    <i class="fas fa-check-circle"></i> {{ product.stock }} in stock
+                                    <i class="fas fa-check-circle"></i> in stock
                                 </span>
                             {% else %}
                                 <span class="out-stock">
