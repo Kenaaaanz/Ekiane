@@ -3,6 +3,64 @@
 {% block hero %}{% endblock %}
 
 {% block content %}
+<!-- Shop by Category - Elegant Eyebrow Showcase (Dynamic from Database) -->
+<section class="category-showcase">
+    <div class="category-header">
+        <span class="eyebrow">Browse By Essence</span>
+        <h2>Shop by Category</h2>
+        <p>Explore our curated range of organic hair and beard care rituals</p>
+    </div>
+    
+    {% if categories %}
+        <div class="category-grid">
+            {% for category in categories %}
+                <div class="category-card" data-category="{{ category.slug }}">
+                    <div class="category-icon">
+                        {% if category.icon_class %}
+                            <i class="{{ category.icon_class }}"></i>
+                        {% else %}
+                            <i class="fas fa-leaf"></i>
+                        {% endif %}
+                    </div>
+                    <h3>{{ category.name }}</h3>
+                    <p>{{ category.description|truncatechars:60|default:"Discover our premium collection" }}</p>
+                    <a href="{{ category.get_absolute_url }}" class="eyebrow-link">
+                        Explore {{ category.name }} <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <!-- Fallback static categories if database is empty -->
+        <div class="category-grid">
+            <div class="category-card" data-category="shea">
+                <div class="category-icon"><i class="fas fa-seedling"></i></div>
+                <h3>Shea Butter</h3>
+                <p>Deep moisturizing formulas</p>
+                <a href="/category/shea-butter/" class="eyebrow-link">Explore Shea Butter <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="category-card" data-category="shampoo">
+                <div class="category-icon"><i class="fas fa-shower"></i></div>
+                <h3>Shampoo</h3>
+                <p>Gentle cleansing blends</p>
+                <a href="/category/shampoo/" class="eyebrow-link">Explore Shampoo <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="category-card" data-category="conditioner">
+                <div class="category-icon"><i class="fas fa-leaf"></i></div>
+                <h3>Conditioner</h3>
+                <p>Hydrating treatments</p>
+                <a href="/category/conditioner/" class="eyebrow-link">Explore Conditioner <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="category-card" data-category="beard">
+                <div class="category-icon"><i class="fas fa-beard"></i></div>
+                <h3>Beard Oil</h3>
+                <p>Premium grooming oils</p>
+                <a href="/category/beard-oil/" class="eyebrow-link">Explore Beard Oil <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    {% endif %}
+</section>
+
 <!-- Featured Collection Section - Refined Luxury -->
 <section class="featured-section">
     <div class="section-header">
@@ -49,41 +107,6 @@
                 <span>New collections arriving soon.</span>
             </div>
         {% endfor %}
-    </div>
-</section>
-
-<!-- Shop by Category - Elegant Showcase -->
-<section class="category-showcase">
-    <div class="category-header">
-        <span class="eyebrow">Browse By Essence</span>
-        <h2>Shop by Category</h2>
-        <p>Explore our curated range of organic hair and beard care rituals</p>
-    </div>
-    <div class="category-grid">
-        <div class="category-card" data-category="shea">
-            <div class="category-icon"><i class="fas fa-seedling"></i></div>
-            <h3>Shea Butter</h3>
-            <p>Deep moisturizing formulas</p>
-            <a href="/category/shea-butter/" class="category-link">Explore <i class="fas fa-arrow-right"></i></a>
-        </div>
-        <div class="category-card" data-category="shampoo">
-            <div class="category-icon"><i class="fas fa-shower"></i></div>
-            <h3>Shampoo</h3>
-            <p>Gentle cleansing blends</p>
-            <a href="/category/shampoo/" class="category-link">Explore <i class="fas fa-arrow-right"></i></a>
-        </div>
-        <div class="category-card" data-category="conditioner">
-            <div class="category-icon"><i class="fas fa-leaf"></i></div>
-            <h3>Conditioner</h3>
-            <p>Hydrating treatments</p>
-            <a href="/category/conditioner/" class="category-link">Explore <i class="fas fa-arrow-right"></i></a>
-        </div>
-        <div class="category-card" data-category="beard">
-            <div class="category-icon"><i class="fas fa-beard"></i></div>
-            <h3>Beard Oil</h3>
-            <p>Premium grooming oils</p>
-            <a href="/category/beard-oil/" class="category-link">Explore <i class="fas fa-arrow-right"></i></a>
-        </div>
     </div>
 </section>
 
@@ -287,10 +310,11 @@
         transform: translateX(3px);
     }
 
-    /* Category Showcase */
+    /* Category Showcase - Eyebrow Format */
     .category-showcase {
-        padding: 4rem 0 2rem;
-        margin-top: 2rem;
+        padding: 2rem 0 3rem;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     }
 
     .category-header {
@@ -312,12 +336,14 @@
 
     .category-header p {
         color: #5C5548;
+        max-width: 500px;
+        margin: 0 auto;
     }
 
     .category-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 1.8rem;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 2rem;
     }
 
     .category-card {
@@ -356,20 +382,36 @@
         margin-bottom: 1.2rem;
     }
 
-    .category-link {
+    /* Eyebrow format link for categories */
+    .eyebrow-link {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        font-size: 0.8rem;
+        gap: 8px;
+        font-size: 0.7rem;
         font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
         color: #B78C5A;
         text-decoration: none;
-        transition: gap 0.2s;
+        transition: all 0.2s ease;
+        background: rgba(183, 140, 90, 0.08);
+        padding: 0.5rem 1.2rem;
+        border-radius: 40px;
     }
 
-    .category-link:hover {
-        gap: 10px;
+    .eyebrow-link:hover {
+        gap: 12px;
         color: #8B5E3C;
+        background: rgba(183, 140, 90, 0.15);
+    }
+
+    .eyebrow-link i {
+        font-size: 0.65rem;
+        transition: transform 0.2s;
+    }
+
+    .eyebrow-link:hover i {
+        transform: translateX(3px);
     }
 
     .empty-state {
@@ -401,10 +443,18 @@
         }
         .category-grid {
             grid-template-columns: 1fr 1fr;
+            gap: 1rem;
         }
         .section-header h2,
         .category-header h2 {
             font-size: 1.8rem;
+        }
+        .category-card {
+            padding: 1.5rem 1rem;
+        }
+        .eyebrow-link {
+            font-size: 0.65rem;
+            padding: 0.4rem 1rem;
         }
     }
 
@@ -415,6 +465,9 @@
         .product-meta {
             flex-direction: column;
             align-items: flex-start;
+        }
+        .category-card h3 {
+            font-size: 1.2rem;
         }
     }
 </style>
