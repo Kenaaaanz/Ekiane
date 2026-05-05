@@ -85,17 +85,19 @@
 
         .nav-container {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            flex-wrap: wrap;
+            justify-content: center;
+            text-align: center;
+            gap: 1rem;
         }
 
-        /* Brand and Tagline Section */
         .brand-section {
             display: flex;
-            align-items: baseline;
-            gap: 1rem;
-            flex-wrap: wrap;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
         }
 
         .brand {
@@ -103,28 +105,12 @@
             font-weight: 600;
             letter-spacing: 0.12em;
             color: #2A2723;
-            transition: opacity 0.2s;
             text-decoration: none;
-            border-right: 2px solid #DCC9AE;
-            padding-right: 1.4rem;
+            border-right: none;
+            padding-right: 0;
+            margin-bottom: 0.5rem;
         }
 
-        .brand:hover {
-            opacity: 0.75;
-        }
-
-        .tagline {
-            font-size: 0.7rem;
-            color: #B78C5A;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-        }
-
-        .tagline i {
-            margin-right: 4px;
-        }
-
-        /* Centered Tagline Container */
         .tagline-container {
             text-align: center;
             display: flex;
@@ -132,7 +118,6 @@
             align-items: center;
             justify-content: center;
             gap: 0.25rem;
-            margin: 0.5rem 0;
         }
 
         .tagline-container h6 {
@@ -147,14 +132,22 @@
             letter-spacing: 0.05em;
         }
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .tagline-container h6 {
-                font-size: 0.6rem;
-                gap: 6px;
-            }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
         }
 
+        /* Remove the border-right from brand */
+        .brand {
+            border-right: none;
+        }
+
+        /* Desktop Navigation - center the menu items */
+        .desktop-nav .nav-menu {
+            justify-content: center;
+        }
         /* Desktop Navigation */
         .nav-menu {
             display: flex;
