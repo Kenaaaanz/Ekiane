@@ -85,14 +85,21 @@
 
         .nav-container {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            text-align: center;
             gap: 1rem;
         }
 
+        /* Left section - Hamburger */
+        .nav-left {
+            flex: 1;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        /* Center section - Brand */
         .brand-section {
+            flex: 2;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -132,30 +139,54 @@
             letter-spacing: 0.05em;
         }
 
+        /* Right section - Cart */
         .nav-right {
+            flex: 1;
             display: flex;
+            justify-content: flex-end;
             align-items: center;
-            justify-content: center;
             gap: 1.5rem;
         }
 
-        /* Remove the border-right from brand */
-        .brand {
-            border-right: none;
+        /* Cart Link Styling */
+        .cart-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #B78C5A;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.2s;
         }
 
-        /* Desktop Navigation - center the menu items */
-        .desktop-nav .nav-menu {
-            justify-content: center;
+        .cart-link:hover {
+            color: #8B5E3C;
         }
-        /* Desktop Navigation */
-        .nav-menu {
+
+        .cart-link i {
+            font-size: 1.1rem;
+        }
+
+        .cart-text {
+            display: inline-block;
+        }
+
+        /* Desktop Navigation - below the navbar container */
+        .desktop-nav {
+            margin-top: 1.5rem;
+            width: 100%;
+        }
+
+        .desktop-nav .nav-menu {
             display: flex;
             list-style: none;
             gap: 2.6rem;
             align-items: center;
+            justify-content: center;
             font-weight: 500;
             font-size: 0.9rem;
+            flex-wrap: wrap;
         }
 
         .nav-menu li a {
@@ -182,11 +213,6 @@
 
         .nav-menu li a:hover:after {
             width: 100%;
-        }
-
-        /* Cart Icon - Always Visible */
-        .cart-icon-mobile {
-            display: none;
         }
 
         /* Hamburger Button */
@@ -220,33 +246,111 @@
             transform: rotate(-45deg) translate(7px, -7px);
         }
 
-        /* Right Section with Cart and Hamburger */
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
+        /* Cart Icon - Mobile specific */
+        .cart-icon-mobile {
+            display: none;
         }
 
-        /* Mobile Menu Overlay */
-        .mobile-menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 199;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
+        /* Responsive Styles */
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 1rem;
+            }
+            
+            .nav-container {
+                flex-wrap: wrap;
+            }
+            
+            /* Show hamburger on mobile */
+            .hamburger {
+                display: flex;
+            }
+            
+            /* Adjust brand section size on mobile */
+            .brand-section {
+                flex: 3;
+            }
+            
+            .brand {
+                font-size: 1.3rem;
+            }
+            
+            .tagline-container h6 {
+                font-size: 0.6rem;
+            }
+            
+            /* Desktop navigation becomes full width and scrollable if needed */
+            .desktop-nav {
+                order: 3;
+                margin-top: 1rem;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .desktop-nav .nav-menu {
+                gap: 1.5rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            /* Hide cart text on tablets if needed */
+            .cart-text {
+                display: inline-block;
+            }
         }
 
-        .mobile-menu-overlay.active {
-            opacity: 1;
-            visibility: visible;
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 0.8rem;
+            }
+            
+            .brand {
+                font-size: 1rem;
+            }
+            
+            .tagline-container h6 {
+                font-size: 0.5rem;
+                gap: 4px;
+            }
+            
+            .desktop-nav .nav-menu {
+                gap: 1rem;
+                font-size: 0.8rem;
+            }
+            
+            .nav-menu li a {
+                gap: 4px;
+            }
+            
+            /* Hide cart text on very small screens - show only icon */
+            .cart-text {
+                display: none;
+            }
+            
+            .cart-link i {
+                font-size: 1.3rem;
+            }
+            
+            .nav-right {
+                flex: 0.5;
+            }
         }
 
-        /* Dropdown refined */
+        @media (max-width: 480px) {
+            .brand {
+                font-size: 0.85rem;
+            }
+            
+            .tagline-container h6 {
+                font-size: 0.45rem;
+            }
+            
+            .desktop-nav .nav-menu {
+                gap: 0.8rem;
+            }
+        }
+
+        /* Dropdown Styles - keep as is */
         .dropdown {
             position: relative;
         }
@@ -298,24 +402,42 @@
             transform: translateX(4px);
         }
 
-        /* Mobile Menu Panel */
+        /* Mobile menu overlay and panel */
+        .mobile-menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 199;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
         .mobile-menu {
             position: fixed;
             top: 0;
-            right: -100%;
+            left: -100%;
             width: 80%;
             max-width: 350px;
             height: 100vh;
             background: #FFFFFF;
-            box-shadow: -5px 0 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 5px 0 30px rgba(0, 0, 0, 0.1);
             z-index: 200;
-            transition: right 0.3s ease;
+            transition: left 0.3s ease;
             padding: 5rem 1.5rem 2rem;
             overflow-y: auto;
         }
 
         .mobile-menu.active {
-            right: 0;
+            left: 0;
         }
 
         .mobile-nav-list {
@@ -363,6 +485,8 @@
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #F0E7DF;
         }
 
         /* Hero Section */
@@ -629,6 +753,16 @@
     <header class="site-header">
         <nav class="navbar">
             <div class="nav-container">
+                <!-- Left side: Hamburger Menu (Mobile only) -->
+                <div class="nav-left">
+                    <button class="hamburger" id="hamburgerBtn">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                </div>
+
+                <!-- Center: Brand Section -->
                 <div class="brand-section">
                     <a href="/" class="brand">E'KIANE ONSARE NATURALS.</a>
                     <div class="tagline-container">
@@ -637,55 +771,46 @@
                     </div>
                 </div>
 
-                <!-- Desktop Navigation -->
-                <div class="desktop-nav">
-                    <ul class="nav-menu">
-                        <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle"><i class="fas fa-shopping-bag"></i> Shop</a>
-                            <ul class="dropdown-menu">
-                                <li><a href="/category/shea-butter/"><i class="fas fa-seedling"></i> Shea Butter</a></li>
-                                <li><a href="/category/shampoo/"><i class="fas fa-shower"></i> Shampoo</a></li>
-                                <li><a href="/category/conditioner/"><i class="fas fa-leaf"></i> Conditioner</a></li>
-                                <li><a href="/category/beard-oil/"><i class="fa-solid fa-user-beard"></i> Beard Oil</a></li>
-                                <li><a href="/category/duo-pack/"><i class="fa-solid fa-bottle-water"></i> Duo Pack</a></li>
-                                <li><a href="/category/rosemary-spritz/"><i class="fas fa-spray-can"></i> Rosemary Spritz</a></li>
-                                <li><a href="/category/hair-oil/"><i class="fa-solid fa-bottle-droplet"></i> Hair Oil</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="/about/"><i class="fas fa-info-circle"></i> About</a></li>
-                        {% if user.is_authenticated %}
-                            <li><a href="{% url 'orders:order_history' %}"><i class="fas fa-history"></i> Order History</a></li>
-                        {% endif %}
-                        {% if user.is_staff %}
-                            <li><a href="/admin/"><i class="fas fa-gem"></i> Admin</a></li>
-                            <li><a href="/analytics/dashboard/"><i class="fas fa-chart-line"></i> Analytics</a></li>
-                            <li><a href="{% url 'website_settings:settings' %}"><i class="fas fa-cogs"></i> Settings</a></li>
-                        {% endif %}
-                    </ul>
-                </div>
-
-                <!-- Right section with Cart and Hamburger -->
+                <!-- Right side: Cart Icon -->
                 <div class="nav-right">
-                    <!-- Desktop Cart Link-->
-                    <a href="/orders/checkout/" class="desktop-cart" style="display: inline-flex; align-items: center; gap: 5px; color: #B78C5A;">
-                        <i class="fas fa-shopping-cart"></i> Cart
+                    <a href="/orders/checkout/" class="cart-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-text">Cart</span>
                     </a>
                 </div>
+            </div>
 
-                    <!-- Mobile Cart Icon
-                    <a href="/orders/checkout/" class="cart-icon-mobile" style="color: #B78C5A; font-size: 1.2rem;">
-                        <i class="fas fa-shopping-cart"></i>
-                    </a> -->
-
-                    <!-- Hamburger Button -->
-                <div class="nav-left">
-                    <button class="hamburger" id="hamburgerBtn">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </button>
-                </div>
+            <!-- Desktop Navigation (Below brand section on mobile) -->
+            <div class="desktop-nav">
+                <ul class="nav-menu">
+                    <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle"><i class="fas fa-shopping-bag"></i> Shop</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/category/shea-butter/"><i class="fas fa-seedling"></i> Shea Butter</a></li>
+                            <li><a href="/category/shampoo/"><i class="fas fa-shower"></i> Shampoo</a></li>
+                            <li><a href="/category/conditioner/"><i class="fas fa-leaf"></i> Conditioner</a></li>
+                            <li><a href="/category/beard-oil/"><i class="fa-solid fa-user-beard"></i> Beard Oil</a></li>
+                            <li><a href="/category/duo-pack/"><i class="fa-solid fa-bottle-water"></i> Duo Pack</a></li>
+                            <li><a href="/category/rosemary-spritz/"><i class="fas fa-spray-can"></i> Rosemary Spritz</a></li>
+                            <li><a href="/category/hair-oil/"><i class="fa-solid fa-bottle-droplet"></i> Hair Oil</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="/about/"><i class="fas fa-info-circle"></i> About</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'orders:order_history' %}"><i class="fas fa-history"></i> Order History</a></li>
+                    {% endif %}
+                    {% if user.is_staff %}
+                        <li><a href="/admin/"><i class="fas fa-gem"></i> Admin</a></li>
+                        <li><a href="/analytics/dashboard/"><i class="fas fa-chart-line"></i> Analytics</a></li>
+                        <li><a href="{% url 'website_settings:settings' %}"><i class="fas fa-cogs"></i> Settings</a></li>
+                    {% endif %}
+                    {% if not user.is_authenticated %}
+                        <li><a href="/accounts/login/"><i class="fas fa-user-circle"></i> Login</a></li>
+                    {% elif user.is_authenticated and not user.is_staff %}
+                        <li><a href="/accounts/logout/"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    {% endif %}
+                </ul>
             </div>
         </nav>
 
