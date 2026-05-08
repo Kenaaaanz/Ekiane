@@ -38,16 +38,6 @@
                     <span class="input-hint">Order confirmation will be sent here</span>
                 </div>
                 <div class="form-group">
-                    <label for="exact_location">Exact Location</label>
-                    <input type="text" name="exact_location" id="exact_location" required placeholder="Detailed address or landmark">
-                    <span class="input-focus"></span>
-                </div>
-                <div class="form-group">
-                    <label for="house_number">House Number</label>
-                    <input type="text" name="house_number" id="house_number" required placeholder="House/Apartment number">
-                    <span class="input-focus"></span>
-                </div>
-                <div class="form-group">
                     <label>Delivery Option</label>
                     <div class="radio-group">
                         <label class="radio-label">
@@ -60,11 +50,23 @@
                         </label>
                     </div>
                 </div>
-                <div class="form-group" id="distance-group">
-                    <label for="distance_km">Distance from CBD (km)</label>
-                    <input type="number" name="distance_km" id="distance_km" step="0.01" min="0" placeholder="2.5" required>
-                    <span class="input-focus"></span>
-                    <span class="input-hint">Enter distance in kilometers for delivery fee calculation</span>
+                <div id="delivery-fields" class="delivery-fields">
+                    <div class="form-group">
+                        <label for="exact_location">Exact Location</label>
+                        <input type="text" name="exact_location" id="exact_location" required placeholder="Detailed address or landmark">
+                        <span class="input-focus"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="house_number">House Number</label>
+                        <input type="text" name="house_number" id="house_number" required placeholder="House/Apartment number">
+                        <span class="input-focus"></span>
+                    </div>
+                    <div class="form-group" id="distance-group">
+                        <label for="distance_km">Distance from CBD (km)</label>
+                        <input type="number" name="distance_km" id="distance_km" step="0.01" min="0" placeholder="2.5" required>
+                        <span class="input-focus"></span>
+                        <span class="input-hint">Enter distance in kilometers for delivery fee calculation</span>
+                    </div>
                 </div>
             </div>
 
@@ -309,6 +311,11 @@
         border-color: #B78C5A;
         background: #F0E7DF;
         box-shadow: 0 2px 8px rgba(183, 140, 90, 0.1);
+    }
+
+    /* Delivery Fields Container */
+    .delivery-fields {
+        display: block;
     }
 
     /* Payment Method Card */
@@ -567,8 +574,10 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const deliveryRadios = document.querySelectorAll('input[name="delivery_option"]');
-    const distanceGroup = document.getElementById('distance-group');
+    const deliveryFields = document.getElementById('delivery-fields');
     const distanceInput = document.getElementById('distance_km');
+    const exactLocationInput = document.getElementById('exact_location');
+    const houseNumberInput = document.getElementById('house_number');
     const deliveryFeeSpan = document.getElementById('delivery-fee');
     const totalAmountSpan = document.getElementById('total-amount');
     const payButton = document.querySelector('.pay-button span');
@@ -590,12 +599,19 @@ document.addEventListener('DOMContentLoaded', function() {
     deliveryRadios.forEach(radio => {
         radio.addEventListener('change', function() {
             if (this.value === 'delivery') {
-                distanceGroup.style.display = 'block';
+                deliveryFields.style.display = 'block';
                 distanceInput.required = true;
-            } else {
-                distanceGroup.style.display = 'none';
-                distanceInput.required = false;
+                exactLocationInput.required = true;
+                houseNumberInput.required = true;
                 distanceInput.value = '';
+            } else {
+                deliveryFields.style.display = 'none';
+                distanceInput.required = false;
+                exactLocationInput.required = false;
+                houseNumberInput.required = false;
+                distanceInput.value = '';
+                exactLocationInput.value = '';
+                houseNumberInput.value = '';
             }
             updateDeliveryFee();
         });
@@ -605,8 +621,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initial state
     if (document.querySelector('input[name="delivery_option"]:checked').value === 'collection') {
-        distanceGroup.style.display = 'none';
+        deliveryFields.style.display = 'none';
         distanceInput.required = false;
+        exactLocationInput.required = false;
+        houseNumberInput.required = false;
     }
     updateDeliveryFee();
 });

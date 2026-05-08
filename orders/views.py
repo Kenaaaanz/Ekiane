@@ -1,4 +1,4 @@
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -31,13 +31,18 @@ def checkout(request):
         email = request.POST.get('email')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
-        exact_location = request.POST.get('exact_location')
-        house_number = request.POST.get('house_number')
+        exact_location = request.POST.get('exact_location', '')
+        house_number = request.POST.get('house_number', '')
         delivery_option = request.POST.get('delivery_option')
-        distance_km = Decimal(request.POST.get('distance_km', '0'))
         delivery_fee = Decimal('0.00')
+        distance_km = Decimal('0.00')
 
         if delivery_option == 'delivery':
+            try:
+                distance_km_str = request.POST.get('distance_km', '0').strip()
+                distance_km = Decimal(distance_km_str) if distance_km_str else Decimal('0')
+            except (ValueError, InvalidOperation):
+                distance_km = Decimal('0')
             delivery_fee = distance_km * Decimal('100.00')
         else:
             delivery_fee = Decimal('0.00')
