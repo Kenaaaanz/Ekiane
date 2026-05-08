@@ -23,7 +23,7 @@
                         {% endif %}
                     </div>
                     <h3>{{ category.name }}</h3>
-                    <p>{{ category.description|truncatechars:60|default:"Discover our premium collection" }}</p>
+                    <p>{{ category.description|truncatechars:60| }}</p>
                     <a href="{{ category.get_absolute_url }}" class="eyebrow-link">
                         Explore {{ category.name }} <i class="fas fa-arrow-right"></i>
                     </a>
