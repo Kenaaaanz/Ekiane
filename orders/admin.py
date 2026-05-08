@@ -13,6 +13,6 @@ class OrderItemInline(admin.TabularInline):
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['id', 'email', 'first_name', 'last_name', 'total', 'paid', 'status', 'created_at']
     list_filter = ['paid', 'status', 'created_at']
-    search_fields = ['email', 'first_name', 'last_name', 'address']
+    search_fields = ['email', 'first_name', 'last_name', 'exact_location']
     inlines = [OrderItemInline]
     readonly_fields = ['total']

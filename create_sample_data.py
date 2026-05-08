@@ -57,9 +57,11 @@ for i in range(3):
         email=f"customer{i}@example.com",
         first_name="Sample",
         last_name=f"Customer {i}",
-        address="123 Main Street",
-        city="Nairobi",
-        postal_code="00100",
+        exact_location="123 Main Street, Westlands",
+        house_number="Apartment 4B",
+        delivery_option='delivery',
+        distance_km=Decimal('5.5'),
+        delivery_fee=Decimal('550.00'),
         paid=True,
         status='fulfilled',
         created_at=order_date
@@ -76,7 +78,7 @@ for i in range(3):
             quantity=quantity
         )
     
-    order.total = sum(item.price * item.quantity for item in order.items.all())
+    order.total = sum(item.price * item.quantity for item in order.items.all()) + order.delivery_fee
     order.save()
     created_orders += 1
 

@@ -12,13 +12,20 @@ class Order(models.Model):
         ('cancelled', 'Cancelled'),
     ]
 
+    DELIVERY_CHOICES = [
+        ('delivery', 'Delivery'),
+        ('collection', 'Collection at Star Mall CBD'),
+    ]
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL)
     email = models.EmailField()
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    address = models.CharField(max_length=255)
-    city = models.CharField(max_length=100)
-    postal_code = models.CharField(max_length=20)
+    exact_location = models.CharField(max_length=255, blank=True, null=True)
+    house_number = models.CharField(max_length=50, blank=True, null=True)
+    delivery_option = models.CharField(max_length=20, choices=DELIVERY_CHOICES, default='delivery')
+    distance_km = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    delivery_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')

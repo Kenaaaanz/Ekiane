@@ -27,6 +27,25 @@
                         <span class="detail-label">Email Address</span>
                         <span class="detail-value">{{ order.email }}</span>
                     </div>
+                    {% if order.delivery_option == 'delivery' %}
+                    <div class="detail-item">
+                        <span class="detail-label">Delivery Address</span>
+                        <span class="detail-value">{{ order.house_number }}, {{ order.exact_location }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Distance</span>
+                        <span class="detail-value">{{ order.distance_km }} km</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Delivery Fee</span>
+                        <span class="detail-value">KES {{ order.delivery_fee|floatformat:0 }}</span>
+                    </div>
+                    {% else %}
+                    <div class="detail-item">
+                        <span class="detail-label">Collection</span>
+                        <span class="detail-value">Star Mall CBD (Free)</span>
+                    </div>
+                    {% endif %}
                     <div class="detail-item">
                         <span class="detail-label">Total Paid</span>
                         <span class="detail-value total-amount">{{ currency_symbol }} {{ order.total|floatformat:0 }}</span>

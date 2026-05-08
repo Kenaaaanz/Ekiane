@@ -31,18 +31,29 @@ def checkout(request):
         email = request.POST.get('email')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
-        address = request.POST.get('address')
-        city = request.POST.get('city')
-        postal_code = request.POST.get('postal_code')
+        exact_location = request.POST.get('exact_location')
+        house_number = request.POST.get('house_number')
+        delivery_option = request.POST.get('delivery_option')
+        distance_km = Decimal(request.POST.get('distance_km', '0'))
+        delivery_fee = Decimal('0.00')
+
+        if delivery_option == 'delivery':
+            delivery_fee = distance_km * Decimal('100.00')
+        else:
+            delivery_fee = Decimal('0.00')
+
+        total_with_delivery = cart['total'] + delivery_fee
 
         order = Order.objects.create(
             email=email,
             first_name=first_name,
             last_name=last_name,
-            address=address,
-            city=city,
-            postal_code=postal_code,
-            total=cart['total'],
+            exact_location=exact_location,
+            house_number=house_number,
+            delivery_option=delivery_option,
+            distance_km=distance_km,
+            delivery_fee=delivery_fee,
+            total=total_with_delivery,
         )
 
         for item in cart['items']:
