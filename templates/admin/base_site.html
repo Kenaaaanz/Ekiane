@@ -1,4 +1,3 @@
-
 {% extends "admin/base.html" %}
 {% load static %}
 
@@ -64,7 +63,6 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
     text-decoration: none !important;
     transition: opacity 0.2s ease !important;
 }
-
 
 #site-name a:hover {
     opacity: 0.85 !important;
@@ -156,9 +154,7 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
     display: inline-flex !important;
     align-items: center !important;
     gap: 0.6rem !important;
-    box-shadow:
-        0 4px 14px rgba(0, 0, 0, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
     min-width: 130px !important;
     justify-content: center !important;
 }
@@ -179,9 +175,7 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
 
 .luxury-nav-item:hover {
     transform: translateY(-2px) !important;
-    box-shadow:
-        0 8px 24px rgba(0, 0, 0, 0.12),
-        inset 0 1px 0 rgba(255, 255, 255, 0.45) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.45) !important;
     border-color: var(--accent-gold) !important;
     color: var(--primary-deep) !important;
 }
@@ -195,9 +189,7 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
     background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%) !important;
     color: var(--primary-deep) !important;
     border-color: var(--accent-gold-dark) !important;
-    box-shadow:
-        0 6px 22px rgba(198, 164, 63, 0.28),
-        inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
+    box-shadow: 0 6px 22px rgba(198, 164, 63, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
     font-weight: 700 !important;
 }
 
@@ -208,7 +200,11 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
 }
 
 /* Navigation Icons */
-.luxury-nav-item[href*="/admin/auth/"]::after,
+.luxury-nav-item[href*="/admin/auth/"]::after {
+    content: "👥";
+    font-size: 1.1rem;
+}
+
 .luxury-nav-item[href*="/admin/accounts/"]::after {
     content: "👥";
     font-size: 1.1rem;
@@ -236,7 +232,14 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
     font-size: 1.1rem;
 }
 
-.luxury-nav-item[href*="/admin/"]:not([href*="/admin/auth/"]):not([href*="/admin/store/"]):not([href*="/admin/orders/"]):not([href*="/admin/payments/"]):not([href*="/admin/analytics/"])::after {
+/* NEW: Sites icon */
+.luxury-nav-item[href*="/admin/sites/"]::after,
+.luxury-nav-item[href*="/sites/"]::after {
+    content: "🌐";
+    font-size: 1.1rem;
+}
+
+.luxury-nav-item[href*="/admin/"]:not([href*="/admin/auth/"]):not([href*="/admin/store/"]):not([href*="/admin/orders/"]):not([href*="/admin/payments/"]):not([href*="/admin/analytics/"]):not([href*="/admin/sites/"])::after {
     content: "⚙️";
     font-size: 1.1rem;
 }
@@ -785,6 +788,13 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
     <a href="{% url 'admin:orders_order_changelist' %}" class="luxury-nav-item">Orders</a>
     <a href="{% url 'admin:payments_payment_changelist' %}" class="luxury-nav-item">Payments</a>
     <a href="{% url 'admin:analytics_productbatch_changelist' %}" class="luxury-nav-item">Product Batches</a>
+    
+    <!-- NEW: Sites Button - Domain Management -->
+    <a href="{% url 'admin:sites_site_changelist' %}" class="luxury-nav-item" style="background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%); color: var(--primary-deep); border-color: var(--accent-gold-dark);">
+        <i class="fas fa-globe"></i>
+        Sites
+    </a>
+    
     <a href="{% url 'analytics:dashboard' %}" class="luxury-nav-item">Analytics</a>
 </nav>
 
