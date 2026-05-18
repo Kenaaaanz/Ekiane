@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin.sites import AdminSite
+from django.contrib.sites.models import Site
+from django.contrib.sites.admin import SiteAdmin
 from django.template.response import TemplateResponse
 from django.urls import path
 from django.utils import timezone
@@ -16,8 +18,8 @@ import json
 
 
 class EkianeAdminSite(AdminSite):
-    site_header = "Ekiane Admin"
-    site_title = "Ekiane Luxury Organics"
+    site_header = "E'kiane Onsare Admin"
+    site_title = "E'kiane Onsare Luxury Organics"
     index_title = "Dashboard"
     site_url = "/"
 
@@ -53,6 +55,24 @@ class EkianeAdminSite(AdminSite):
         # Insert analytics app at the beginning
         app_list.insert(0, analytics_app)
 
+        # Add Sites app to the list if it exists
+        from django.contrib.sites.models import Site
+        if Site._meta.installed:
+            sites_app = {
+                'name': 'Sites',
+                'app_label': 'sites',
+                'app_url': '/admin/sites/',
+                'has_module_perms': True,
+                'models': [{
+                    'name': 'Sites',
+                    'object_name': 'Site',
+                    'perms': {'add': True, 'change': True, 'delete': True, 'view': True},
+                    'admin_url': '/admin/sites/site/',
+                    'add_url': '/admin/sites/site/add/',
+                }],
+            }
+            app_list.append(sites_app)
+
         return app_list
 
     def index(self, request, extra_context=None):
@@ -84,3 +104,11 @@ admin_site.register(Product, ProductAdmin)
 admin_site.register(Order, OrderAdmin)
 admin_site.register(Payment, PaymentAdmin)
 admin_site.register(ProductBatch, ProductBatchAdmin)
+
+# Register Sites model with custom admin
+from django.contrib.sites.models import Site
+from django.contrib.sites.admin import SiteAdmin
+
+# Only register if not already registered
+if not admin_site.is_registered(Site):
+    admin_site.register(Site, SiteAdmin)

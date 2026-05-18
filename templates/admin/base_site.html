@@ -785,6 +785,18 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
     <a href="{% url 'admin:orders_order_changelist' %}" class="luxury-nav-item">Orders</a>
     <a href="{% url 'admin:payments_payment_changelist' %}" class="luxury-nav-item">Payments</a>
     <a href="{% url 'admin:analytics_productbatch_changelist' %}" class="luxury-nav-item">Product Batches</a>
+    <!-- Sites Button - Try multiple URL patterns -->
+    {% url 'admin:sites_site_changelist' as sites_url %}
+    {% if not sites_url %}
+        {% url 'sites:site_changelist' as sites_url %}
+    {% endif %}
+    {% if not sites_url %}
+        {% url 'admin:sites_site_changelist' as sites_url %}
+    {% endif %}
+    <a href="{{ sites_url|default:'/admin/sites/site/' }}" class="luxury-nav-item" style="background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%); color: var(--primary-deep); border-color: var(--accent-gold-dark);">
+        <i class="fas fa-globe"></i>
+        Sites
+    </a>
     <a href="{% url 'analytics:dashboard' %}" class="luxury-nav-item">Analytics</a>
 </nav>
 
