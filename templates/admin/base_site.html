@@ -1,3 +1,4 @@
+
 {% extends "admin/base.html" %}
 {% load static %}
 
@@ -7,7 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 /* ============================================
-   E'kiane Onsare LUXURY ADMIN - COMPLETE FIX
+   E'kiane Onsare LUXURY ADMIN - PROFESSIONAL REFINEMENT
    Deep Emerald (#0A2E2A), Aged Gold (#C6A43F), Ivory (#FAF7F2)
    ============================================ */
 
@@ -49,7 +50,6 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
     border-bottom: 2px solid var(--accent-gold) !important;
     padding: 1rem 2rem !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
-    height: auto !important;
 }
 
 #branding h1, #site-name {
@@ -57,7 +57,6 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
     font-weight: 600 !important;
     letter-spacing: 0.15em !important;
     font-size: 1.6rem !important;
-    margin: 0 !important;
 }
 
 #site-name a {
@@ -65,6 +64,7 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
     text-decoration: none !important;
     transition: opacity 0.2s ease !important;
 }
+
 
 #site-name a:hover {
     opacity: 0.85 !important;
@@ -75,7 +75,6 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
     color: rgba(255, 245, 230, 0.85) !important;
     font-size: 0.8rem !important;
     font-weight: 400 !important;
-    margin-top: 0 !important;
 }
 
 #user-tools a {
@@ -89,28 +88,24 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
     text-decoration: underline !important;
 }
 
-/* ========== HIDE DEFAULT SIDEBAR ========== */
+/* ========== HORIZONTAL NAVIGATION BAR - LUXURY FLOATING BUTTONS ========== */
 #nav-sidebar,
 #sidebar,
-.sidebar,
-#content-related {
-    display: none !important;
+.sidebar {
+    display: none !important; /* Hide the vertical sidebar */
 }
 
-/* ========== MAIN CONTENT LAYOUT ========== */
 #content {
     margin-left: 0 !important;
     width: auto !important;
     padding: 0 !important;
     background: var(--bg-ivory) !important;
-    float: none !important;
 }
 
 #container {
     max-width: 1440px !important;
     margin: 0 auto !important;
     padding: 0 1.5rem !important;
-    width: 100% !important;
 }
 
 #content-main {
@@ -120,28 +115,16 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
     margin: 1.5rem auto !important;
     padding: 2rem !important;
     border: 1px solid var(--border-light) !important;
-    width: 100% !important;
-    float: none !important;
 }
 
-/* Fix for change list and form layouts */
-.colMS, .colM {
-    width: 100% !important;
-}
-
-#changelist, #changelist-form {
-    width: 100% !important;
-}
-
-/* ========== HORIZONTAL NAVIGATION BAR ========== */
 .luxury-nav-bar {
     position: relative !important;
     top: auto !important;
     left: 0 !important;
     right: 0 !important;
-    width: 100% !important;
+    width: calc(100% - 3rem) !important;
     max-width: 1440px !important;
-    margin: 0 auto 2rem auto !important;
+    margin: 0 auto 2rem !important;
     background: rgba(250, 247, 242, 0.96) !important;
     backdrop-filter: blur(22px) !important;
     border-bottom: 1px solid var(--border-light) !important;
@@ -173,13 +156,11 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
     display: inline-flex !important;
     align-items: center !important;
     gap: 0.6rem !important;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+    box-shadow:
+        0 4px 14px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
     min-width: 130px !important;
     justify-content: center !important;
-}
-
-.luxury-nav-item i {
-    font-size: 1rem;
 }
 
 .luxury-nav-item::before {
@@ -198,7 +179,9 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
 
 .luxury-nav-item:hover {
     transform: translateY(-2px) !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.45) !important;
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.45) !important;
     border-color: var(--accent-gold) !important;
     color: var(--primary-deep) !important;
 }
@@ -212,51 +195,127 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
     background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%) !important;
     color: var(--primary-deep) !important;
     border-color: var(--accent-gold-dark) !important;
-    box-shadow: 0 6px 22px rgba(198, 164, 63, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
+    box-shadow:
+        0 6px 22px rgba(198, 164, 63, 0.28),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
     font-weight: 700 !important;
 }
 
-/* ========== BACK BUTTON STYLES ========== */
-.back-button-container {
-    margin-bottom: 1rem;
-    display: flex;
-    justify-content: flex-start;
-    gap: 0.75rem;
-    flex-wrap: wrap;
+.luxury-nav-item.current::before,
+.luxury-nav-item.selected::before {
+    opacity: 1 !important;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 100%) !important;
 }
 
-.back-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.25rem;
-    background: linear-gradient(135deg, var(--bg-cream) 0%, var(--bg-warm) 100%);
-    border: 1px solid rgba(222, 184, 135, 0.32);
-    border-radius: 999px;
-    color: var(--text-charcoal);
-    text-decoration: none;
-    font-family: 'Inter', sans-serif;
-    font-weight: 600;
-    font-size: 0.85rem;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+/* Navigation Icons */
+.luxury-nav-item[href*="/admin/auth/"]::after,
+.luxury-nav-item[href*="/admin/accounts/"]::after {
+    content: "👥";
+    font-size: 1.1rem;
 }
 
-.back-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    border-color: var(--accent-gold);
-    color: var(--primary-deep);
-    text-decoration: none;
+.luxury-nav-item[href*="/admin/store/"]::after,
+.luxury-nav-item[href*="/admin/products/"]::after {
+    content: "🛍️";
+    font-size: 1.1rem;
 }
 
-.back-button i {
-    font-size: 1rem;
+.luxury-nav-item[href*="/admin/orders/"]::after {
+    content: "📦";
+    font-size: 1.1rem;
 }
 
-/* ========== DASHBOARD TITLE ========== */
+.luxury-nav-item[href*="/admin/payments/"]::after {
+    content: "💳";
+    font-size: 1.1rem;
+}
+
+.luxury-nav-item[href*="/admin/analytics/"]::after,
+.luxury-nav-item[href*="/analytics/"]::after {
+    content: "📊";
+    font-size: 1.1rem;
+}
+
+.luxury-nav-item[href*="/admin/"]:not([href*="/admin/auth/"]):not([href*="/admin/store/"]):not([href*="/admin/orders/"]):not([href*="/admin/payments/"]):not([href*="/admin/analytics/"])::after {
+    content: "⚙️";
+    font-size: 1.1rem;
+}
+
+#content {
+    margin-top: 0 !important;
+    background: var(--bg-ivory) !important;
+}
+
+#content-main {
+    background: var(--bg-cream) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.04) !important;
+    margin: 1.5rem auto !important;
+    padding: 2rem !important;
+    border: 1px solid var(--border-light) !important;
+}
+
+/* Responsive design for navigation */
+@media (max-width: 1024px) {
+    .luxury-nav-bar {
+        padding: 0.8rem 1rem !important;
+        gap: 0.4rem !important;
+    }
+
+    .luxury-nav-item {
+        padding: 0.7rem 1.2rem !important;
+        font-size: 0.8rem !important;
+        min-width: 110px !important;
+    }
+
+    .luxury-nav-item::after {
+        font-size: 1rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .luxury-nav-bar {
+        width: 100% !important;
+        padding: 1rem !important;
+        gap: 0.5rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .luxury-nav-item {
+        flex: 1 1 calc(50% - 0.3rem) !important;
+        min-width: auto !important;
+        padding: 0.7rem 0.85rem !important;
+        font-size: 0.75rem !important;
+        justify-content: center !important;
+    }
+
+    .luxury-nav-item::after {
+        font-size: 0.95rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .luxury-nav-item {
+        flex: 1 1 100% !important;
+        margin-bottom: 0.3rem !important;
+    }
+}
+
+/* ========== MAIN CONTENT AREA ========== */
+#content {
+    background: var(--bg-ivory) !important;
+}
+
+#content-main {
+    background: var(--bg-cream) !important;
+    border-radius: 20px !important;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.04) !important;
+    margin: 1.5rem !important;
+    padding: 2rem !important;
+    border: 1px solid var(--border-light) !important;
+}
+
+/* Dashboard Title */
 .dashboard-title {
     font-size: 1.8rem;
     font-weight: 500;
@@ -273,7 +332,7 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
     border-bottom: 1px solid var(--border-light);
 }
 
-/* ========== KPI CARDS ========== */
+/* ========== KPI CARDS - PROFESSIONAL METRICS ========== */
 .kpi-grid {
     display: grid;
     gap: 1.5rem;
@@ -542,32 +601,6 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
     margin: 0;
 }
 
-/* ========== DJANGO ADMIN FORM FIXES ========== */
-.aligned label {
-    color: var(--primary-dark) !important;
-    font-weight: 600 !important;
-}
-
-.submit-row {
-    background: var(--bg-warm) !important;
-    border-radius: 16px !important;
-    padding: 1rem !important;
-    border: 1px solid var(--border-light) !important;
-}
-
-.submit-row input.default {
-    background: var(--primary-dark) !important;
-    border: none !important;
-}
-
-.submit-row input.default:hover {
-    background: var(--primary-medium) !important;
-}
-
-.delete-confirmation form input[type="submit"] {
-    background: var(--error-ruby) !important;
-}
-
 /* ========== BUTTON STYLES ========== */
 .button, input[type="submit"], .submit-row input {
     display: inline-flex;
@@ -603,6 +636,39 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
     color: white;
 }
 
+/* ========== BACK BUTTON STYLES ========== */
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: linear-gradient(135deg, var(--bg-cream) 0%, var(--bg-warm) 100%);
+    border: 1px solid rgba(222, 184, 135, 0.32);
+    border-radius: 999px;
+    color: var(--text-charcoal);
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    margin-bottom: 1rem;
+}
+
+.back-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    border-color: var(--accent-gold);
+    color: var(--primary-deep);
+    text-decoration: none;
+}
+
+.back-button i {
+    font-size: 1rem;
+}
+
 /* ========== RESPONSIVE DESIGN ========== */
 @media (max-width: 1024px) {
     .charts-grid {
@@ -612,12 +678,6 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
     #content-main {
         margin: 1rem !important;
         padding: 1.25rem !important;
-    }
-    
-    .luxury-nav-item {
-        padding: 0.7rem 1.2rem !important;
-        font-size: 0.8rem !important;
-        min-width: 110px !important;
     }
 }
 
@@ -646,19 +706,6 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
     .products-table td {
         padding: 0.7rem 0.8rem;
     }
-    
-    .luxury-nav-bar {
-        padding: 1rem !important;
-        gap: 0.5rem !important;
-    }
-    
-    .luxury-nav-item {
-        flex: 1 1 calc(50% - 0.3rem) !important;
-        min-width: auto !important;
-        padding: 0.7rem 0.85rem !important;
-        font-size: 0.75rem !important;
-        justify-content: center !important;
-    }
 }
 
 @media (max-width: 480px) {
@@ -676,14 +723,6 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
     
     .chart-container {
         height: 220px;
-    }
-    
-    .luxury-nav-item {
-        flex: 1 1 100% !important;
-    }
-    
-    #container {
-        padding: 0 0.75rem !important;
     }
 }
 
@@ -715,7 +754,7 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
 
 /* ========== PRINT STYLES ========== */
 @media print {
-    .luxury-nav-bar, .back-button-container, #user-tools {
+    #nav-sidebar, #user-tools, .button, .button-secondary {
         display: none !important;
     }
     
@@ -731,66 +770,6 @@ h1, h2, h3, h4, .dashboard-title, .card-title {
         border: 1px solid #ddd;
     }
 }
-
-/* ========== BREADCRUMBS FIX ========== */
-div.breadcrumbs {
-    background: var(--bg-warm) !important;
-    border-bottom: 1px solid var(--border-light) !important;
-    color: var(--text-muted) !important;
-    padding: 0.5rem 1rem !important;
-    border-radius: 12px !important;
-    margin-bottom: 1rem !important;
-}
-
-div.breadcrumbs a {
-    color: var(--primary-dark) !important;
-}
-
-div.breadcrumbs a:hover {
-    color: var(--accent-gold) !important;
-}
-
-/* ========== OBJECT TOOLS FIX ========== */
-.object-tools a {
-    background: var(--primary-dark) !important;
-    border-radius: 999px !important;
-    padding: 0.4rem 1rem !important;
-}
-
-.object-tools a:hover {
-    background: var(--primary-medium) !important;
-}
-
-/* ========== PAGINATION FIX ========== */
-.paginator {
-    background: var(--bg-warm) !important;
-    border-radius: 16px !important;
-    padding: 0.75rem !important;
-    margin-top: 1rem !important;
-}
-
-.paginator a, .paginator .this-page {
-    background: var(--bg-cream) !important;
-    border-radius: 12px !important;
-    padding: 0.3rem 0.7rem !important;
-}
-
-.paginator a:hover {
-    background: var(--accent-gold) !important;
-    color: white !important;
-}
-
-/* ========== SEARCH BAR FIX ========== */
-#changelist-search .search-fields input[type="text"] {
-    border: 1px solid var(--border-medium) !important;
-    border-radius: 999px !important;
-    padding: 0.5rem 1rem !important;
-}
-
-#changelist-search .search-fields input[type="submit"] {
-    background: var(--primary-dark) !important;
-    border-radius: 999px !important;
-}
 </style>
 
 <!-- Font Awesome for Icons -->
@@ -800,31 +779,17 @@ div.breadcrumbs a:hover {
 {% block nav-breadcrumbs %}
 <!-- Luxury Navigation Bar - Under Header -->
 <nav class="luxury-nav-bar">
-    <a href="{% url 'admin:auth_user_changelist' %}" class="luxury-nav-item"><i class="fas fa-users"></i> Users</a>
-    <a href="{% url 'admin:store_category_changelist' %}" class="luxury-nav-item"><i class="fas fa-tags"></i> Categories</a>
-    <a href="{% url 'admin:store_product_changelist' %}" class="luxury-nav-item"><i class="fas fa-box"></i> Products</a>
-    <a href="{% url 'admin:orders_order_changelist' %}" class="luxury-nav-item"><i class="fas fa-shopping-cart"></i> Orders</a>
-    <a href="{% url 'admin:payments_payment_changelist' %}" class="luxury-nav-item"><i class="fas fa-credit-card"></i> Payments</a>
-    <a href="{% url 'admin:analytics_productbatch_changelist' %}" class="luxury-nav-item"><i class="fas fa-chart-line"></i> Batches</a>
-    
-    <!-- Sites Button - Try multiple URL patterns -->
-    {% url 'admin:sites_site_changelist' as sites_url %}
-    {% if not sites_url %}
-        {% url 'sites:site_changelist' as sites_url %}
-    {% endif %}
-    {% if not sites_url %}
-        {% url 'admin:sites_site_changelist' as sites_url %}
-    {% endif %}
-    <a href="{{ sites_url|default:'/admin/sites/site/' }}" class="luxury-nav-item" style="background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%); color: var(--primary-deep); border-color: var(--accent-gold-dark);">
-        <i class="fas fa-globe"></i>
-        Sites
-    </a>
-    
-    <a href="{% url 'analytics:dashboard' %}" class="luxury-nav-item"><i class="fas fa-chart-pie"></i> Analytics</a>
+    <a href="{% url 'admin:auth_user_changelist' %}" class="luxury-nav-item">Users</a>
+    <a href="{% url 'admin:store_category_changelist' %}" class="luxury-nav-item">Categories</a>
+    <a href="{% url 'admin:store_product_changelist' %}" class="luxury-nav-item">Products</a>
+    <a href="{% url 'admin:orders_order_changelist' %}" class="luxury-nav-item">Orders</a>
+    <a href="{% url 'admin:payments_payment_changelist' %}" class="luxury-nav-item">Payments</a>
+    <a href="{% url 'admin:analytics_productbatch_changelist' %}" class="luxury-nav-item">Product Batches</a>
+    <a href="{% url 'analytics:dashboard' %}" class="luxury-nav-item">Analytics</a>
 </nav>
 
 <!-- Back Button -->
-<div class="back-button-container">
+<div style="margin-bottom: 1rem; display:flex; justify-content:flex-start; gap:0.75rem; flex-wrap:wrap;">
     <a href="#" class="back-button" onclick="if (window.history.length > 1) { window.history.back(); } else { window.location.href = '{% url 'admin:index' %}'; } return false;">
         <i class="fas fa-arrow-left"></i>
         <span>Back</span>
@@ -833,5 +798,5 @@ div.breadcrumbs a:hover {
 {% endblock %}
 
 {% block branding %}
-<h1 id="site-name"><a href="{% url 'admin:index' %}">✨ E'kiane Onsare</a></h1>
+<h1 id="site-name"><a href="{% url 'admin:index' %}">E'kiane Onsare</a></h1>
 {% endblock %}
