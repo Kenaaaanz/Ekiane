@@ -210,7 +210,6 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-SITE_ID = 1
 CURRENCY_SYMBOL = 'KES'
 CURRENCY_CODE = 'KES'
 ACCOUNT_LOGIN_METHODS = ['email']
@@ -230,3 +229,19 @@ PLATFORM_FEE_PERCENT = config('PLATFORM_FEE_PERCENT', default=8, cast=int)
 # Google Analytics Settings
 GOOGLE_TAG_MANAGER_ID = config('GOOGLE_TAG_MANAGER_ID')
 GOOGLE_ANALYTICS_ID = config('GOOGLE_ANALYTICS_ID')
+
+# Security settings - Avoid loops
+if not DEBUG:
+    # Only set these in production
+    SECURE_SSL_REDIRECT = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    
+    # Don't set both of these if they cause loops
+    SECURE_HSTS_SECONDS = 0  # Temporarily set to 0 to debug
+    # SECURE_HSTS_INCLUDE_SUBDOMAINS = True  # Comment out temporarily
+    
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+else:
+    # In DEBUG mode, disable SSL redirect
+    SECURE_SSL_REDIRECT = False
