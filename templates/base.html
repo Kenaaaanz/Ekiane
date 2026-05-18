@@ -48,16 +48,15 @@
         });
         
         // Track user authentication status
-        {% if user.is_authenticated %}
-            gtag('set', 'user_properties', {
-                'user_type': 'authenticated',
-                'user_email_domain': '{{ user.email|default:""|split:"@"|last }}'
-            });
-        {% else %}
-            gtag('set', 'user_properties', {
-                'user_type': 'guest'
-            });
-        {% endif %}
+            {% if user.is_authenticated %}
+                gtag('set', 'user_properties', {
+                    'user_type': 'authenticated'
+                });
+            {% else %}
+                gtag('set', 'user_properties', {
+                    'user_type': 'guest'
+                });
+            {% endif %}
     </script>
     
     <!-- Google Analytics Event Tracking Helper -->
