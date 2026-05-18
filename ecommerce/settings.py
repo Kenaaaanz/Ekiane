@@ -30,7 +30,10 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['testserver', 'localhost', '127.0.0.1', '.onrender.com', 'ekianeonsare.com', 'www.ekianeonsare.com']
+ALLOWED_HOSTS = ['testserver', 'localhost', '127.0.0.1', '.onrender.com', 'ekianeonsare.com', 'www.ekianeonsare.com', 'ekianeonsare.shop', 'www.ekianeonsare.shop']
+
+# Site ID for Django Sites Framework
+SITE_ID = 1
 
 
 # Application definition
@@ -42,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.redirects',
     'django.contrib.sites',
     'store',
     'accounts',
@@ -58,6 +63,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'ecommerce.middleware.DomainRedirectMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -67,6 +73,7 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
 ]
 
 ROOT_URLCONF = 'ecommerce.urls'
