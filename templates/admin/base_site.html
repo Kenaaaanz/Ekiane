@@ -807,8 +807,15 @@ div.breadcrumbs a:hover {
     <a href="{% url 'admin:payments_payment_changelist' %}" class="luxury-nav-item"><i class="fas fa-credit-card"></i> Payments</a>
     <a href="{% url 'admin:analytics_productbatch_changelist' %}" class="luxury-nav-item"><i class="fas fa-chart-line"></i> Batches</a>
     
-    <!-- Sites Button - Domain Management (Highlighted) -->
-    <a href="{% url 'admin:sites_site_changelist' %}" class="luxury-nav-item" style="background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%); color: var(--primary-deep); border-color: var(--accent-gold-dark);">
+    <!-- Sites Button - Try multiple URL patterns -->
+    {% url 'admin:sites_site_changelist' as sites_url %}
+    {% if not sites_url %}
+        {% url 'sites:site_changelist' as sites_url %}
+    {% endif %}
+    {% if not sites_url %}
+        {% url 'admin:sites_site_changelist' as sites_url %}
+    {% endif %}
+    <a href="{{ sites_url|default:'/admin/sites/site/' }}" class="luxury-nav-item" style="background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%); color: var(--primary-deep); border-color: var(--accent-gold-dark);">
         <i class="fas fa-globe"></i>
         Sites
     </a>
