@@ -57,3 +57,112 @@ See `CLOUDINARY_SETUP.md` for detailed instructions.
 - `payments`: Paystack integration
 - `analytics`: Sales analytics and profit tracking
 - `accounts`: User accounts (optional)
+
+## Recent Additions (June 2026)
+
+### 1. Email Notifications System
+Admin receives detailed email notifications when customers complete purchases.
+
+**Features**:
+- HTML & plain text email templates
+- Complete order information (products, customer details, delivery, pricing)
+- Profit calculations included in email
+- Direct link to order in admin panel
+
+**Setup**: See [EMAIL_SETUP.md](./EMAIL_SETUP.md)
+
+**Quick Start**:
+```bash
+# Configure email in .env
+EMAIL_HOST=smtp.gmail.com
+ADMIN_EMAIL=admin@ekianeonsare.com
+
+# Test email setup
+python manage.py send_test_order_email
+```
+
+### 2. Google Analytics & Tag Manager
+Track user behavior, purchases, and site performance with Google Analytics 4.
+
+**Features**:
+- Automatic page view tracking
+- Product view tracking
+- Add to cart events
+- Purchase tracking
+- Custom user properties
+- Scroll depth tracking
+- Outbound link tracking
+
+**Setup**: See [GOOGLE_ANALYTICS_TAB_MANAGEMENT.md](./GOOGLE_ANALYTICS_TAB_MANAGEMENT.md)
+
+**Quick Start**:
+```env
+GOOGLE_ANALYTICS_ID=G-XXXXXXXXXX
+GOOGLE_TAG_MANAGER_ID=GTM-XXXXXX  # Optional
+```
+
+### 3. Tab Management System
+Automatically synchronize cart, user session, and data across browser tabs.
+
+**Features**:
+- Cart synchronization across tabs
+- User login/logout sync
+- Tab visibility tracking
+- LocalStorage sync
+- BroadcastChannel API with fallback
+
+**Status**: Automatically enabled in all pages
+
+**Implementation**:
+```javascript
+// Sync cart across tabs
+window.tabManager.broadcastCartUpdate(cartData);
+
+// Listen for updates
+window.addEventListener('cartUpdated', (e) => {
+    console.log('Cart updated in another tab:', e.detail);
+});
+```
+
+## Configuration Guide
+
+### Environment Variables (.env)
+
+#### Email Configuration
+```env
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER=your-email@gmail.com
+EMAIL_HOST_PASSWORD=your-app-password
+DEFAULT_FROM_EMAIL=noreply@ekianeonsare.com
+ADMIN_EMAIL=admin@ekianeonsare.com
+```
+
+#### Google Analytics
+```env
+GOOGLE_ANALYTICS_ID=G-XXXXXXXXXX
+GOOGLE_TAG_MANAGER_ID=GTM-XXXXXX
+```
+
+#### Paystack
+```env
+PAYSTACK_PUBLIC_KEY=pk_test_...
+PAYSTACK_SECRET_KEY=sk_test_...
+PAYSTACK_SUBACCOUNT_CODE=ACCT_...
+PLATFORM_FEE_PERCENT=8
+```
+
+#### Site Configuration
+```env
+SITE_URL=https://ekianeonsare.com
+DEBUG=False  # Use True for development
+```
+
+### Complete Setup Instructions
+
+For comprehensive setup instructions covering all systems, see:
+- **[COMPLETE_SYSTEM_INTEGRATION.md](./COMPLETE_SYSTEM_INTEGRATION.md)** - Full integration guide
+- **[EMAIL_SETUP.md](./EMAIL_SETUP.md)** - Detailed email configuration
+- **[GOOGLE_ANALYTICS_TAB_MANAGEMENT.md](./GOOGLE_ANALYTICS_TAB_MANAGEMENT.md)** - Analytics & tab management guide
+- **[CLOUDINARY_SETUP.md](./CLOUDINARY_SETUP.md)** - Media storage (production)

@@ -1,0 +1,51 @@
+New Order Received!
+
+Order Details:
+==============
+Order ID: #{{ order.id }}
+Order Date: {{ order.created_at|date:"M d, Y H:i" }}
+Status: {{ order.get_status_display }}
+Total Amount: {{ currency }} {{ order.total }}
+
+Customer Information:
+====================
+Name: {{ order.first_name }} {{ order.last_name }}
+Email: {{ order.email }}
+Phone: {{ order.phone|default:"Not provided" }}
+
+Delivery Information:
+====================
+Delivery Option: {{ order.get_delivery_option_display }}
+{% if order.delivery_option == "delivery" %}
+Location: {{ order.exact_location }}
+House Number: {{ order.house_number }}
+Distance: {{ order.distance_km }} km
+Delivery Fee: {{ currency }} {{ order.delivery_fee }}
+{% else %}
+Collection Point: Star Mall CBD
+{% endif %}
+
+Products Ordered:
+=================
+{% for item in order.items.all %}
+{{ item.product.name }}
+  - Quantity: {{ item.quantity }}
+  - Price per unit: {{ currency }} {{ item.price }}
+  - Subtotal: {{ currency }} {{ item.get_cost_per_item }}
+
+{% endfor %}
+
+Order Summary:
+==============
+Subtotal: {{ currency }} {{ order.get_subtotal }}
+Delivery Fee: {{ currency }} {{ order.delivery_fee }}
+Total: {{ currency }} {{ order.total }}
+Platform Fee ({{ platform_fee_percent }}%): {{ currency }} {{ order.get_platform_fee }}
+Your Profit: {{ currency }} {{ order.get_profit }}
+
+Payment Status: {{ order.get_paid_status }}
+Verification Time: {{ payment.verified_at|date:"M d, Y H:i" }}
+
+---
+Please ensure this order is processed promptly.
+Log in to the admin panel to view more details and mark the order as fulfilled.

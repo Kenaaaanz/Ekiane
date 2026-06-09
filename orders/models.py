@@ -21,6 +21,7 @@ class Order(models.Model):
     email = models.EmailField()
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=20, blank=True, null=True)
     exact_location = models.CharField(max_length=255, blank=True, null=True)
     house_number = models.CharField(max_length=50, blank=True, null=True)
     delivery_option = models.CharField(max_length=20, choices=DELIVERY_CHOICES, default='delivery')
@@ -46,6 +47,14 @@ class Order(models.Model):
 
     def get_profit(self):
         return self.total - self.get_cost() - self.get_platform_fee()
+    
+    def get_subtotal(self):
+        """Get the subtotal (sum of all items excluding delivery fee)."""
+        return sum(item.get_cost_per_item() for item in self.items.all())
+    
+    def get_paid_status(self):
+        """Return payment status as human-readable string."""
+        return "Paid" if self.paid else "Pending"
 
 
 class OrderItem(models.Model):
@@ -58,4 +67,9 @@ class OrderItem(models.Model):
         return f"{self.quantity} x {self.product.name}"
 
     def get_cost(self):
+        """Calculate cost to store (wholesale cost)."""
         return self.product.cost_price * self.quantity
+    
+    def get_cost_per_item(self):
+        """Calculate total price for this item (selling price)."""
+        return self.price * self.quantity
