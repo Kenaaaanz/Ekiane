@@ -31,6 +31,7 @@ def checkout(request):
         email = request.POST.get('email')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
+        phone = request.POST.get('phone', '')
         exact_location = request.POST.get('exact_location', '')
         house_number = request.POST.get('house_number', '')
         delivery_option = request.POST.get('delivery_option')
@@ -53,6 +54,7 @@ def checkout(request):
             email=email,
             first_name=first_name,
             last_name=last_name,
+            phone=phone,
             exact_location=exact_location,
             house_number=house_number,
             delivery_option=delivery_option,

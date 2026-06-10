@@ -11,8 +11,19 @@ class OrderItemInline(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['id', 'email', 'first_name', 'last_name', 'total', 'paid', 'status', 'created_at']
+    list_display = ['id', 'email', 'first_name', 'last_name', 'phone', 'total', 'paid', 'status', 'created_at']
     list_filter = ['paid', 'status', 'created_at']
-    search_fields = ['email', 'first_name', 'last_name', 'exact_location']
+    search_fields = ['email', 'first_name', 'last_name', 'phone', 'exact_location']
+    readonly_fields = ['total', 'created_at', 'updated_at']
+    fieldsets = (
+        ('Customer Information', {
+            'fields': ('email', 'first_name', 'last_name', 'phone', 'user')
+        }),
+        ('Delivery Details', {
+            'fields': ('delivery_option', 'exact_location', 'house_number', 'distance_km', 'delivery_fee')
+        }),
+        ('Order Status', {
+            'fields': ('status', 'paid', 'total', 'created_at', 'updated_at')
+        }),
+    )
     inlines = [OrderItemInline]
-    readonly_fields = ['total']
