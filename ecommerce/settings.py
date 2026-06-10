@@ -232,7 +232,7 @@ DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='gichabakenani@gmail.c
 
 # Admin email for order notifications
 ADMIN_EMAIL = [
-    email.strip() for email in config('ADMIN_EMAIL', default='admin@ekianeonsare.com, ekianeonsare@gmail.com, onsarekenani@gmail.com').split(',')
+    email.strip() for email in config('ADMIN_EMAIL', default='ekianeonsare@gmail.com, onsarekenani@gmail.com').split(',')
     if email.strip()
 ]
 
