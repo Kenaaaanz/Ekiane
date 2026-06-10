@@ -31,6 +31,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         order_id = options.get('order_id')
         email = options.get('email') or settings.ADMIN_EMAIL
+        if isinstance(email, list):
+            email = email[0] if email else None
 
         if order_id:
             try:

@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = False #config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['testserver', 'localhost', '127.0.0.1', '.onrender.com', 'ekianeonsare.com', 'www.ekianeonsare.com', 'ekianeonsare.shop', 'www.ekianeonsare.shop']
 
@@ -231,19 +231,29 @@ else:
     EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 
 # Default sender email
-DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@ekianeonsare.com')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='ekianeonsare@gmail.com')
 
 # Admin email for order notifications
-ADMIN_EMAIL = config('ADMIN_EMAIL', default='admin@ekianeonsare.com')
+ADMIN_EMAIL = [
+    email.strip() for email in config('ADMIN_EMAIL', default='admin@ekianeonsare.com, ekianeonsare@gmail.com, gichabakenani@gmail.com').split(',')
+    if email.strip()
+]
 
 # Site URL for email links
-SITE_URL = config('SITE_URL', default='http://localhost:8000')
+SITE_URL = config('SITE_URL', default='https://ekianeonsare.com')
 
 # Paystack settings
 PAYSTACK_PUBLIC_KEY = config('PAYSTACK_PUBLIC_KEY') 
 PAYSTACK_SECRET_KEY = config('PAYSTACK_SECRET_KEY') 
 PAYSTACK_SUBACCOUNT_CODE = config('PAYSTACK_SUBACCOUNT_CODE') 
-PLATFORM_FEE_PERCENT = config('PLATFORM_FEE_PERCENT', default=8, cast=int)
+PAYSTACK_WEBHOOK_SECRET = config('PAYSTACK_WEBHOOK_SECRET', default='')
+PLATFORM_FEE_PERCENT = config('PLATFORM_FEE_PERCENT', default=0, cast=int)
+
+# Twilio SMS settings
+TWILIO_ACCOUNT_SID = config('TWILIO_ACCOUNT_SID', default='')
+TWILIO_AUTH_TOKEN = config('TWILIO_AUTH_TOKEN', default='')
+TWILIO_FROM_PHONE = config('TWILIO_FROM_PHONE', default='')
+TWILIO_ADMIN_PHONE = config('TWILIO_ADMIN_PHONE', default='')
 
 # Google Analytics Settings
 GOOGLE_TAG_MANAGER_ID = config('GOOGLE_TAG_MANAGER_ID')

@@ -25,7 +25,18 @@ Update the Paystack keys and subaccount in `ecommerce/settings.py`:
 - `PAYSTACK_PUBLIC_KEY`
 - `PAYSTACK_SECRET_KEY`
 - `PAYSTACK_SUBACCOUNT_CODE`
+- `PAYSTACK_WEBHOOK_SECRET`
 - `PLATFORM_FEE_PERCENT`
+
+### SMS Notifications
+To receive text notifications on purchase, configure Twilio credentials in `.env` and add:
+
+- `TWILIO_ACCOUNT_SID`
+- `TWILIO_AUTH_TOKEN`
+- `TWILIO_FROM_PHONE`
+- `TWILIO_ADMIN_PHONE`
+
+The system exposes a webhook listener at `/payments/webhook/` for Paystack events.
 
 ### Cloudinary Setup (Production Media Storage)
 For production deployment, images are stored on Cloudinary:

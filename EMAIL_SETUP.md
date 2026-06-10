@@ -24,6 +24,12 @@ EMAIL_HOST_PASSWORD=your-app-password-here
 DEFAULT_FROM_EMAIL=noreply@ekianeonsare.com
 ADMIN_EMAIL=admin@ekianeonsare.com
 SITE_URL=https://ekianeonsare.com
+
+# Twilio SMS Notification Configuration
+TWILIO_ACCOUNT_SID=your_twilio_account_sid
+TWILIO_AUTH_TOKEN=your_twilio_auth_token
+TWILIO_FROM_PHONE=+1234567890
+TWILIO_ADMIN_PHONE=+254700000000
 ```
 
 ### 2. Gmail Setup (Recommended)

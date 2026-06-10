@@ -2,10 +2,12 @@ import json
 import requests
 from decimal import Decimal
 from django.conf import settings
+from django.http import HttpResponseBadRequest, HttpResponseForbidden, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from .models import Payment
+from .utils import is_valid_paystack_signature, parse_paystack_amount, send_sms_notification
 from orders.models import Order
 
 
@@ -98,3 +100,49 @@ def verify_payment(request):
         payment.save()
 
     return render(request, 'payments/payment_error.html', {'error': 'Payment was not successful.'})
+
+
+def paystack_webhook(request):
+    if request.method != 'POST':
+        return HttpResponseBadRequest('Only POST requests are allowed.')
+
+    if not is_valid_paystack_signature(request):
+        return HttpResponseForbidden('Invalid Paystack signature.')
+
+    try:
+        payload = json.loads(request.body.decode('utf-8'))
+    except json.JSONDecodeError:
+        return HttpResponseBadRequest('Invalid JSON payload.')
+
+    event = payload.get('event')
+    if event not in ['charge.success', 'payment.success']:
+        return JsonResponse({'status': 'ignored', 'event': event})
+
+    payment_data = payload.get('data', {})
+    metadata = payment_data.get('metadata') or {}
+    order_id = metadata.get('order_id')
+    reference = payment_data.get('reference')
+    amount = parse_paystack_amount(payment_data.get('amount'))
+
+    if not order_id:
+        return HttpResponseBadRequest('Missing order_id in metadata.')
+
+    order = get_object_or_404(Order, pk=order_id)
+
+    payment, created = Payment.objects.update_or_create(
+        order=order,
+        defaults={
+            'reference': reference or f'WEBHOOK-{order.id}-{timezone.now().strftime("%Y%m%d%H%M%S")}',
+            'amount': amount or order.total,
+            'status': 'success',
+            'verified_at': timezone.now(),
+        }
+    )
+
+    if order.status != 'paid':
+        order.paid = True
+        order.status = 'paid'
+        order.save()
+
+    return JsonResponse({'status': 'ok', 'order_id': order_id, 'payment': payment.reference})
+
