@@ -265,3 +265,37 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # Session and CSRF security (still needed even with SECURE_SSL_REDIRECT=False)
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+
+# Logging configuration for debugging payments and webhooks
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'payments.log',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'payments': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG' if DEBUG else 'INFO',
+            'propagate': False,
+        },
+    },
+}

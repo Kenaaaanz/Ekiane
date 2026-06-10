@@ -103,10 +103,15 @@ def verify_payment(request):
 
 
 def paystack_webhook(request):
+    import logging
+    logger = logging.getLogger('payments')
+    
     if request.method != 'POST':
+        logger.warning('Webhook received non-POST request')
         return HttpResponseBadRequest('Only POST requests are allowed.')
 
     if not is_valid_paystack_signature(request):
+        logger.error('Webhook signature validation failed')
         return HttpResponseForbidden('Invalid Paystack signature.')
 
     try:
@@ -116,6 +121,7 @@ def paystack_webhook(request):
 
     event = payload.get('event')
     if event not in ['charge.success', 'payment.success']:
+        logger.info(f'Webhook ignored event type: {event}')
         return JsonResponse({'status': 'ignored', 'event': event})
 
     payment_data = payload.get('data', {})
@@ -124,10 +130,17 @@ def paystack_webhook(request):
     reference = payment_data.get('reference')
     amount = parse_paystack_amount(payment_data.get('amount'))
 
+    logger.info(f'Processing webhook: order_id={order_id}, reference={reference}, status={payment_data.get("status")}')
+
     if not order_id:
+        logger.error(f'Missing order_id in webhook metadata: {metadata}')
         return HttpResponseBadRequest('Missing order_id in metadata.')
 
-    order = get_object_or_404(Order, pk=order_id)
+    try:
+        order = Order.objects.get(pk=order_id)
+    except Order.DoesNotExist:
+        logger.error(f'Webhook: Order {order_id} not found')
+        return JsonResponse({'status': 'error', 'message': f'Order {order_id} not found'}, status=404)
 
     payment, created = Payment.objects.update_or_create(
         order=order,
@@ -143,6 +156,9 @@ def paystack_webhook(request):
         order.paid = True
         order.status = 'paid'
         order.save()
+        logger.info(f'Webhook: Updated order {order_id} to paid status')
+    else:
+        logger.info(f'Webhook: Order {order_id} already marked as paid')
 
     return JsonResponse({'status': 'ok', 'order_id': order_id, 'payment': payment.reference})
 

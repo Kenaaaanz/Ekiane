@@ -10,12 +10,20 @@ from django.urls import reverse
 def is_valid_paystack_signature(request):
     signature = request.headers.get('X-Paystack-Signature') or request.META.get('HTTP_X_PAYSTACK_SIGNATURE')
     if not signature:
+        print(f'[WEBHOOK DEBUG] No signature header found. Headers: {list(request.headers.keys())}')
         return False
 
     secret = settings.PAYSTACK_WEBHOOK_SECRET or settings.PAYSTACK_SECRET_KEY
+    if not secret:
+        print('[WEBHOOK DEBUG] No webhook secret configured in settings')
+        return False
+        
     payload = request.body
     expected = hmac.new(secret.encode('utf-8'), payload, hashlib.sha512).hexdigest()
-    return hmac.compare_digest(signature, expected)
+    is_valid = hmac.compare_digest(signature, expected)
+    if not is_valid:
+        print(f'[WEBHOOK DEBUG] Signature mismatch. Expected: {expected[:20]}... Got: {signature[:20]}...')
+    return is_valid
 
 
 def format_order_sms(order, payment=None):

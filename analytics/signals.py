@@ -181,8 +181,8 @@ def _compute_and_cache_analytics():
         'last_updated': timezone.now().isoformat(),
     }
 
-    # Cache for 1 hour (3600 seconds) - shorter for live updates
-    cache.set('analytics_dashboard_data', analytics_data, 3600)
+    # Cache for 5 minutes (300 seconds) for live dashboard updates
+    cache.set('analytics_dashboard_data', analytics_data, 300)
 
 
 def get_cached_analytics():
