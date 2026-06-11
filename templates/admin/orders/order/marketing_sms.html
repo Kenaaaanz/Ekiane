@@ -1,0 +1,46 @@
+{% extends 'admin/base_site.html' %}
+{% load i18n admin_urls %}
+
+{% block title %}{% trans 'Send Marketing SMS' %}{% endblock %}
+
+{% block content %}
+<div class="app-marketing-sms">
+    <div class="module aligned">
+        <h1>{% trans 'Send Marketing SMS' %}</h1>
+        <p class="subtitle">{% trans 'Send a custom marketing or discount message to customers who have provided their phone numbers.' %}</p>
+        <form method="post" class="marketing-sms-form">
+            {% csrf_token %}
+            <div class="form-row">
+                <label for="id_message" class="required">{% trans 'Message' %}</label>
+                <textarea id="id_message" name="message" rows="5" cols="80" class="vLargeTextField" required>{{ message }}</textarea>
+            </div>
+            <div class="form-row">
+                <label for="id_days">{% trans 'Customer orders from last' %}</label>
+                <input type="number" name="days" id="id_days" value="{{ days }}" min="1" class="vIntegerField" />
+                <span class="help">{% trans 'days will be included in the recipient list.' %}</span>
+            </div>
+            <div class="form-row">
+                <label for="id_limit">{% trans 'Limit recipients' %}</label>
+                <input type="number" name="limit" id="id_limit" value="{{ limit }}" min="0" class="vIntegerField" />
+                <span class="help">{% trans '0 means send to all eligible customers.' %}</span>
+            </div>
+            <div class="form-row checkbox-row">
+                <label class="inline"> 
+                    <input type="checkbox" name="include_cancelled" id="id_include_cancelled" {% if include_cancelled %}checked{% endif %} />
+                    {% trans 'Include customers with cancelled orders' %}
+                </label>
+            </div>
+            <div class="submit-row">
+                <input type="submit" value="{% trans 'Send SMS' %}" class="default" />
+                <a href="{% url 'admin:orders_order_changelist' %}" class="button">{% trans 'Back to orders' %}</a>
+            </div>
+        </form>
+
+        {% if sent_count %}
+            <div class="messagelist">
+                <div class="success">{{ sent_count }} {% trans 'messages were sent successfully.' %}</div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

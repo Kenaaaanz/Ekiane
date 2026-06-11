@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 from django.conf import settings
 from django.urls import reverse
 from .models import Payment
-from .utils import send_sms_notification
+from .utils import send_order_admin_sms, send_order_customer_sms
 
 
 @receiver(pre_save, sender=Payment)
@@ -68,7 +68,16 @@ def send_order_notification_email(sender, instance, created, **kwargs):
         print(f"Failed to send order notification email for order #{order.id}: {str(e)}")
 
     try:
-        send_sms_notification(order, instance)
-        print(f"Order SMS notification sent for order #{order.id}")
+        send_order_admin_sms(order, instance)
+        print(f"Admin SMS notification sent for order #{order.id}")
     except Exception as e:
-        print(f"Failed to send order SMS notification for order #{order.id}: {str(e)}")
+        print(f"Failed to send admin SMS notification for order #{order.id}: {str(e)}")
+
+    try:
+        if order.phone:
+            send_order_customer_sms(order, instance)
+            print(f"Customer SMS notification sent for order #{order.id}")
+        else:
+            print(f"No customer phone number available for order #{order.id}")
+    except Exception as e:
+        print(f"Failed to send customer SMS notification for order #{order.id}: {str(e)}")
